@@ -26,9 +26,7 @@ An all-in-one life assistant where you just speak, and the app handles the rest:
 * [Expo (React Native)](https://expo.dev)
 * [NativeWind](https://www.nativewind.dev/) for styling
 * [Supabase](https://supabase.com) for backend
-* [OpenAI GPT-4](https://platform.openai.com) for AI understanding
-* [Whisper](https://openai.com/research/whisper) for speech-to-text
-* [Bun](https://bun.sh) for blazing fast development
+* [Bun](https://bun.sh)
 
 ## 🚀 Getting Started
 
@@ -42,4 +40,4 @@ bun run web
 ## 🛠️ Project Status
 
 **🚧 Early-stage development.**
-We're building the most intuitive voice-based productivity tool. Contributions and ideas are welcome!
+Contributions and ideas are welcome!
