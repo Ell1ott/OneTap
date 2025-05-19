@@ -9,7 +9,6 @@ An all-in-one life assistant where you just speak, and the app handles the rest:
 * 📖 **“Today I went to the beach with friends…”** → Logged as a **Diary entry**
 * 📅 **“Want to meet up with Mickel at 6”** → Adds a **Calendar event**
 * 🏃‍♂️ **“Did 30 pushups and ran 3k today”** → Logged in the **Fitness tracker**
-* 😟 **“I’m feeling really anxious this week”** → Creates a **Mood log** or **suggests journaling**
 
 
 ## 🎯 Goals
