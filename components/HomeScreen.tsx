@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Pressable } from 'react-native';
+import { View, Pressable, Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -13,6 +13,7 @@ import { Audio } from 'expo-av';
 export const HomeScreen: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [availableInputs, setAvailableInputs] = useState<Audio.RecordingInput[]>([]);
   const scale = useSharedValue(1);
 
   const animatedStyles = useAnimatedStyle(() => {
@@ -35,8 +36,8 @@ export const HomeScreen: React.FC = () => {
   const inactiveSize = 1;
   const hoverSize = 1.05;
   const pressedSize = 0.9;
-  const minVolumeSize = 1.0;
-  const maxVolumeSize = 2.0;
+  const minVolumeSize = 1.1;
+  const maxVolumeSize = 1.5;
 
   // Request audio recording permissions
   useEffect(() => {
@@ -63,7 +64,9 @@ export const HomeScreen: React.FC = () => {
         100 // Update status every 100ms
       );
 
-      console.log(recording.getAvailableInputs());
+      const inputs = await recording.getAvailableInputs();
+      setAvailableInputs(inputs);
+      console.log('Available inputs:', inputs);
 
       setRecording(recording);
     } catch (err) {
@@ -92,16 +95,18 @@ export const HomeScreen: React.FC = () => {
 
     // Get the metering level (volume) from the status
     // metering is in dB, typically between -160 and 0
-    // where 0 is the loudest
-    const metering = status.metering || -160;
+    // where 0 is the loudes
+    if (!status.metering || status.metering <= -160) return;
+
+    console.log('Metering level:', status.metering);
 
     // Convert dB to a scale value
     // Map -160dB (silence) to minVolumeSize and 0dB (loudest) to maxVolumeSize
-    const normalizedVolume = Math.max(0, (metering + 160) / 160);
+    const normalizedVolume = Math.max(0, (status.metering + 160) / 160);
     const newScale = minVolumeSize + normalizedVolume * (maxVolumeSize - minVolumeSize);
 
     // Apply the new scale with spring animation
-    scale.value = withSpring(newScale, SpringConfig);
+    scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
   };
 
   const handlePressIn = () => {
@@ -111,9 +116,21 @@ export const HomeScreen: React.FC = () => {
   };
 
   const handlePressOut = () => {
-    if (active) return;
+    
+    const newActiveState = !active;
+    setActive(newActiveState);
     // Return to hover state or active state
-    scale.value = withSpring(active ? activeSize : hoverSize, SpringConfig);
+    scale.value = withSpring(newActiveState ? activeSize : hoverSize, SpringConfig);
+
+    if (newActiveState) {
+      // Start recording when activated
+      startRecording();
+    } else {
+      // Stop recording when deactivated
+      stopRecording();
+      // Animate to inactive state
+      scale.value = withSpring(inactiveSize, SpringConfig);
+    }
   };
 
   const handleHoverIn = () => {
@@ -128,37 +145,31 @@ export const HomeScreen: React.FC = () => {
     scale.value = withSpring(active ? activeSize : inactiveSize, SpringConfig);
   };
 
-  const handlePress = () => {
-    const newActiveState = !active;
-    setActive(newActiveState);
-
-    if (newActiveState) {
-      // Start recording when activated
-      startRecording();
-    } else {
-      // Stop recording when deactivated
-      stopRecording();
-      // Animate to inactive state
-      scale.value = withSpring(inactiveSize, SpringConfig);
-    }
-  };
-
   // AnimatedPressable combines Animated and Pressable
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   return (
     <View className="flex-1 items-center justify-center bg-gray-300">
       <AnimatedPressable
-        onPress={handlePress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         onHoverIn={handleHoverIn}
         onHoverOut={handleHoverOut}
         style={animatedStyles}
-        className={`h-24 w-24 items-center justify-center rounded-full ${
+        className={`h-48 w-48 items-center justify-center rounded-full ${
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
+
+      {/* Display available inputs */}
+      <View className="mt-8 px-4">
+        <Text className="mb-2 text-lg font-bold">Available Microphones:</Text>
+        {availableInputs.map((input, index) => (
+          <Text key={index} className="mb-1 text-base">
+            {input.name || `Microphone ${index + 1}`}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 };
