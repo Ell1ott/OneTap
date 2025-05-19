@@ -13,7 +13,6 @@ import { Audio } from 'expo-av';
 export const HomeScreen: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [availableInputs, setAvailableInputs] = useState<Audio.RecordingInput[]>([]);
   const scale = useSharedValue(1);
 
   const animatedStyles = useAnimatedStyle(() => {
@@ -160,16 +159,7 @@ export const HomeScreen: React.FC = () => {
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
-
-      {/* Display available inputs */}
-      <View className="mt-8 px-4">
-        <Text className="mb-2 text-lg font-bold">Available Microphones:</Text>
-        {availableInputs.map((input, index) => (
-          <Text key={index} className="mb-1 text-base">
-            {input.name || `Microphone ${index + 1}`}
-          </Text>
-        ))}
-      </View>
+      
     </View>
   );
 };
