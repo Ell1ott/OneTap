@@ -80,19 +80,6 @@ export const HomeScreen: React.FC = () => {
             if(audioStreamEvent.data.length != 16 * interval) return;
 
             setTranscriptionData(new Int16Array(audioStreamEvent.data));
-            // Pass audio data for transcriptionjjjj
-            // Convert to the correct type based on what's available
-
-            // if (audioStreamEvent.data instanceof Float32Array) {
-            //     setTranscriptionData(new Uint16Array(audioStreamEvent.data.buffer));
-            // } else if (typeof audioStreamEvent.data === 'object') {
-            //   // Try to create a typed array from the data
-            //   try {
-            //     setTranscriptionData(new Uint16Array(audioStreamEvent.data));
-            //   } catch (err) {
-            //     console.error('Could not convert audio data to Uint16Array:', err);
-            //   }
-            // }
           }
         },
 
