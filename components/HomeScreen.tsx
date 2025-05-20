@@ -43,7 +43,7 @@ export const HomeScreen: React.FC = () => {
     (async () => {
       const { status } = await Audio.requestPermissionsAsync();
       if (status !== 'granted') {
-        console.error('Audio recording permissions not granted');
+        console.error('Audio recording permissions aint granted');
       }
     })();
   }, []);
@@ -64,7 +64,6 @@ export const HomeScreen: React.FC = () => {
       );
 
       const inputs = await recording.getAvailableInputs();
-      setAvailableInputs(inputs);
       console.log('Available inputs:', inputs);
 
       setRecording(recording);
@@ -100,6 +99,7 @@ export const HomeScreen: React.FC = () => {
     console.log('Metering level:', status.metering);
 
     // Convert dB to a scale value
+    // How does wakatime work???
     // Map -160dB (silence) to minVolumeSize and 0dB (loudest) to maxVolumeSize
     const normalizedVolume = Math.max(0, (status.metering + 160) / 160);
     const newScale = minVolumeSize + normalizedVolume * (maxVolumeSize - minVolumeSize);
@@ -115,7 +115,6 @@ export const HomeScreen: React.FC = () => {
   };
 
   const handlePressOut = () => {
-    
     const newActiveState = !active;
     setActive(newActiveState);
     // Return to hover state or active state
@@ -159,7 +158,6 @@ export const HomeScreen: React.FC = () => {
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
-      
     </View>
   );
 };
