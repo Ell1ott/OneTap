@@ -2,8 +2,8 @@
   "name": "OneTap",
   "version": "1.0.0",
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "start": "expo start",
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
@@ -11,10 +11,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@deepgram/sdk": "^4.1.1",
+    "@deepgram/sdk": "^4.2.0",
+    "@siteed/expo-audio-studio": "^2.9.0",
+    "cross-fetch": "^4.1.0",
+    "dotenv": "^16.5.0",
     "expo": "^53.0.9",
     "expo-audio": "^0.4.5",
     "expo-av": "^15.1.4",
+    "expo-file-system": "^18.1.10",
     "expo-status-bar": "~2.2.3",
     "nativewind": "latest",
     "react": "19.0.0",
