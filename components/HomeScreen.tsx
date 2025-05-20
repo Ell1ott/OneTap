@@ -14,11 +14,14 @@ import {
   ExpoAudioStreamModule,
   RecordingConfig,
 } from '@siteed/expo-audio-studio';
-import Recorder from './Recorder';
+import DeepgramTranscriber from './DeepgramTranscriber';
+import { DEEPGRAM_API_KEY } from '../env';
 
 export const HomeScreen: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
   const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
+  const [transcriptionData, setTranscriptionData] = useState<any | null>(null);
+  const [deepgramApiKey, setDeepgramApiKey] = useState<string>(DEEPGRAM_API_KEY);
   const scale = useSharedValue(1);
 
   const { startRecording, stopRecording, isRecording, durationMs, size, analysisData } =
@@ -47,6 +50,8 @@ export const HomeScreen: React.FC = () => {
   const minVolumeSize = 1.1;
   const maxVolumeSize = 1.5;
 
+  const interval = 100;
+
   // Request audio recording permissions
   useEffect(() => {
     (async () => {
@@ -62,16 +67,41 @@ export const HomeScreen: React.FC = () => {
     try {
       // Configure recording options
       const config: RecordingConfig = {
-        interval: 100, // Emit recording data every 100ms
-        enableProcessing: true, // Enable audio analysis
-        sampleRate: 44100, // Sample rate in Hz
+        interval: interval, // Emit recording data every 100ms
+        enableProcessing: true, // Enable audio analys
+        sampleRate: 16000, // Sample rate in Hz
         channels: 1, // Mono recording
-        encoding: 'pcm_16bit', // PCM encoding
+       encoding: 'pcm_16bit', // PCMl hmj
+
+        onAudioStream: async (audioStreamEvent) => {
+          if (audioStreamEvent && audioStreamEvent.data) {
+            console.log('Audio stream data:', audioStreamEvent.data);
+            console.log(audioStreamEvent.data.length);
+            if(audioStreamEvent.data.length != 16 * interval) return;
+
+            setTranscriptionData(new Int16Array(audioStreamEvent.data));
+            // Pass audio data for transcriptionjjjj
+            // Convert to the correct type based on what's available
+
+            // if (audioStreamEvent.data instanceof Float32Array) {
+            //     setTranscriptionData(new Uint16Array(audioStreamEvent.data.buffer));
+            // } else if (typeof audioStreamEvent.data === 'object') {
+            //   // Try to create a typed array from the data
+            //   try {
+            //     setTranscriptionData(new Uint16Array(audioStreamEvent.data));
+            //   } catch (err) {
+            //     console.error('Could not convert audio data to Uint16Array:', err);
+            //   }
+            // }
+          }
+        },
 
         // Handle audio analysis data for volume visualization
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
             console.log('Volume:', analysisEvent.dataPoints[0].amplitude);
+
+            console.log(analysisEvent.dataPoints.length);
 
             // Map volume to scale value
             // Volume typically ranges from 0 to 1
@@ -95,6 +125,8 @@ export const HomeScreen: React.FC = () => {
     try {
       const result = await stopRecording();
       setAudioResult(result);
+      // Reset transcription data
+      setTranscriptionData(null);
 
       // Reset scale to inactive size
       scale.value = withSpring(inactiveSize, SpringConfig);
@@ -159,6 +191,15 @@ export const HomeScreen: React.FC = () => {
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
+      
+      {/* Transcription component */}
+      <View className="w-3/4 mt-8">
+        <DeepgramTranscriber 
+          isRecording={isRecording} 
+          audioData={transcriptionData}
+          apiKey={deepgramApiKey}
+        />
+      </View>
     </View>
   );
 };
