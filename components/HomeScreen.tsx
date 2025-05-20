@@ -8,13 +8,21 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { Audio } from 'expo-av';
+import {
+  AudioRecording,
+  useAudioRecorder,
+  ExpoAudioStreamModule,
+  RecordingConfig,
+} from '@siteed/expo-audio-studio';
 import Recorder from './Recorder';
 
 export const HomeScreen: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
   const scale = useSharedValue(1);
+
+  const { startRecording, stopRecording, isRecording, durationMs, size, analysisData } =
+    useAudioRecorder();
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -42,7 +50,7 @@ export const HomeScreen: React.FC = () => {
   // Request audio recording permissions
   useEffect(() => {
     (async () => {
-      const { status } = await Audio.requestPermissionsAsync();
+      const { status } = await ExpoAudioStreamModule.requestPermissionsAsync();
       if (status !== 'granted') {
         console.error('Audio recording permissions aint granted');
       }
@@ -50,36 +58,43 @@ export const HomeScreen: React.FC = () => {
   }, []);
 
   // Start recording and monitoring volume
-  const startRecording = async () => {
+  const beginRecording = async () => {
     try {
-      // Prepare the recording
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
+      // Configure recording options
+      const config: RecordingConfig = {
+        interval: 100, // Emit recording data every 100ms
+        enableProcessing: true, // Enable audio analysis
+        sampleRate: 44100, // Sample rate in Hz
+        channels: 1, // Mono recording
+        encoding: 'pcm_16bit', // PCM encoding
 
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY,
-        onRecordingStatusUpdate,
-        100 // Update status every 100ms
-      );
+        // Handle audio analysis data for volume visualization
+        onAudioAnalysis: async (analysisEvent) => {
+          if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
+            console.log('Volume:', analysisEvent.dataPoints[0].amplitude);
 
-      const inputs = await recording.getAvailableInputs();
-      console.log('Available inputs:', inputs);
+            // Map volume to scale value
+            // Volume typically ranges from 0 to 1
+            const newScale =
+              minVolumeSize +
+              (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
+            // Apply the new scale with spring animation
+            scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+          }
+        },
+      };
 
-      setRecording(recording);
+      await startRecording(config);
     } catch (err) {
       console.error('Failed to start recording', err);
     }
   };
 
   // Stop recording
-  const stopRecording = async () => {
-    if (!recording) return;
-
+  const endRecording = async () => {
     try {
-      await recording.stopAndUnloadAsync();
-      setRecording(null);
+      const result = await stopRecording();
+      setAudioResult(result);
 
       // Reset scale to inactive size
       scale.value = withSpring(inactiveSize, SpringConfig);
@@ -88,34 +103,16 @@ export const HomeScreen: React.FC = () => {
     }
   };
 
-  // Handle recording status updates (including volume)
-  const onRecordingStatusUpdate = (status: Audio.RecordingStatus) => {
-    if (!status.isRecording) return;
-
-    // Get the metering level (volume) from the status
-    // metering is in dB, typically between -160 and 0
-    // where 0 is the loudes
-    if (!status.metering || status.metering <= -160) return;
-
-    console.log('Metering level:', status.metering);
-
-    // Convert dB to a scale valuek
-
-    // Map -160dB (silence) to minVolumeSize and 0dB (loudexst) to maxVolumeSize
-    const normalizedVolume = Math.max(0, (status.metering + 160) / 160);
-    const newScale = minVolumeSize + normalizedVolume * (maxVolumeSize - minVolumeSize);
-
-    // Apply the new scale with spring animation
-    scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
-  };
-
   const handlePressIn = () => {
+    console.log('pressed in');
     if (active) return;
+
     // Shrink when pressed
     scale.value = withSpring(pressedSize, SpringConfig);
   };
 
   const handlePressOut = () => {
+    console.log('pressed out');
     const newActiveState = !active;
     setActive(newActiveState);
     // Return to hover state or active state
@@ -123,10 +120,10 @@ export const HomeScreen: React.FC = () => {
 
     if (newActiveState) {
       // Start recording when activated
-      startRecording();
+      beginRecording();
     } else {
       // Stop recording when deactivated
-      stopRecording();
+      endRecording();
       // Animate to inactive state
       scale.value = withSpring(inactiveSize, SpringConfig);
     }
@@ -152,6 +149,9 @@ export const HomeScreen: React.FC = () => {
       <AnimatedPressable
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
+        onPress={() => {
+          console.log('pressed');
+        }}
         onHoverIn={handleHoverIn}
         onHoverOut={handleHoverOut}
         style={animatedStyles}
@@ -159,7 +159,6 @@ export const HomeScreen: React.FC = () => {
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
-      <Recorder />
     </View>
   );
 };
