@@ -98,9 +98,9 @@ export const HomeScreen: React.FC = () => {
 
     console.log('Metering level:', status.metering);
 
-    // Convert dB to a scale value
-    // How does wakatime work???
-    // Map -160dB (silence) to minVolumeSize and 0dB (loudest) to maxVolumeSize
+    // Convert dB to a scale valuek
+
+    // Map -160dB (silence) to minVolumeSize and 0dB (loudexst) to maxVolumeSize
     const normalizedVolume = Math.max(0, (status.metering + 160) / 160);
     const newScale = minVolumeSize + normalizedVolume * (maxVolumeSize - minVolumeSize);
 
