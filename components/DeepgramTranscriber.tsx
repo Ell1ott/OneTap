@@ -31,12 +31,13 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       const deepgram = createClient(apiKey);
       
       const connection = deepgram.listen.live({
-        model: "nova",
+        language: "da",
+        model: "nova-2",
         smart_format: true,
         interim_results: true,
-        encoding: "linear16", // For PCM 16-bit audiodfdgd
+        encoding: "linear16", // For PCM 16-bit audio
         sample_rate: 16000,   // Match the recorder's sample rate
-        // channels: 1,          // Mono audiohh
+        channels: 1,          // Mono audio
         
       });
 
