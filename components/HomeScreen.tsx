@@ -9,6 +9,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { Audio } from 'expo-av';
+import Recorder from './Recorder';
 
 export const HomeScreen: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
@@ -158,6 +159,7 @@ export const HomeScreen: React.FC = () => {
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
+      <Recorder />
     </View>
   );
 };
