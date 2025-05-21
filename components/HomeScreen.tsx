@@ -88,8 +88,6 @@ export const HomeScreen: React.FC = () => {
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
 
-            console.log(analysisEvent.dataPoints.length);
-
             // Map volume to scale value
             // Volume typically ranges from 0 to 1
             const newScale =

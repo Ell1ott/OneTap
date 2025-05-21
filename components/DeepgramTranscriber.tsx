@@ -24,13 +24,6 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   // Store animation values in a ref to persist across renders
   const animationsRef = useRef<Map<string, Animated.Value>>(new Map());
 
-  useEffect(() => {
-    console.log("transcriptionIndexes", transcriptionIndexes);
-  }, [transcriptionIndexes]);
-  useEffect(() => {
-    console.log("transcripts", transcripts);
-  }, [transcripts]);
-
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
     if (!apiKey) return;
@@ -60,7 +53,6 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       });
 
       connection.on(LiveTranscriptionEvents.Transcript, (data) => {
-        console.log("data", data);
         const transcriptText: string = data.channel.alternatives[0].transcript;
         if (transcriptText) {
           setTranscript(transcriptText);
