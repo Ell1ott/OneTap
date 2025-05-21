@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, Animated } from 'react-native';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
 
 interface DeepgramTranscriberProps {
@@ -15,9 +15,21 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   apiKey 
 }) => {
   const [transcript, setTranscript] = useState<string>('');
+  const [transcripts, setTranscripts] = useState<string[]>(['']);
+  const [transcriptionIndexes, setTranscriptionIndexes] = useState<number[][]>([[]]);
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
+  
+  // Store animation values in a ref to persist across renders
+  const animationsRef = useRef<Map<string, Animated.Value>>(new Map());
+
+  useEffect(() => {
+    console.log("transcriptionIndexes", transcriptionIndexes);
+  }, [transcriptionIndexes]);
+  useEffect(() => {
+    console.log("transcripts", transcripts);
+  }, [transcripts]);
 
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
@@ -31,8 +43,8 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       const deepgram = createClient(apiKey);
       
       const connection = deepgram.listen.live({
-        language: "da",
-        model: "nova-2",
+        language: "en",
+        model: "nova-3",
         smart_format: true,
         interim_results: true,
         encoding: "linear16", // For PCM 16-bit audio
@@ -48,9 +60,29 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       });
 
       connection.on(LiveTranscriptionEvents.Transcript, (data) => {
-        const transcriptText = data.channel.alternatives[0].transcript;
+        console.log("data", data);
+        const transcriptText: string = data.channel.alternatives[0].transcript;
         if (transcriptText) {
           setTranscript(transcriptText);
+          setTranscripts(prev => {
+            const newTranscripts = [...prev];
+            
+            newTranscripts[newTranscripts.length - 1] = transcriptText;
+            if(data.is_final) {
+              newTranscripts.push("");
+            }
+            
+            return newTranscripts;
+          });
+          console.log("newTranscription", transcriptText);
+          setTranscriptionIndexes(prevIndexes => {
+            const newIndexes = [...prevIndexes];
+            newIndexes[newIndexes.length - 1].push(transcriptText.length);
+            if(data.is_final) {
+              newIndexes.push([]);
+            }
+            return newIndexes;
+          });
         }
       });
 
@@ -97,6 +129,23 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
     }
   }, [isRecording, audioData, socket, isConnected]);
 
+  // Helper function to get or create an animation value for a specific text segment
+  const getAnimationValue = (segmentKey: string): Animated.Value => {
+    if (!animationsRef.current.has(segmentKey)) {
+      const anim = new Animated.Value(0);
+      animationsRef.current.set(segmentKey, anim);
+      
+      // Start fade-in animation
+      Animated.timing(anim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+    
+    return animationsRef.current.get(segmentKey)!;
+  };
+
   return (
     <View className="mt-4 p-4 bg-gray-100 rounded-lg w-full">
       <View className="flex-row justify-between mb-2">
@@ -105,7 +154,28 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
           {connectionStatus}
         </Text>
       </View>
-      <Text className="text-lg">{transcript || 'Waiting for speech...'}</Text>
+      <Text className="text-lg">
+        {transcriptionIndexes.map((indexes, a) => {
+          return (
+            <Text key={a}>
+              {indexes.map((index, b) => {
+                // Create unique key for this text segment
+                const segmentKey = `text-${a}-${b}`;
+                const opacity = getAnimationValue(segmentKey);
+                
+                return (
+                  <Animated.Text 
+                    key={segmentKey}
+                    style={{ opacity }}
+                  >
+                    {transcripts[a].slice(indexes[b - 1] || 0, index)}
+                  </Animated.Text>
+                );
+              })}
+            </Text>
+          );
+        })}
+      </Text>
     </View>
   );
 };
