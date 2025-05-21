@@ -46,6 +46,10 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
         
       });
 
+      // Currently researching which model is best for this use case
+      // I found this really interesting video on the topic:
+      // https://youtu.be/t38gZi8WNKE
+
       connection.on("open", () => {
         console.log("Deepgram connection established");
         setIsConnected(true);
