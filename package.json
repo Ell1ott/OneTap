@@ -14,6 +14,7 @@
     "@deepgram/sdk": "^4.2.0",
     "@siteed/expo-audio-studio": "^2.9.0",
     "cross-fetch": "^4.1.0",
+    "deepgram": "^1.0.3",
     "dotenv": "^16.5.0",
     "expo": "^53.0.9",
     "expo-audio": "^0.4.5",
@@ -25,7 +26,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-reanimated": "~3.17.4",
+    "react-native-reanimated": "^3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-web": "^0.20.0"
   },
