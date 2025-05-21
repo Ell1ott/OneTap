@@ -22,6 +22,7 @@ export const HomeScreen: React.FC = () => {
   const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
   const [transcriptionData, setTranscriptionData] = useState<any | null>(null);
   const [deepgramApiKey, setDeepgramApiKey] = useState<string>(DEEPGRAM_API_KEY);
+
   const scale = useSharedValue(1);
 
   const { startRecording, stopRecording, isRecording, durationMs, size, analysisData } =
@@ -75,8 +76,8 @@ export const HomeScreen: React.FC = () => {
 
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {
-            console.log('Audio stream data:', audioStreamEvent.data);
-            console.log(audioStreamEvent.data.length);
+            
+            
             if(audioStreamEvent.data.length != 16 * interval) return;
 
             setTranscriptionData(new Int16Array(audioStreamEvent.data));
@@ -86,7 +87,6 @@ export const HomeScreen: React.FC = () => {
         // Handle audio analysis data for volume visualization
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-            console.log('Volume:', analysisEvent.dataPoints[0].amplitude);
 
             console.log(analysisEvent.dataPoints.length);
 
