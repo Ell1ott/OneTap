@@ -172,6 +172,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
                   </Animated.Text>
                 );
               })}
+              {' '}
             </Text>
           );
         })}
