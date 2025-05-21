@@ -134,7 +134,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       // Start fade-in animation
       Animated.timing(anim, {
         toValue: 1,
-        duration: 500,
+        duration: 350,
         useNativeDriver: true,
       }).start();
     }
