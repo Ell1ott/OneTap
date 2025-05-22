@@ -83,12 +83,8 @@ export const HomeScreen: React.FC = () => {
             console.log('currentTime', currentTime - prevTime.current);
             prevTime.current = currentTime;
 
-            // console.log('audioStreamEvent.data.length', audioStreamEvent.data)
             if(typeof audioStreamEvent.data === 'string') {
               const int16Array = base64ToInt16Array(audioStreamEvent.data);
-              console.log('int16Array', int16Array.length);
-              console.log('newScale', calculateRMSVolume(int16Array)); 
-              // if(int16Array.length != 16 * interval) return;
 
               const newScale =
               minVolumeSize +
