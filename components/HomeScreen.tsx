@@ -76,36 +76,33 @@ export const HomeScreen: React.FC = () => {
         channels: 1, // Mono recording
         encoding: 'pcm_16bit', // PCMl
 
-
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {
             const currentTime = Date.now();
             console.log('currentTime', currentTime - prevTime.current);
             prevTime.current = currentTime;
 
-            if(typeof audioStreamEvent.data === 'string') {
+            if (typeof audioStreamEvent.data === 'string') {
               const int16Array = base64ToInt16Array(audioStreamEvent.data);
 
               const newScale =
-              minVolumeSize +
-              (calculateRMSVolume(int16Array) / 32768 * 3) * (maxVolumeSize - minVolumeSize);
-              scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+                minVolumeSize +
+                (calculateRMSVolume(int16Array) / 32768) * (maxVolumeSize - minVolumeSize) * 5;
+              scale.value = withSpring(newScale, { damping: 100, stiffness: 350 });
               setTranscriptionData(int16Array);
-            } else if(typeof audioStreamEvent.data === 'object') {
-              if(audioStreamEvent.data.length < 15 * interval) return;
+            } else if (typeof audioStreamEvent.data === 'object') {
+              if (audioStreamEvent.data.length < 15 * interval) return;
               setTranscriptionData(new Int16Array(audioStreamEvent.data));
               const newScale =
-              minVolumeSize +
-              (calculateRMSVolume(new Int16Array(audioStreamEvent.data)) / 32768 * 3) * (maxVolumeSize - minVolumeSize);
+                minVolumeSize +
+                (calculateRMSVolume(new Int16Array(audioStreamEvent.data)) / 32768) *
+                  3 *
+                  (maxVolumeSize - minVolumeSize);
               scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
             }
-
-            
-
           }
         },
 
-        
         // Handle audio analysis data for volume visualization
         // onAudioAnalysis: async (analysisEvent) => {
         //   if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
@@ -186,6 +183,7 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <View className="flex-1 items-center justify-center bg-background">
+      <Pressable></Pressable>
       <AnimatedPressable
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
@@ -199,11 +197,11 @@ export const HomeScreen: React.FC = () => {
           active ? 'bg-blue-500' : 'bg-blue-400'
         }`}
       />
-      
+
       {/* Transcription component */}
-      <View className="w-3/4 mt-8">
-        <DeepgramTranscriber 
-          isRecording={isRecording} 
+      <View className="mt-8 w-3/4">
+        <DeepgramTranscriber
+          isRecording={isRecording}
           audioData={transcriptionData}
           apiKey={deepgramApiKey}
         />
