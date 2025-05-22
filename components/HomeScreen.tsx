@@ -162,7 +162,7 @@ export const HomeScreen: React.FC = () => {
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   return (
-    <View className="flex-1 items-center justify-center bg-gray-300">
+    <View className="flex-1 items-center justify-center bg-background">
       <AnimatedPressable
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
