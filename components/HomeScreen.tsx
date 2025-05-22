@@ -16,12 +16,14 @@ import {
 } from '@siteed/expo-audio-studio';
 import DeepgramTranscriber from './DeepgramTranscriber';
 import { DEEPGRAM_API_KEY } from '../env';
+import { base64ToInt16Array, calculateRMSVolume } from 'utils/AudioConversionUtils';
 
 export const HomeScreen: React.FC = () => {
   const [active, setActive] = useState<boolean>(false);
   const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
   const [transcriptionData, setTranscriptionData] = useState<any | null>(null);
   const [deepgramApiKey, setDeepgramApiKey] = useState<string>(DEEPGRAM_API_KEY);
+  const prevTime = React.useRef<number>(0);
 
   const scale = useSharedValue(1);
 
@@ -51,7 +53,7 @@ export const HomeScreen: React.FC = () => {
   const minVolumeSize = 1.1;
   const maxVolumeSize = 1.5;
 
-  const interval = 500;
+  const interval = 100;
 
   // Request audio recording permissions
   useEffect(() => {
@@ -72,36 +74,46 @@ export const HomeScreen: React.FC = () => {
         enableProcessing: true, // Enable audio analys
         sampleRate: 16000, // Sample rate in Hz
         channels: 1, // Mono recording
-        encoding: 'pcm_16bit', // PCMl hmj
-        segmentDurationMs: 500,
-        compression: {
-          enabled: true, // Set to true to enable compression
-          format: 'aac', // 'aac' or 'opus'
-          bitrate: 128000, // Bitrate in bits per secondjj
-      },
+        encoding: 'pcm_16bit', // PCMl
+
 
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {
-            
-            
-            if(audioStreamEvent.data.length != 16 * interval) return;
+            const currentTime = Date.now();
+            console.log('currentTime', currentTime - prevTime.current);
+            prevTime.current = currentTime;
+
+            // console.log('audioStreamEvent.data.length', audioStreamEvent.data)
+            if(typeof audioStreamEvent.data === 'string') {
+              const int16Array = base64ToInt16Array(audioStreamEvent.data);
+              console.log('int16Array', int16Array.length);
+              console.log('newScale', calculateRMSVolume(int16Array)); 
+              // if(int16Array.length != 16 * interval) return;
+
+              const newScale =
+              minVolumeSize +
+              (calculateRMSVolume(int16Array) / 32768 * 2) * (maxVolumeSize - minVolumeSize);
+              scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+              setTranscriptionData(int16Array);
+            }
+
             
 
-            // setTranscriptionData(new Int16Array(audioStreamEvent.data));
           }
         },
 
         // Handle audio analysis data for volume visualization
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-            // console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
+            console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
+
             // Map volume to scale value
             // Volume typically ranges from 0 to 1
             const newScale =
               minVolumeSize +
-              (analysisEvent.dataPoints[0].amplitude * 2) * (maxVolumeSize - minVolumeSize);
+              (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
             // Apply the new scale with spring animation
-            scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+            // scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
           }
         },
       };
