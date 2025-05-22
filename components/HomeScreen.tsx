@@ -51,7 +51,7 @@ export const HomeScreen: React.FC = () => {
   const minVolumeSize = 1.1;
   const maxVolumeSize = 1.5;
 
-  const interval = 100;
+  const interval = 500;
 
   // Request audio recording permissions
   useEffect(() => {
@@ -72,27 +72,34 @@ export const HomeScreen: React.FC = () => {
         enableProcessing: true, // Enable audio analys
         sampleRate: 16000, // Sample rate in Hz
         channels: 1, // Mono recording
-       encoding: 'pcm_16bit', // PCMl hmj
+        encoding: 'pcm_16bit', // PCMl hmj
+        segmentDurationMs: 500,
+        compression: {
+          enabled: true, // Set to true to enable compression
+          format: 'aac', // 'aac' or 'opus'
+          bitrate: 128000, // Bitrate in bits per secondjj
+      },
 
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {
             
             
             if(audioStreamEvent.data.length != 16 * interval) return;
+            
 
-            setTranscriptionData(new Int16Array(audioStreamEvent.data));
+            // setTranscriptionData(new Int16Array(audioStreamEvent.data));
           }
         },
 
         // Handle audio analysis data for volume visualization
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-
+            // console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
             // Map volume to scale value
             // Volume typically ranges from 0 to 1
             const newScale =
               minVolumeSize +
-              (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
+              (analysisEvent.dataPoints[0].amplitude * 2) * (maxVolumeSize - minVolumeSize);
             // Apply the new scale with spring animation
             scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
           }
