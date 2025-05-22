@@ -92,9 +92,16 @@ export const HomeScreen: React.FC = () => {
 
               const newScale =
               minVolumeSize +
-              (calculateRMSVolume(int16Array) / 32768 * 2) * (maxVolumeSize - minVolumeSize);
+              (calculateRMSVolume(int16Array) / 32768 * 3) * (maxVolumeSize - minVolumeSize);
               scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
               setTranscriptionData(int16Array);
+            } else if(typeof audioStreamEvent.data === 'object') {
+              if(audioStreamEvent.data.length < 15 * interval) return;
+              setTranscriptionData(new Int16Array(audioStreamEvent.data));
+              const newScale =
+              minVolumeSize +
+              (calculateRMSVolume(new Int16Array(audioStreamEvent.data)) / 32768 * 3) * (maxVolumeSize - minVolumeSize);
+              scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
             }
 
             
@@ -102,20 +109,21 @@ export const HomeScreen: React.FC = () => {
           }
         },
 
+        
         // Handle audio analysis data for volume visualization
-        onAudioAnalysis: async (analysisEvent) => {
-          if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-            console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
+        // onAudioAnalysis: async (analysisEvent) => {
+        //   if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
+        //     console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
 
-            // Map volume to scale value
-            // Volume typically ranges from 0 to 1
-            const newScale =
-              minVolumeSize +
-              (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
-            // Apply the new scale with spring animation
-            // scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
-          }
-        },
+        //     // Map volume to scale value
+        //     // Volume typically ranges from 0 to 1
+        //     const newScale =
+        //       minVolumeSize +
+        //       (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
+        //     // Apply the new scale with spring animation
+        //     // scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+        //   }
+        // },
       };
 
       await startRecording(config);
