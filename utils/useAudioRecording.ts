@@ -1,0 +1,118 @@
+import { useState, useRef } from 'react';
+import { Platform } from 'react-native';
+import {
+  AudioRecording,
+  useAudioRecorder,
+  ExpoAudioStreamModule,
+  RecordingConfig,
+} from '@siteed/expo-audio-studio';
+import { base64ToInt16Array, calculateRMSVolume } from './AudioConversionUtils';
+
+export const useAudioRecording = () => {
+  const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
+  const [transcriptionData, setTranscriptionData] = useState<any | null>(null);
+  const prevTime = useRef<number>(0);
+
+  const { startRecording, stopRecording, isRecording, durationMs, size, analysisData } =
+    useAudioRecorder();
+
+  // Request audio recording permissions
+  const requestPermissions = async () => {
+    const { status } = await ExpoAudioStreamModule.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.error('Audio recording permissions aint granted');
+    }
+  };
+
+  const interval = 100;
+  const minVolumeSize = 1.1;
+  const maxVolumeSize = 1.5;
+
+  // Start recording and monitoring volume
+  const beginRecording = async (onVolumeChange: (newScale: number) => void) => {
+    try {
+      // Configure recording options
+      const config: RecordingConfig = {
+        interval: interval,
+        enableProcessing: Platform.OS === 'web',
+        sampleRate: 16000,
+        channels: 1,
+        encoding: 'pcm_16bit',
+
+        onAudioStream: async (audioStreamEvent) => {
+          if (audioStreamEvent && audioStreamEvent.data) {
+            const currentTime = Date.now();
+            console.log('currentTime', currentTime - prevTime.current);
+            prevTime.current = currentTime;
+
+            if (typeof audioStreamEvent.data === 'string') {
+              const int16Array = base64ToInt16Array(audioStreamEvent.data);
+
+              // We need to calculate volume here because onAudioAnalysis is too slow/laggy for mobile
+              const volume = calculateRMSVolume(int16Array);
+              const normalizedVolume = Math.min((volume / 32768) * 3, 1); // Ensure it doesn't exceed 1
+
+              const newScale = minVolumeSize + normalizedVolume * (maxVolumeSize - minVolumeSize);
+              console.log('Volume scale from audio stream:', {
+                volume,
+                normalizedVolume,
+                newScale,
+              });
+              onVolumeChange(newScale);
+              setTranscriptionData(int16Array);
+            } else if (typeof audioStreamEvent.data === 'object') {
+              if (audioStreamEvent.data.length < 15 * interval) return;
+              setTranscriptionData(new Int16Array(audioStreamEvent.data));
+
+              // If its web we do not calculate volume here becayse onAudioAnalysis gives better results
+            }
+          }
+        },
+
+        onAudioAnalysis: async (analysisEvent) => {
+          if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
+            const amplitude = analysisEvent.dataPoints[0].amplitude;
+            const normalizedAmplitude = Math.min(amplitude / 32768, 1);
+            const newScale = minVolumeSize + normalizedAmplitude * (maxVolumeSize - minVolumeSize);
+
+            console.log('Volume scale from analysis:', {
+              amplitude,
+              normalizedAmplitude,
+              newScale,
+            });
+            onVolumeChange(newScale);
+          }
+        },
+      };
+
+      await startRecording(config);
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  };
+
+  // Stop recording
+  const endRecording = async () => {
+    try {
+      const result = await stopRecording();
+      setAudioResult(result);
+      setTranscriptionData(null);
+      return result;
+    } catch (err) {
+      console.error('Failed to stop recording', err);
+      return null;
+    }
+  };
+
+  return {
+    audioResult,
+    transcriptionData,
+    isRecording,
+    durationMs,
+    size,
+    analysisData,
+    requestPermissions,
+    beginRecording,
+    endRecording,
+  };
+};

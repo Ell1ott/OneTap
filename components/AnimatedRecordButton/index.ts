@@ -1,0 +1,1 @@
+export { AnimatedRecordButton } from './AnimatedRecordButton';
