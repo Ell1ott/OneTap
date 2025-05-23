@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text } from 'react-native';
-
+import AppText from '../AppText';
 interface GreetingProps {
   name?: string;
   className?: string;
@@ -20,11 +20,11 @@ const getTimeBasedGreeting = (): string => {
 
 export const Greeting: React.FC<GreetingProps> = ({
   name = 'Elliott',
-  className = 'mb-3 text-3xl font-bold text-foreground',
+  className = 'mb-3 text-[25px] font-bold text-foreground',
 }) => {
   return (
-    <Text className={className}>
+    <AppText f className={className}>
       {getTimeBasedGreeting()}, {name}!
-    </Text>
+    </AppText>
   );
 };
