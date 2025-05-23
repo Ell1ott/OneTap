@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@deepgram/sdk": "^4.2.0",
+    "@expo-google-fonts/inter": "^0.3.0",
     "@siteed/expo-audio-studio": "^2.9.0",
     "cross-fetch": "^4.1.0",
     "deepgram": "^1.0.3",
@@ -21,6 +22,7 @@
     "expo-av": "^15.1.4",
     "expo-dev-client": "^5.1.8",
     "expo-file-system": "^18.1.10",
+    "expo-font": "^13.3.1",
     "expo-status-bar": "~2.2.3",
     "nativewind": "latest",
     "react": "19.0.0",
