@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Pressable, Text } from 'react-native';
+import { View, Pressable, Text, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -17,8 +17,11 @@ import {
 import DeepgramTranscriber from './DeepgramTranscriber';
 import { DEEPGRAM_API_KEY } from '../env';
 import { base64ToInt16Array, calculateRMSVolume } from 'utils/AudioConversionUtils';
+import { theme } from 'tailwind.config';
 
 export const HomeScreen: React.FC = () => {
+  // console log the current theme
+  console.log('current theme', theme);
   const [active, setActive] = useState<boolean>(false);
   const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
   const [transcriptionData, setTranscriptionData] = useState<any | null>(null);
@@ -71,7 +74,7 @@ export const HomeScreen: React.FC = () => {
       // Configure recording options
       const config: RecordingConfig = {
         interval: interval, // Emit recording data every 100ms
-        enableProcessing: true, // Enable audio analys
+        enableProcessing: Platform.OS !== 'web', // Enable audio analysis on non-web platforms
         sampleRate: 16000, // Sample rate in Hz
         channels: 1, // Mono recording
         encoding: 'pcm_16bit', // PCMl
@@ -93,30 +96,29 @@ export const HomeScreen: React.FC = () => {
             } else if (typeof audioStreamEvent.data === 'object') {
               if (audioStreamEvent.data.length < 15 * interval) return;
               setTranscriptionData(new Int16Array(audioStreamEvent.data));
-              const newScale =
-                minVolumeSize +
-                (calculateRMSVolume(new Int16Array(audioStreamEvent.data)) / 32768) *
-                  3 *
-                  (maxVolumeSize - minVolumeSize);
-              scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+              // const newScale =
+              //   minVolumeSize +
+              //   (calculateRMSVolume(new Int16Array(audioStreamEvent.data)) / 32768) *
+              //     3 *
+              //     (maxVolumeSize - minVolumeSize);
+              // scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
             }
           }
         },
 
         // Handle audio analysis data for volume visualization
-        // onAudioAnalysis: async (analysisEvent) => {
-        //   if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-        //     console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
+        onAudioAnalysis: async (analysisEvent) => {
+          if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
+            console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
 
-        //     // Map volume to scale value
-        //     // Volume typically ranges from 0 to 1
-        //     const newScale =
-        //       minVolumeSize +
-        //       (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
-        //     // Apply the new scale with spring animation
-        //     // scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
-        //   }
-        // },
+            // Map volume to scale value
+            const newScale =
+              minVolumeSize +
+              (analysisEvent.dataPoints[0].amplitude / 32768) * (maxVolumeSize - minVolumeSize);
+            // Apply the new scale with spring animation
+            scale.value = withSpring(newScale, { damping: 100, stiffness: 1000 });
+          }
+        },
       };
 
       await startRecording(config);
