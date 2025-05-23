@@ -1,19 +1,15 @@
 import * as React from 'react';
 import { View, Pressable, Text } from 'react-native';
 import { theme } from 'tailwind.config';
-import { AudioRecorder } from '../AudioRecorder';
-import { Greeting } from './Greeting';
-import FontLoader from '../FontLoader';
-import AppText from '../AppText';
-import { Todos } from './Todos';
-import { TodoList } from 'components/Todos/TodoList';
-import { TodoSection } from './TodoSection';
+import AppText from 'components/AppText';
+import { TodoSection } from 'components/HomeScreen/TodoSection';
+import { Greeting } from 'components/HomeScreen/Greeting';
 
-export const HomeScreen: React.FC = () => {
+export function HomeScreen() {
   console.log('current theme', theme);
 
   return (
-    <View className="flex-1 bg-background px-6 py-16">
+    <View className="flex-1 bg-background px-6 py-16" style={{ backgroundColor: 'White' }}>
       <View className="mb-10">
         <Greeting />
         <AppText f className="text-base leading-5 text-foregroundMuted">
@@ -76,4 +72,4 @@ export const HomeScreen: React.FC = () => {
       </View>
     </View>
   );
-};
+}
