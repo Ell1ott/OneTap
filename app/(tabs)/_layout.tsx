@@ -1,19 +1,22 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 
 import { HapticTab } from 'components/HapticTab';
 import TabBarBackground from 'components/ui/TabBarBackground';
 import { Feather, Plane } from 'lucide-react-native';
 
 export default function TabLayout() {
+  // Get the foregroundMuted color from the theme
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'White',
+        tabBarActiveTintColor: 'Black',
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
+        tabBarShowLabel: false,
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect
