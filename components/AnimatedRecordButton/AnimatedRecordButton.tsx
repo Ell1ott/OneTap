@@ -46,20 +46,10 @@ export const AnimatedRecordButton: React.FC<AnimatedRecordButtonProps> = ({
 
   // Handle volume-based scaling when active
   useEffect(() => {
-    console.log('AnimatedRecordButton useEffect triggered:', { active, volumeScale });
     if (active && volumeScale !== undefined) {
-      console.log('Applying volume scale animation:', volumeScale);
       scale.value = withSpring(volumeScale, { damping: 100, stiffness: 350 });
     }
   }, [volumeScale, active]);
-
-  // Reset to active size when becoming active but no volume yet
-  useEffect(() => {
-    if (active && volumeScale === undefined) {
-      console.log('Setting initial active scale');
-      scale.value = withSpring(activeSize, SpringConfig);
-    }
-  }, [active]);
 
   const handlePressIn = () => {
     console.log('pressed in');

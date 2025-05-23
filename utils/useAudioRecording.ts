@@ -25,8 +25,6 @@ export const useAudioRecording = () => {
   };
 
   const interval = 100;
-  const minVolumeSize = 1.1;
-  const maxVolumeSize = 1.5;
 
   // Start recording and monitoring volume
   const beginRecording = async (onVolumeChange: (newScale: number) => void) => {
@@ -48,38 +46,21 @@ export const useAudioRecording = () => {
             if (typeof audioStreamEvent.data === 'string') {
               const int16Array = base64ToInt16Array(audioStreamEvent.data);
 
-              // We need to calculate volume here because onAudioAnalysis is too slow/laggy for mobile
-              const volume = calculateRMSVolume(int16Array);
-              const normalizedVolume = Math.min((volume / 32768) * 3, 1); // Ensure it doesn't exceed 1
-
-              const newScale = minVolumeSize + normalizedVolume * (maxVolumeSize - minVolumeSize);
-              console.log('Volume scale from audio stream:', {
-                volume,
-                normalizedVolume,
-                newScale,
-              });
+              const newScale = 1.1 + (calculateRMSVolume(int16Array) / 32768) * (1.5 - 1.1) * 5;
               onVolumeChange(newScale);
               setTranscriptionData(int16Array);
             } else if (typeof audioStreamEvent.data === 'object') {
               if (audioStreamEvent.data.length < 15 * interval) return;
               setTranscriptionData(new Int16Array(audioStreamEvent.data));
-
-              // If its web we do not calculate volume here becayse onAudioAnalysis gives better results
             }
           }
         },
 
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-            const amplitude = analysisEvent.dataPoints[0].amplitude;
-            const normalizedAmplitude = Math.min(amplitude / 32768, 1);
-            const newScale = minVolumeSize + normalizedAmplitude * (maxVolumeSize - minVolumeSize);
+            console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
 
-            console.log('Volume scale from analysis:', {
-              amplitude,
-              normalizedAmplitude,
-              newScale,
-            });
+            const newScale = 1.1 + (analysisEvent.dataPoints[0].amplitude / 32768) * (1.5 - 1.1);
             onVolumeChange(newScale);
           }
         },

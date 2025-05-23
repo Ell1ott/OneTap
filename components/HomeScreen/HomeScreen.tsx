@@ -30,13 +30,10 @@ export const HomeScreen: React.FC = () => {
     setActive(newActiveState);
 
     if (newActiveState) {
-      console.log('Starting recording with volume callback');
       beginRecording((newScale) => {
-        console.log('HomeScreen received volume scale:', newScale);
         setVolumeScale(newScale);
       });
     } else {
-      console.log('Stopping recording');
       endRecording();
       setVolumeScale(undefined);
     }
@@ -49,11 +46,6 @@ export const HomeScreen: React.FC = () => {
   const handleHoverOut = () => {
     // Button handles its own animation
   };
-
-  // Debug volume scale changes
-  useEffect(() => {
-    console.log('HomeScreen volumeScale updated:', volumeScale);
-  }, [volumeScale]);
 
   return (
     <View className="flex-1 items-center justify-center bg-background">
