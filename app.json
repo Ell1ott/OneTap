@@ -3,12 +3,14 @@
     "name": "OneTap",
     "slug": "OneTap",
     "version": "1.0.0",
+    "scheme": "onetap",
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "experiments": {
-      "tsconfigPaths": true
+      "tsconfigPaths": true,
+      "typedRoutes": true
     },
     "plugins": [
       "@siteed/expo-audio-studio",
@@ -95,6 +97,16 @@
               }
             ]
           }
+        }
+      ],
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
         }
       ]
     ],
