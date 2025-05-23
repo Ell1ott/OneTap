@@ -39,10 +39,6 @@ export const useAudioRecording = () => {
 
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {
-            const currentTime = Date.now();
-            console.log('currentTime', currentTime - prevTime.current);
-            prevTime.current = currentTime;
-
             if (typeof audioStreamEvent.data === 'string') {
               const int16Array = base64ToInt16Array(audioStreamEvent.data);
 
@@ -58,8 +54,6 @@ export const useAudioRecording = () => {
 
         onAudioAnalysis: async (analysisEvent) => {
           if (analysisEvent && analysisEvent.dataPoints[0].amplitude !== undefined) {
-            console.log('analysisEvent', analysisEvent.dataPoints[0].amplitude);
-
             const newScale = 1.1 + (analysisEvent.dataPoints[0].amplitude / 32768) * (1.5 - 1.1);
             onVolumeChange(newScale);
           }

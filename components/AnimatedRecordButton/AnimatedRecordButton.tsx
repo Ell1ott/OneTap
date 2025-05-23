@@ -5,21 +5,13 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 interface AnimatedRecordButtonProps {
   active: boolean;
   volumeScale?: number;
-  onPressIn: () => void;
   onPressOut: () => void;
-  onPress: () => void;
-  onHoverIn?: () => void;
-  onHoverOut?: () => void;
 }
 
 export const AnimatedRecordButton: React.FC<AnimatedRecordButtonProps> = ({
   active,
   volumeScale,
-  onPressIn,
   onPressOut,
-  onPress,
-  onHoverIn,
-  onHoverOut,
 }) => {
   const scale = useSharedValue(1);
 
@@ -55,7 +47,6 @@ export const AnimatedRecordButton: React.FC<AnimatedRecordButtonProps> = ({
     console.log('pressed in');
     if (active) return;
     scale.value = withSpring(pressedSize, SpringConfig);
-    onPressIn();
   };
 
   const handlePressOut = () => {
@@ -73,13 +64,11 @@ export const AnimatedRecordButton: React.FC<AnimatedRecordButtonProps> = ({
   const handleHoverIn = () => {
     if (active) return;
     scale.value = withSpring(hoverSize, SpringConfig);
-    onHoverIn?.();
   };
 
   const handleHoverOut = () => {
     if (active) return;
     scale.value = withSpring(active ? activeSize : inactiveSize, SpringConfig);
-    onHoverOut?.();
   };
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -88,7 +77,6 @@ export const AnimatedRecordButton: React.FC<AnimatedRecordButtonProps> = ({
     <AnimatedPressable
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={onPress}
       onHoverIn={handleHoverIn}
       onHoverOut={handleHoverOut}
       style={animatedStyles}
