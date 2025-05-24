@@ -33,15 +33,19 @@ export const TodoItem = ({ item }: { item: Todo | Event }) => {
         )}
         {item.type === 'event' && (
           <View className="mt-1 rounded-sm">
-            <AppText>
-              at{' '}
-              <AppText className=" rounded-[4px] bg-accent/70 p-0.5 px-1.5 font-medium text-foreground">
-                {item.startTime
-                  .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-                  .toLowerCase()}
-                {/* {' ' + getRelativeDateString(item.startTime)} */}
-              </AppText>
-            </AppText>
+            <View className="flex-row items-center gap-x-1">
+              <AppText>at</AppText>
+
+              <View className="m-0 rounded-[4px] bg-accent/70 px-1.5 font-medium text-foreground">
+                <AppText>
+                  {item.startTime
+                    .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                    .toLowerCase()}
+                  {/*
+                 {' ' + getRelativeDateString(item.startTime)} */}
+                </AppText>
+              </View>
+            </View>
           </View>
         )}
       </View>
