@@ -1,16 +1,11 @@
-import { Image } from 'expo-image';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import AppText from 'components/AppText';
+import { RichTextEditor } from 'components/diary/RichTextEditor';
 
 export default function TabTwoScreen() {
-  return (
-    <View>
-      <View style={styles.titleContainer}>
-        <AppText>Explore</AppText>
-      </View>
-    </View>
-  );
+  console.log(Platform.OS);
+  return <RichTextEditor />;
 }
 
 const styles = StyleSheet.create({
