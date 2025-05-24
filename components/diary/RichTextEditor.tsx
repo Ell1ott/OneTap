@@ -14,11 +14,27 @@ ${InterFontBase64}
 * {
     font-family: 'Inter', sans-serif;
     // change the optical size
-    font-variation-settings: 'opsz' 48;
+    font-variation-settings: 'opsz' 16;
 }
     
 .tiptap  {
   padding: 64px 24px;
+}
+
+p {
+ font-weight: 550;
+}
+
+h1, h2, h3 {
+  font-weight: 750 !important;
+}
+
+h1 {
+font-size: 35px
+}
+
+h2 {
+  font-weight: 550;
 }
 `;
 
