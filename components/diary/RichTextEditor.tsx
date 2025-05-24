@@ -1,4 +1,5 @@
 import {
+  CodeBridge,
   CoreBridge,
   PlaceholderBridge,
   RichText,
@@ -24,7 +25,7 @@ ${InterFontBase64}
 
   const editor = useEditorBridge({
     customSource: editorHtml,
-    bridgeExtensions: [...TenTapStartKit],
+    bridgeExtensions: [...TenTapStartKit, CodeBridge.configureCSS(customFont)],
   });
 
   // Monitor content changes and ensure h1 is always at the top
