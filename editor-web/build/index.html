@@ -235,7 +235,7 @@ img.ProseMirror-separator {
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */var V1;function Rz(){if(V1)return Hh;V1=1;var n=At,t=kw;function e(h,m){return h===m&&(h!==0||1/h===1/m)||h!==h&&m!==m}var i=typeof Object.is=="function"?Object.is:e,s=t.useSyncExternalStore,l=n.useRef,u=n.useEffect,c=n.useMemo,d=n.useDebugValue;return Hh.useSyncExternalStoreWithSelector=function(h,m,y,v,S){var w=l(null);if(w.current===null){var k={hasValue:!1,value:null};w.current=k}else k=w.current;w=c(function(){function R(j){if(!_){if(_=!0,G=j,j=v(j),S!==void 0&&k.hasValue){var et=k.value;if(S(et,j))return ot=et}return ot=j}if(et=ot,i(G,j))return et;var yt=v(j);return S!==void 0&&S(et,yt)?et:(G=j,ot=yt)}var _=!1,G,ot,$=y===void 0?null:y;return[function(){return R(m())},$===null?void 0:function(){return R($())}]},[m,y,v,S]);var E=s(h,w[0],w[1]);return u(function(){k.hasValue=!0,k.value=E},[E]),d(E),E},Hh}Rz();const Dz=jt.createContext({editor:null});Dz.Consumer;const zz=jt.createContext({onDragStart:void 0}),Bz=()=>jt.useContext(zz);At.forwardRef((n,t)=>{const{onDragStart:e}=Bz(),i=n.as||"div";return At.createElement(i,{...n,ref:t,"data-node-view-wrapper":"",onDragStart:e,style:{whiteSpace:"normal",...n.style}})});const Lz=so.create({name:"doc",topNode:!0,content:"block+"}),Hz=so.create({name:"paragraph",priority:1e3,addOptions(){return{HTMLAttributes:{}}},group:"block",content:"inline*",parseHTML(){return[{tag:"p"}]},renderHTML({HTMLAttributes:n}){return["p",eD(this.options.HTMLAttributes,n),0]},addCommands(){return{setParagraph:()=>({commands:n})=>n.setNode(this.name)}},addKeyboardShortcuts(){return{"Mod-Alt-0":()=>this.editor.commands.setParagraph()}}}),jz=so.create({name:"text",group:"inline"}),Uz=Mn.create({name:"placeholder",addOptions(){return{emptyEditorClass:"is-editor-empty",emptyNodeClass:"is-empty",placeholder:"Write something …",showOnlyWhenEditable:!0,showOnlyCurrent:!0,includeChildren:!1}},addProseMirrorPlugins(){return[new Jt({key:new ie("placeholder"),props:{decorations:({doc:n,selection:t})=>{const e=this.editor.isEditable||!this.options.showOnlyWhenEditable,{anchor:i}=t,s=[];if(!e)return null;const l=this.editor.isEmpty;return n.descendants((u,c)=>{const d=i>=c&&i<=c+u.nodeSize,h=!u.isLeaf&&tm(u);if((d||!this.options.showOnlyCurrent)&&h){const m=[this.options.emptyNodeClass];l&&m.push(this.options.emptyEditorClass);const y=Je.node(c,c+u.nodeSize,{class:m.join(" "),"data-placeholder":typeof this.options.placeholder=="function"?this.options.placeholder({editor:this.editor,node:u,pos:c,hasAnchor:d}):this.options.placeholder});s.push(y)}return this.options.includeChildren}),It.create(n,s)}}})]}}),qz=[CN,PN,LN,a2,I2,$2,j2,qN,n2,RN,xN,F2,z2,jN,JN,mN,B2,P2],Vz=()=>{const n=bN({bridges:[...qz],tiptapOptions:{extensions:[Lz.extend({content:"heading block*"}),Hz,jz,Uz.configure({placeholder:({node:t})=>t.type.name==="heading"?"What’s the title?":"Can you add some further context?"})]}});return J1.jsx(Nz,{editor:n,className:window.dynamicHeight?"dynamic-height":void 0})},_z=()=>window.contentInjected;let _1;_1=setInterval(()=>{if(!_z())return;const n=document.getElementById("root");tM.createRoot(n).render(J1.jsx(Vz,{})),clearInterval(_1)},1);</script>
+ */var V1;function Rz(){if(V1)return Hh;V1=1;var n=At,t=kw;function e(h,m){return h===m&&(h!==0||1/h===1/m)||h!==h&&m!==m}var i=typeof Object.is=="function"?Object.is:e,s=t.useSyncExternalStore,l=n.useRef,u=n.useEffect,c=n.useMemo,d=n.useDebugValue;return Hh.useSyncExternalStoreWithSelector=function(h,m,y,v,S){var w=l(null);if(w.current===null){var k={hasValue:!1,value:null};w.current=k}else k=w.current;w=c(function(){function R(j){if(!_){if(_=!0,G=j,j=v(j),S!==void 0&&k.hasValue){var et=k.value;if(S(et,j))return ot=et}return ot=j}if(et=ot,i(G,j))return et;var yt=v(j);return S!==void 0&&S(et,yt)?et:(G=j,ot=yt)}var _=!1,G,ot,$=y===void 0?null:y;return[function(){return R(m())},$===null?void 0:function(){return R($())}]},[m,y,v,S]);var E=s(h,w[0],w[1]);return u(function(){k.hasValue=!0,k.value=E},[E]),d(E),E},Hh}Rz();const Dz=jt.createContext({editor:null});Dz.Consumer;const zz=jt.createContext({onDragStart:void 0}),Bz=()=>jt.useContext(zz);At.forwardRef((n,t)=>{const{onDragStart:e}=Bz(),i=n.as||"div";return At.createElement(i,{...n,ref:t,"data-node-view-wrapper":"",onDragStart:e,style:{whiteSpace:"normal",...n.style}})});const Lz=so.create({name:"doc",topNode:!0,content:"block+"}),Hz=so.create({name:"paragraph",priority:1e3,addOptions(){return{HTMLAttributes:{}}},group:"block",content:"inline*",parseHTML(){return[{tag:"p"}]},renderHTML({HTMLAttributes:n}){return["p",eD(this.options.HTMLAttributes,n),0]},addCommands(){return{setParagraph:()=>({commands:n})=>n.setNode(this.name)}},addKeyboardShortcuts(){return{"Mod-Alt-0":()=>this.editor.commands.setParagraph()}}}),jz=so.create({name:"text",group:"inline"}),Uz=Mn.create({name:"placeholder",addOptions(){return{emptyEditorClass:"is-editor-empty",emptyNodeClass:"is-empty",placeholder:"Write something …",showOnlyWhenEditable:!0,showOnlyCurrent:!0,includeChildren:!1}},addProseMirrorPlugins(){return[new Jt({key:new ie("placeholder"),props:{decorations:({doc:n,selection:t})=>{const e=this.editor.isEditable||!this.options.showOnlyWhenEditable,{anchor:i}=t,s=[];if(!e)return null;const l=this.editor.isEmpty;return n.descendants((u,c)=>{const d=i>=c&&i<=c+u.nodeSize,h=!u.isLeaf&&tm(u);if((d||!this.options.showOnlyCurrent)&&h){const m=[this.options.emptyNodeClass];l&&m.push(this.options.emptyEditorClass);const y=Je.node(c,c+u.nodeSize,{class:m.join(" "),"data-placeholder":typeof this.options.placeholder=="function"?this.options.placeholder({editor:this.editor,node:u,pos:c,hasAnchor:d}):this.options.placeholder});s.push(y)}return this.options.includeChildren}),It.create(n,s)}}})]}}),qz=[CN,PN,LN,a2,I2,$2,j2,qN,n2,RN,xN,F2,z2,jN,JN,mN,B2,P2],Vz=()=>{const n=bN({bridges:[...qz],tiptapOptions:{extensions:[Lz.extend({content:"heading block*"}),Hz,jz,Uz.configure({showOnlyCurrent:!1,placeholder:({node:t})=>t.type.name==="heading"?"What’s the title?":"Can you add some further context?"})]}});return J1.jsx(Nz,{editor:n,className:window.dynamicHeight?"dynamic-height":void 0})},_z=()=>window.contentInjected;let _1;_1=setInterval(()=>{if(!_z())return;const n=document.getElementById("root");tM.createRoot(n).render(J1.jsx(Vz,{})),clearInterval(_1)},1);</script>
   </head>
   <style>
     body {
@@ -292,24 +292,7 @@ img.ProseMirror-separator {
       background-color: #e6e6ff;
     }
 
-    /* TipTap Placeholder Styles */
-    .is-editor-empty:first-child::before {
-      color: #adb5bd;
-      content: attr(data-placeholder);
-      float: left;
-      height: 0;
-      pointer-events: none;
-    }
-
-    .is-empty::before {
-      color: #adb5bd;
-      content: attr(data-placeholder);
-      float: left;
-      height: 0;
-      pointer-events: none;
-    }
-
-    .ProseMirror p.is-editor-empty:first-child::before {
+    .ProseMirror p.is-empty:first-of-type::before {
       content: attr(data-placeholder);
       float: left;
       color: #adb5bd;
@@ -317,13 +300,13 @@ img.ProseMirror-separator {
       height: 0;
     }
 
-    .ProseMirror .is-empty::before {
+    /* .ProseMirror .is-empty::before {
       content: attr(data-placeholder);
       color: #adb5bd;
       float: left;
       height: 0;
       pointer-events: none;
-    }
+    } */
   </style>
   <body>
     <div id="root"></div>

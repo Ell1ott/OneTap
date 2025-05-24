@@ -32,7 +32,7 @@ ${InterFontBase64}
       day: 'numeric',
     };
     const prettyDate = today.toLocaleDateString('en-US', options);
-    return `<h1>${prettyDate}</h1>`;
+    return `<h1>${prettyDate}</h1><p></p>`;
   };
 
   const editor = useEditorBridge({
