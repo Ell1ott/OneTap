@@ -118,9 +118,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ell10tt.OneTap",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -128,6 +134,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.qazwsxedc123.OneTap"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ab315ddf-9061-40a5-b960-cad0d80e1643"
+      }
     }
   }
 }
