@@ -13,12 +13,27 @@ import { AppState, KeyboardAvoidingView, SafeAreaView, AppStateStatus } from 're
 import { useEffect, useRef, useState } from 'react';
 import { InterFontBase64 } from './InterFontBase64';
 import { DiaryStorage } from '../../utils/diaryStorage';
+import { useDiaryEntries } from '../../utils/useDiaryEntries';
 
-export const RichTextEditor = () => {
+interface RichTextEditorProps {
+  entryId?: string; // If provided, edit specific entry. If not, use today's entry
+  onContentChange?: (content: string) => void;
+  multiEntryMode?: boolean; // If true, uses multi-entry system
+}
+
+export const RichTextEditor: React.FC<RichTextEditorProps> = ({
+  entryId,
+  onContentChange,
+  multiEntryMode = true,
+}) => {
   const [initialContent, setInitialContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [currentEntryId, setCurrentEntryId] = useState<string | null>(entryId || null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const appStateRef = useRef(AppState.currentState);
+
+  // Use multi-entry hook if in multi-entry mode
+  const multiEntryHook = useDiaryEntries();
 
   const customFont = `
 ${InterFontBase64}
@@ -29,12 +44,31 @@ ${InterFontBase64}
 }
 `;
 
-  // Load saved content on component mount
+  // Load content based on mode
   useEffect(() => {
     const loadContent = async () => {
       try {
-        const savedContent = await DiaryStorage.loadDiaryContent();
-        setInitialContent(savedContent);
+        if (multiEntryMode) {
+          // Multi-entry mode: load specific entry or today's entry
+          if (entryId) {
+            const entry = await DiaryStorage.loadEntry(entryId);
+            if (entry) {
+              setInitialContent(entry.content);
+              setCurrentEntryId(entry.id);
+            } else {
+              throw new Error('Entry not found');
+            }
+          } else {
+            // Get or create today's entry
+            const todaysEntry = await DiaryStorage.getTodaysEntry();
+            setInitialContent(todaysEntry.content);
+            setCurrentEntryId(todaysEntry.id);
+          }
+        } else {
+          // Legacy single-entry mode
+          const savedContent = await DiaryStorage.loadDiaryContent();
+          setInitialContent(savedContent);
+        }
       } catch (error) {
         console.error('Failed to load diary content:', error);
         // Fallback to current date content
@@ -52,7 +86,7 @@ ${InterFontBase64}
     };
 
     loadContent();
-  }, []);
+  }, [entryId, multiEntryMode]);
 
   const editor = useEditorBridge({
     customSource: editorHtml,
@@ -70,6 +104,11 @@ ${InterFontBase64}
       return;
     }
 
+    // Notify parent of content change
+    if (onContentChange) {
+      onContentChange(content);
+    }
+
     // Clear existing timeout
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
@@ -78,8 +117,15 @@ ${InterFontBase64}
     // Set new timeout for debounced saving (save after 1 second of no changes)
     saveTimeoutRef.current = setTimeout(async () => {
       try {
-        await DiaryStorage.saveDiaryContent(content);
-        console.log('Content auto-saved');
+        if (multiEntryMode && currentEntryId) {
+          // Multi-entry mode: update specific entry
+          await DiaryStorage.updateEntryContent(currentEntryId, content);
+          console.log('Multi-entry content auto-saved');
+        } else {
+          // Legacy mode: save to single diary
+          await DiaryStorage.saveDiaryContent(content);
+          console.log('Content auto-saved');
+        }
       } catch (error) {
         console.error('Failed to auto-save content:', error);
       }
@@ -91,7 +137,7 @@ ${InterFontBase64}
         clearTimeout(saveTimeoutRef.current);
       }
     };
-  }, [content, isLoading, initialContent]);
+  }, [content, isLoading, initialContent, multiEntryMode, currentEntryId, onContentChange]);
 
   // Listen for app state changes and save immediately when app goes to background
   useEffect(() => {
@@ -105,8 +151,13 @@ ${InterFontBase64}
       ) {
         // App is going to background, save immediately
         try {
-          await DiaryStorage.saveDiaryContent(content);
-          console.log('Content saved on app background');
+          if (multiEntryMode && currentEntryId) {
+            await DiaryStorage.updateEntryContent(currentEntryId, content);
+            console.log('Multi-entry content saved on app background');
+          } else {
+            await DiaryStorage.saveDiaryContent(content);
+            console.log('Content saved on app background');
+          }
         } catch (error) {
           console.error('Failed to save on app background:', error);
         }
@@ -117,19 +168,52 @@ ${InterFontBase64}
     const subscription = AppState.addEventListener('change', handleAppStateChange);
 
     return () => subscription?.remove();
-  }, [content, isLoading]);
+  }, [content, isLoading, multiEntryMode, currentEntryId]);
 
   // Save immediately when component unmounts
   useEffect(() => {
     return () => {
       // Save immediately on unmount
       if (content && content.trim() !== '' && !isLoading) {
-        DiaryStorage.saveDiaryContent(content).catch((error) => {
-          console.error('Failed to save on unmount:', error);
-        });
+        if (multiEntryMode && currentEntryId) {
+          DiaryStorage.updateEntryContent(currentEntryId, content).catch((error) => {
+            console.error('Failed to save on unmount:', error);
+          });
+        } else {
+          DiaryStorage.saveDiaryContent(content).catch((error) => {
+            console.error('Failed to save on unmount:', error);
+          });
+        }
       }
     };
-  }, [content, isLoading]);
+  }, [content, isLoading, multiEntryMode, currentEntryId]);
+
+  // Method to switch to a different entry (for multi-entry mode)
+  const switchToEntry = async (entryId: string) => {
+    if (!multiEntryMode) return;
+
+    setIsLoading(true);
+    try {
+      const entry = await DiaryStorage.loadEntry(entryId);
+      if (entry) {
+        // Save current content before switching
+        if (content && content.trim() !== '' && currentEntryId) {
+          await DiaryStorage.updateEntryContent(currentEntryId, content);
+        }
+
+        setCurrentEntryId(entry.id);
+        setInitialContent(entry.content);
+
+        // Reset the editor with new content
+        // Note: You might need to implement editor.setContent() method
+        // or recreate the editor with new initial content
+      }
+    } catch (error) {
+      console.error('Failed to switch entry:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Don't render the editor until we've loaded the initial content
   if (isLoading) {
