@@ -1,11 +1,15 @@
 import {
   CoreBridge,
+  PlaceholderBridge,
   RichText,
   TenTapStartKit,
   Toolbar,
   useEditorBridge,
+  useEditorContent,
 } from '@10play/tentap-editor';
+import { editorHtml } from '../../editor-web/build/editorHtml';
 import { KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { useEffect } from 'react';
 import { InterFontBase64 } from './InterFontBase64';
 
 export const RichTextEditor = () => {
@@ -16,34 +20,15 @@ ${InterFontBase64}
     // change the optical size
     font-variation-settings: 'opsz' 16;
 }
-    
-.tiptap  {
-  padding: 64px 24px;
-}
-
-p {
- font-weight: 550;
-}
-
-h1, h2, h3 {
-  font-weight: 750 !important;
-}
-
-h1 {
-font-size: 35px
-}
-
-h2 {
-  font-weight: 550;
-}
 `;
 
   const editor = useEditorBridge({
-    autofocus: true,
-    avoidIosKeyboard: true,
-    initialContent: 'Start editing!',
-    bridgeExtensions: [...TenTapStartKit, CoreBridge.configureCSS(customFont)],
+    customSource: editorHtml,
+    bridgeExtensions: [...TenTapStartKit],
   });
+
+  // Monitor content changes and ensure h1 is always at the top
+  const content = useEditorContent(editor, { type: 'html' });
 
   return (
     <SafeAreaView style={{ flex: 1, height: '100%' }}>

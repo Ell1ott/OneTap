@@ -8,7 +8,11 @@
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "editor:dev": "vite --config ./editor-web/vite.config.ts -w build",
+    "editor:build": "vite --config ./editor-web/vite.config.ts build && npm run editor:post-build",
+    "editor:post-build": "node ./node_modules/@10play/tentap-editor/scripts/buildEditor.js ./editor-web/build/index.html",
+    "reverse-android": "adb reverse tcp:3000 tcp:3000"
   },
   "dependencies": {
     "@10play/react-native-web-webview": "^0.0.3",
@@ -16,6 +20,7 @@
     "@deepgram/sdk": "^4.2.0",
     "@expo-google-fonts/inter": "^0.3.0",
     "@siteed/expo-audio-studio": "^2.9.0",
+    "@tiptap/react": "^2.12.0",
     "cross-fetch": "^4.1.0",
     "deepgram": "^1.0.3",
     "dotenv": "^16.5.0",
@@ -49,13 +54,17 @@
     "@babel/core": "^7.20.0",
     "@expo/metro-runtime": "^5.0.4",
     "@types/react": "~19.0.10",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.0",
     "eslint": "^9.25.1",
     "eslint-config-expo": "^9.2.0",
     "eslint-config-prettier": "^10.1.2",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.0",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-singlefile": "^2.2.0"
   },
   "main": "expo-router/entry",
   "private": true

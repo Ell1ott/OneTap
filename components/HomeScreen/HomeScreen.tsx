@@ -9,7 +9,7 @@ export function HomeScreen() {
   console.log('current theme', theme);
 
   return (
-    <View className="flex-1 bg-background px-6 py-16" style={{ backgroundColor: 'White' }}>
+    <View className="flex-1 bg-background px-6 py-16">
       <View className="mb-10">
         <Greeting />
         <AppText f className="text-base leading-5 text-foregroundMuted">

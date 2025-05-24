@@ -18,13 +18,14 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
           },
           default: {
-            height: 95,
+            height: 70,
             border: 'none',
             // paddingLeft: 10,
             // paddingRight: 10,
@@ -33,28 +34,28 @@ export default function TabLayout() {
         }),
 
         tabBarIconStyle: {
-          height: 85,
+          height: 60,
         },
       }}>
       <Tabs.Screen
         name="diary"
         options={{
           title: 'Diary',
-          tabBarIcon: ({ color }) => <Feather size={40} color={color} />,
+          tabBarIcon: ({ color }) => <Feather size={30} color={color} />,
         }}
       />
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <Plane size={40} color={color} />,
+          tabBarIcon: ({ color }) => <Plane size={30} color={color} />,
         }}
       />
       <Tabs.Screen
         name="calender"
         options={{
           title: 'Calender',
-          tabBarIcon: ({ color }) => <Calendar size={40} color={color} />,
+          tabBarIcon: ({ color }) => <Calendar size={30} color={color} />,
         }}
       />
     </Tabs>
