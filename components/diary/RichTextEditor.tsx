@@ -23,9 +23,23 @@ ${InterFontBase64}
 }
 `;
 
+  // Get current date in pretty format
+  const getCurrentDateContent = () => {
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    const prettyDate = today.toLocaleDateString('en-US', options);
+    return `<h1>${prettyDate}</h1>`;
+  };
+
   const editor = useEditorBridge({
     customSource: editorHtml,
     bridgeExtensions: [...TenTapStartKit, CodeBridge.configureCSS(customFont)],
+    autofocus: true,
+    initialContent: getCurrentDateContent(),
   });
 
   // Monitor content changes and ensure h1 is always at the top
