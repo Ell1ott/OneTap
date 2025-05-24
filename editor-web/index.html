@@ -59,6 +59,39 @@
     .highlight-background {
       background-color: #e6e6ff;
     }
+
+    /* TipTap Placeholder Styles */
+    .is-editor-empty:first-child::before {
+      color: #adb5bd;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .is-empty::before {
+      color: #adb5bd;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .ProseMirror p.is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      float: left;
+      color: #adb5bd;
+      pointer-events: none;
+      height: 0;
+    }
+
+    .ProseMirror .is-empty::before {
+      content: attr(data-placeholder);
+      color: #adb5bd;
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
   </style>
   <body>
     <div id="root"></div>

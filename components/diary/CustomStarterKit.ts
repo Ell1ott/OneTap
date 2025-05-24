@@ -15,9 +15,7 @@ import {
   ColorBridge,
   HighlightBridge,
   CoreBridge,
-  PlaceholderBridge,
   ListItemBridge,
-  DropCursorBridge,
   HardBreakBridge,
 } from '@10play/tentap-editor';
 
@@ -38,8 +36,6 @@ export const CustomStarterKit = [
   ColorBridge,
   HighlightBridge,
   CoreBridge,
-  PlaceholderBridge,
   ListItemBridge,
-  DropCursorBridge,
   HardBreakBridge,
 ];
