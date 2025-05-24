@@ -37,9 +37,9 @@ export default function TabLayout() {
         },
       }}>
       <Tabs.Screen
-        name="explore"
+        name="diary"
         options={{
-          title: 'Explore',
+          title: 'Diary',
           tabBarIcon: ({ color }) => <Feather size={40} color={color} />,
         }}
       />
