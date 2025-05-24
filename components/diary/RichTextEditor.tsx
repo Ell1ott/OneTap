@@ -1,11 +1,32 @@
-import { RichText, Toolbar, useEditorBridge } from '@10play/tentap-editor';
+import {
+  CoreBridge,
+  RichText,
+  TenTapStartKit,
+  Toolbar,
+  useEditorBridge,
+} from '@10play/tentap-editor';
 import { KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { InterFontBase64 } from './InterFontBase64';
 
 export const RichTextEditor = () => {
+  const customFont = `
+${InterFontBase64}
+* {
+    font-family: 'Inter', sans-serif;
+    // change the optical size
+    font-variation-settings: 'opsz' 48;
+}
+    
+.tiptap  {
+  padding: 64px 24px;
+}
+`;
+
   const editor = useEditorBridge({
     autofocus: true,
     avoidIosKeyboard: true,
     initialContent: 'Start editing!',
+    bridgeExtensions: [...TenTapStartKit, CoreBridge.configureCSS(customFont)],
   });
 
   return (
