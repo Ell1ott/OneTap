@@ -26,7 +26,7 @@ export const AdvancedEditor = () => {
               return 'What’s the title?';
             }
 
-            return 'Can you add some further context?';
+            return 'What has happened today?';
           },
         }),
       ],
