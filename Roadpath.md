@@ -35,7 +35,22 @@ OneTap should be modern, slick and simple yet still have a unique bit that makes
 
 Due to it being rather simple, and little user interactions, the interactions we do have should feel as snappy, smooth and satsifying as possible. To support this we should try to utilize the reanmiated library to create smooth and satisfying animations.
 
-## HomeScreen
+## Pages
+
+### HomeScreen
 
 What do we want to have for the homescreen?
 It should give the user a overview over the most important things, especcielly in the near future, like things that need to be done today, or events happening today
+
+### Diray
+
+#### Rich text editor
+
+For the diary we would optimally implement a rich text editor
+Some possibles solutions for this would be:
+
+- https://10play.github.io/10tap-editor/docs/intro.html#usage
+- https://www.npmjs.com/package/react-native-pell-rich-editor
+- DOM Components - aka. embed a html rich text editor using Web View
+
+### Calender
