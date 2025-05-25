@@ -5,7 +5,7 @@ import { TodoList } from '../Todos/TodoList';
 import { Todo, Event } from 'components/Todos/TodoItem';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
-
+import { HapticTab } from 'components/HapticTab';
 interface TodoSectionProps {
   title: string;
   tasks: (Todo | Event)[];
@@ -36,9 +36,9 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTa
         <AppText f className="mb-1 text-lg font-extrabold text-foreground/60">
           {title}
         </AppText>
-        <Pressable className="rounded-full text-foreground/60" onPress={handleAddTodo}>
+        <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
           <Plus size={20} />
-        </Pressable>
+        </HapticTab>
       </View>
       <TodoList tasks={tasks} updateTasks={updateTasks} lastAddedTodoId={lastAddedTodoId} />
     </View>
