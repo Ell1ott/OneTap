@@ -91,7 +91,7 @@ It should give the user an overview of the most important things, especially in 
 For the diary we would optimally implement a rich text editor
 Some possible solutions for this would be:
 
-- https://10play.github.io/10tap-editor/docs/intro.html#usage
+- https://10play.github.io/10tap-editor/docs/intro.html#usage - current solution
 - https://www.npmjs.com/package/react-native-pell-rich-editor
 - DOM Components - aka. embed an HTML rich text editor using Web View
 
