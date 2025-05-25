@@ -39,13 +39,15 @@ export const TodoItem = ({
 
   useEffect(() => {
     if (shouldFocus && inputRef.current) {
-      inputRef.current.focus();
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
     }
   }, [shouldFocus]);
 
   return (
     <View className="flex-row items-center justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
-      <View>
+      <View className="flex-1">
         {true ? (
           <TextInput
             ref={inputRef}
@@ -54,6 +56,7 @@ export const TodoItem = ({
             value={item.text}
             placeholder="New task..."
             style={fontStyle}
+            multiline={false}
           />
         ) : (
           <AppText className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
