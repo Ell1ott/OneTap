@@ -12,7 +12,6 @@ You don’t have to open different apps or type anything. Just speak and it hand
 ### Shared todos
 
 Create a project on OneTap and share it with a friend, coworker or family member. Work together to complete the todos.
-
 For example the grocery list with the family, or tasks for a project with your coworkers.
 
 Here it would again be super handy to integrate with things like Notion
@@ -51,6 +50,24 @@ Possibly:
   - Google Maps
 - Fitness - for stat tracking
   - Strava?
+
+### Categories / Collections
+
+As i continue to develop on OneTap, it becomes more and more obvious that a big part of it will end up having to be some sort of "Collections"
+
+These should divide the users small bits and pieces of information into clean, simple to retrieve categories
+
+Examples:
+
+- Spots
+- Ideas
+- Timeevents
+  - Appointments
+  - Sport
+  - Due dates
+  - Birthdates
+- Quotes
+- Recomendations
 
 ## Visual identity
 
