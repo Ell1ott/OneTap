@@ -69,6 +69,8 @@ Examples:
 - Quotes
 - Recomendations
 
+_Not to be confused with differend collections of todos - also a important feature_
+
 ## Visual identity
 
 OneTap should be modern, slick and simple yet still have a unique bit that makes it stand out from the rest. Not just look like a v0 build app
