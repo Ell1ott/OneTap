@@ -1,8 +1,8 @@
 # Road-Path
 
-a file full of ideas, generel direction and goal for the project
+A file full of ideas, general direction and goals for the project
 
-## bare bones concept
+## Bare bones concept
 
 It’s an app where you press one button, talk, and it figures out what you said and puts it in the right place — like a todo list, calendar, diary, or stat-tracker.
 You don’t have to open different apps or type anything. Just speak and it handles it.
@@ -15,29 +15,40 @@ Create a project on OneTap and share it with a friend, coworker or family member
 
 For example the grocery list with the family, or tasks for a project with your coworkers.
 
-Here it would again be super handy to integrate with things like notion
+Here it would again be super handy to integrate with things like Notion
 
 #### Notifications
 
-It could even be nice if the other people gets notified when a person completes a task.
+It could even be nice if the other people get notified when a person completes a task.
 
-### intergration with different apps
+### General ideology behind social features
 
-it's super important that when building OneTap we remember that people already got other apps, that they already use daily. So they will wont want to switch these app over. This means that OneTap should be as good as possible to integrate with these apps
+Generally we want social features to be designed in a way that gets more people to know about OneTap, but NOT in a way that _forces_ them to use OneTap. They should basically still be able to interact with everyone that uses OneTap without having it themselves.
 
-Definitly:
+Examples:
 
-- Calender
-  - Google calender
+- Task sharing - should (if possible) integrate with other apps, like Notion etc. so they don't have to switch as well
+- Spot sharing - when sharing a spot, it should just share a URL that shows the spot / collection of spots, so people without OneTap can access it nearly just as easily
+
+Why? We believe that it's always good if more people know about OneTap, but getting people to actually use the app should be due to the value in the app itself - not forced due to others using it.
+
+### Integration with different apps
+
+It's super important that when building OneTap we remember that people already have other apps that they already use daily. So they won't want to switch these apps over. This means that OneTap should be as good as possible to integrate with these apps
+
+Definitely:
+
+- Calendar
+  - Google Calendar
   - Outlook
 
 Possibly:
 
-- Task manegers
+- Task managers
   - Notion
   - Trello
-- Maps - for example to quickly getting directions to a saved spot
-  - Google maps
+- Maps - for example to quickly get directions to a saved spot
+  - Google Maps
 - Fitness - for stat tracking
   - Strava?
 
@@ -45,24 +56,24 @@ Possibly:
 
 OneTap should be modern, slick and simple yet still have a unique bit that makes it stand out from the rest. Not just look like a v0 build app
 
-Due to it being rather simple, and little user interactions, the interactions we do have should feel as snappy, smooth and satsifying as possible. To support this we should try to utilize the reanmiated library to create smooth and satisfying animations.
+Due to it being rather simple, with few user interactions, the interactions we do have should feel as snappy, smooth and satisfying as possible. To support this we should try to utilize the reanimated library to create smooth and satisfying animations.
 
 ## Pages
 
 ### HomeScreen
 
 What do we want to have for the homescreen?
-It should give the user a overview over the most important things, especcielly in the near future, like things that need to be done today, or events happening today
+It should give the user an overview of the most important things, especially in the near future, like things that need to be done today, or events happening today
 
-### Diray
+### Diary
 
 #### Rich text editor
 
 For the diary we would optimally implement a rich text editor
-Some possibles solutions for this would be:
+Some possible solutions for this would be:
 
 - https://10play.github.io/10tap-editor/docs/intro.html#usage
 - https://www.npmjs.com/package/react-native-pell-rich-editor
-- DOM Components - aka. embed a html rich text editor using Web View
+- DOM Components - aka. embed an HTML rich text editor using Web View
 
-### Calender
+### Calendar
