@@ -4,12 +4,33 @@ import { theme } from 'tailwind.config';
 import AppText from 'components/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
+import { Todo, Event } from 'components/Todos/TodoItem';
+import { useState } from 'react';
+import { ScrollView } from 'react-native';
 
 export function HomeScreen() {
   console.log('current theme', theme);
 
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [tasksToday, setTasksToday] = useState<(Todo | Event)[]>([
+    {
+      id: '1',
+      text: 'Walk the dog',
+      type: 'todo',
+      subtext: 'Twice every day',
+      completed: true,
+    },
+    {
+      id: '2',
+      text: 'Volleyball practice',
+      type: 'event',
+      startTime: new Date(new Date().setHours(17, 0, 0, 0)),
+      completed: true,
+    },
+  ]);
+
   return (
-    <View className="flex-1 bg-background px-6 py-16">
+    <ScrollView className="flex-1 bg-background px-6 py-16">
       <View className="mb-10">
         <Greeting />
         <AppText f className="text-base leading-5 text-foregroundMuted">
@@ -19,25 +40,7 @@ export function HomeScreen() {
       </View>
 
       <View className="flex-1 gap-6">
-        <TodoSection
-          title="Today"
-          tasks={[
-            {
-              id: '1',
-              text: 'Walk the dog',
-              type: 'todo',
-              subtext: 'Twice every day',
-              completed: true,
-            },
-            {
-              id: '2',
-              text: 'Volleyball practice',
-              type: 'event',
-              startTime: new Date(new Date().setHours(17, 0, 0, 0)),
-              completed: true,
-            },
-          ]}
-        />
+        <TodoSection title="Today" tasks={tasksToday} updateTasks={setTasksToday} />
         <TodoSection
           title="Priority"
           tasks={[
@@ -70,6 +73,6 @@ export function HomeScreen() {
           ]}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }

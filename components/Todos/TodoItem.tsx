@@ -1,6 +1,7 @@
-import { Text, View } from 'react-native';
-import AppText from '../AppText';
+import { Text, View, TextInput } from 'react-native';
+import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
+import { useRef, useEffect } from 'react';
 
 export interface Task {
   id: string;
@@ -21,11 +22,44 @@ export interface Event extends Task {
   type: 'event';
 }
 
-export const TodoItem = ({ item }: { item: Todo | Event }) => {
+export const TodoItem = ({
+  item,
+  editing = false,
+  onTextChange,
+  onSubtextChange,
+  shouldFocus = false,
+}: {
+  item: Todo | Event;
+  editing?: boolean;
+  onTextChange?: (text: string) => void;
+  onSubtextChange?: (subtext: string) => void;
+  shouldFocus?: boolean;
+}) => {
+  const inputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (shouldFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [shouldFocus]);
+
   return (
     <View className="flex-row items-center justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
       <View>
-        <AppText className="text-xl font-medium">{item.text}</AppText>
+        {true ? (
+          <TextInput
+            ref={inputRef}
+            className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
+            onChangeText={onTextChange}
+            value={item.text}
+            placeholder="New task..."
+            style={fontStyle}
+          />
+        ) : (
+          <AppText className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
+            {item.text}
+          </AppText>
+        )}
         {item.type === 'todo' && (
           <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">
             {item.subtext}

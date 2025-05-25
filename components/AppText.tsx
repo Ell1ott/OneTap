@@ -9,6 +9,7 @@ const baseStyle = StyleSheet.create({
   },
 });
 
+export const fontStyle = baseStyle.text;
 interface AppTextProps extends TextProps {
   children: React.ReactNode;
   style?: TextStyle | TextStyle[];
