@@ -9,6 +9,18 @@ You don’t have to open different apps or type anything. Just speak and it hand
 
 ## Ideas
 
+### Shared todos
+
+Create a project on OneTap and share it with a friend, coworker or family member. Work together to complete the todos.
+
+For example the grocery list with the family, or tasks for a project with your coworkers.
+
+Here it would again be super handy to integrate with things like notion
+
+#### Notifications
+
+It could even be nice if the other people gets notified when a person completes a task.
+
 ### intergration with different apps
 
 it's super important that when building OneTap we remember that people already got other apps, that they already use daily. So they will wont want to switch these app over. This means that OneTap should be as good as possible to integrate with these apps
