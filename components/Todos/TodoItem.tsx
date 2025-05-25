@@ -39,9 +39,7 @@ export const TodoItem = ({
 
   useEffect(() => {
     if (shouldFocus && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 100);
+      inputRef.current.focus();
     }
   }, [shouldFocus]);
 
