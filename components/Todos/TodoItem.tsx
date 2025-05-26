@@ -13,6 +13,9 @@ export interface Task {
 export interface Todo extends Task {
   subtext: string;
   type: 'todo';
+  reminder?: Date;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface Event extends Task {
