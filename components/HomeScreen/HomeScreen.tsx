@@ -4,7 +4,7 @@ import { theme } from 'tailwind.config';
 import AppText from 'components/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
-import { Todo, Event, TaskCategory } from 'components/Todos/TodoItem';
+import { Todo, Event, TaskCategory } from 'components/Todos/types';
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
 

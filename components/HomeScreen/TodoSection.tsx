@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Pressable, View } from 'react-native';
 import AppText from '../AppText';
 import { TodoList } from '../Todos/TodoList';
-import { Todo, Event, TaskCategory } from 'components/Todos/TodoItem';
+import { Todo, Event, TaskCategory } from 'components/Todos/types';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';
@@ -23,7 +23,7 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTa
         id: newId,
         title: '',
         type: 'todo',
-        completed: false,
+        completed: [false],
         subtext: '',
       },
     ]);
