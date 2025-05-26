@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Check } from 'lucide-react-native';
 
 interface CheckBoxProps {
@@ -27,6 +27,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
       onPress={disabled ? undefined : onToggle}
       activeOpacity={0.7}>
       <View
+        pointerEvents="none"
         className={`
           ${sizeClasses[size]}
           items-center
@@ -41,6 +42,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
             size={size === 'sm' ? 12 : size === 'md' ? 16 : 20}
             strokeWidth={2.5}
             className="text-white"
+            color="white"
           />
         )}
       </View>
