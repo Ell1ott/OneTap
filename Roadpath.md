@@ -118,3 +118,4 @@ Some possible solutions for this would be:
 - “Went hiking with Maya and the weather was perfect.”
 - “App idea: something that tracks how often I interrupt people.”
 - "I need to cancel my Netflex subscription before the 5th May"
+- "I should try to catch up with jake every week or two"
