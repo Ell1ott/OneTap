@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import CheckBox from 'components/CheckBox';
@@ -74,7 +74,8 @@ export const TodoItem = ({
     console.log('item.completed', item.completed);
   }
   const inputRef = useRef<TextInput>(null);
-
+  const textRef = useRef<View>(null);
+  const [textWidth, setTextWidth] = useState(0);
   // Animation for strikethrough effect
   const isCompleted = item.type === 'todo' && item.completed?.every(Boolean);
   const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
@@ -88,6 +89,15 @@ export const TodoItem = ({
     }
   }, [item.type === 'todo' ? item.completed : null]);
 
+  useLayoutEffect(() => {
+    if (isCompleted) {
+      textRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        setTextWidth(width);
+      });
+    }
+    console.log('textWidth', textWidth);
+  }, [isCompleted]);
+
   const animatedTextStyle = useAnimatedStyle(() => {
     const opacity = interpolate(strikethroughProgress.value, [0, 1], [1, 0.6]);
     return {
@@ -96,9 +106,9 @@ export const TodoItem = ({
   });
 
   const strikethroughStyle = useAnimatedStyle(() => {
-    const width = interpolate(strikethroughProgress.value, [0, 1], [0, 100]);
+    const width = interpolate(strikethroughProgress.value, [0, 1], [0, textWidth]);
     return {
-      width: `${width}%`,
+      width: width,
       height: 2,
       position: 'absolute' as const,
       top: '50%',
@@ -131,7 +141,7 @@ export const TodoItem = ({
   return (
     <View className="flex-row justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
       <View className="flex-1">
-        <View className="relative">
+        <View className="relative items-baseline justify-start">
           {!isCompleted ? (
             <Animated.View style={animatedTextStyle}>
               <TextInput
@@ -145,14 +155,14 @@ export const TodoItem = ({
               />
             </Animated.View>
           ) : (
-            <Animated.View style={animatedTextStyle} className="w-fit">
-              <AppText className="m-0 mx-0 w-fit p-0 text-xl font-medium leading-7 outline-none">
+            <Animated.View ref={textRef} style={animatedTextStyle}>
+              <AppText className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
                 {item.title}
               </AppText>
-              {item.type === 'todo' && (
-                <Animated.View style={strikethroughStyle} className="bg-foreground" />
-              )}
             </Animated.View>
+          )}
+          {item.type === 'todo' && (
+            <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
           )}
         </View>
         {item.type !== 'event' && (
@@ -185,6 +195,7 @@ export const TodoItem = ({
               key={index}
               checked={completed}
               onToggle={() => {
+                console.log('onToggle', index);
                 const newCompleted = [...(item.completed || [])];
                 newCompleted[index] = !newCompleted[index];
                 updateTodo({ completed: newCompleted });
