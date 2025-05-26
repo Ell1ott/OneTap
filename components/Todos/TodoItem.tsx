@@ -2,7 +2,9 @@ import { Text, View, TextInput } from 'react-native';
 import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
 import { useRef, useEffect } from 'react';
-import Checkbox from 'expo-checkbox';
+import { ChevronRight } from 'lucide-react-native';
+import { ChevronLeft } from 'lucide-react-native';
+import CheckBox from 'components/CheckBox';
 
 export interface Time {
   years?: number;
@@ -37,7 +39,7 @@ export interface Todo extends Task {
   due?: Date;
   remindAt?: Date;
   softRepeat?: Time; // First repeats when finished
-  completed?: boolean;
+  completed?: boolean[];
   amount?: number;
   category?: string;
 }
@@ -62,6 +64,9 @@ export const TodoItem = ({
   shouldFocus?: boolean;
   updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
 }) => {
+  if (item.type === 'todo') {
+    console.log('item.completed', item.completed);
+  }
   const inputRef = useRef<TextInput>(null);
 
   function onTextChange(text: string) {
@@ -86,7 +91,7 @@ export const TodoItem = ({
   }, [shouldFocus]);
 
   return (
-    <View className="flex-row items-center justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
+    <View className="flex-row justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
       <View className="flex-1">
         {true ? (
           <TextInput
@@ -103,7 +108,7 @@ export const TodoItem = ({
             {item.title}
           </AppText>
         )}
-        {item.type === 'todo' && (
+        {item.type !== 'event' && (
           <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">
             {item.subtext}
           </AppText>
@@ -127,13 +132,21 @@ export const TodoItem = ({
         )}
       </View>
       {item.type === 'todo' && (
-        <Checkbox
-          value={item.completed}
-          onValueChange={() => {
-            updateTodo({ completed: !item.completed });
-          }}
-        />
+        <View className="flex-row items-center">
+          {item.completed?.map((completed, index) => (
+            <CheckBox
+              key={index}
+              checked={completed}
+              onToggle={() => {
+                const newCompleted = [...(item.completed || [])];
+                newCompleted[index] = !newCompleted[index];
+                updateTodo({ completed: newCompleted });
+              }}
+            />
+          ))}
+        </View>
       )}
+      {item.type === 'category' && <ChevronRight size={25} className="text-foregroundMuted" />}
     </View>
   );
 };

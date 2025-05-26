@@ -18,13 +18,39 @@ export function HomeScreen() {
       title: 'Walk the dog',
       type: 'todo',
       subtext: 'Twice every day',
-      completed: true,
+      completed: [true, false],
+      amount: 2,
     },
     {
       id: '2',
       title: 'Volleyball practice',
       type: 'event',
       start: new Date(new Date().setHours(17, 0, 0, 0)),
+    },
+  ]);
+
+  const [priorityTasks, setPriorityTasks] = useState<(Todo | Event | TaskCategory)[]>([
+    {
+      id: '2',
+      title: 'Groceries',
+      type: 'category',
+      subtext: 'Recommended, 9 items',
+    },
+    {
+      id: '3',
+      title: 'Homework',
+      type: 'category',
+      subtext: '5 total, 3 urgent',
+    },
+  ]);
+
+  const [otherTasks, setOtherTasks] = useState<(Todo | Event | TaskCategory)[]>([
+    {
+      id: '4',
+      title: 'Clean Room',
+      type: 'todo',
+      subtext: 'Done 4 days ago',
+      completed: [true],
     },
   ]);
 
@@ -40,37 +66,8 @@ export function HomeScreen() {
 
       <View className="flex-1 gap-6">
         <TodoSection title="Today" tasks={tasksToday} updateTasks={setTasksToday} />
-        <TodoSection
-          title="Priority"
-          tasks={[
-            {
-              id: '2',
-              title: 'Groceries',
-              type: 'todo',
-              subtext: 'Recommended, 9 items',
-              completed: false,
-            },
-            {
-              id: '3',
-              title: 'Homework',
-              type: 'todo',
-              subtext: '5 total, 3 urgent',
-              completed: false,
-            },
-          ]}
-        />
-        <TodoSection
-          title="Other"
-          tasks={[
-            {
-              id: '4',
-              title: 'Clean Room',
-              type: 'todo',
-              subtext: 'Done 4 days ago',
-              completed: true,
-            },
-          ]}
-        />
+        <TodoSection title="Priority" tasks={priorityTasks} updateTasks={setPriorityTasks} />
+        <TodoSection title="Other" tasks={otherTasks} updateTasks={setOtherTasks} />
       </View>
     </ScrollView>
   );
