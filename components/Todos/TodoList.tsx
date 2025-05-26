@@ -35,15 +35,7 @@ export const TodoList = ({
             key={task.id}
             item={task}
             shouldFocus={task.id === focusedTodoId}
-            onTextChange={(text) => {
-              updateTasks(
-                (tasks) =>
-                  [...tasks.map((t) => (t.id === task.id ? { ...t, title: text } : t))] as (
-                    | Todo
-                    | Event
-                  )[]
-              );
-            }}
+            updateTasks={updateTasks}
           />
         ))}
     </View>
