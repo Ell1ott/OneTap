@@ -19,7 +19,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
 }) => {
   const sizeClasses: Record<string, string> = {
     sm: 'w-4 h-4',
-    md: 'w-[21px] h-[21px]',
+    md: 'w-[23px] h-[23px]',
     lg: 'w-6 h-6',
   };
 
