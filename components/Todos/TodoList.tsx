@@ -26,8 +26,8 @@ export const TodoList = ({
     <View className="-mx-6 border-b border-b-foregroundMuted/20">
       {tasks
         .sort((a, b) => {
-          const av = a.type === 'event' ? a.startTime.getTime() : Number.MAX_SAFE_INTEGER;
-          const bv = b.type === 'event' ? b.startTime.getTime() : Number.MAX_SAFE_INTEGER;
+          const av = a.type === 'event' ? a.start.getTime() : Number.MAX_SAFE_INTEGER;
+          const bv = b.type === 'event' ? b.start.getTime() : Number.MAX_SAFE_INTEGER;
           return av - bv;
         })
         .map((task) => (

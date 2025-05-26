@@ -24,8 +24,7 @@ export function HomeScreen() {
       id: '2',
       title: 'Volleyball practice',
       type: 'event',
-      startTime: new Date(new Date().setHours(17, 0, 0, 0)),
-      completed: true,
+      start: new Date(new Date().setHours(17, 0, 0, 0)),
     },
   ]);
 

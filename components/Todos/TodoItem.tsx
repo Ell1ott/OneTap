@@ -4,6 +4,9 @@ import { getRelativeDateString } from '../../utils/dateUtils';
 import { useRef, useEffect } from 'react';
 
 export interface Time {
+  years?: number;
+  months?: number;
+  weeks?: number;
   days?: number;
   hours?: number;
   minutes?: number;
@@ -14,20 +17,20 @@ export interface Task {
   title: string;
   emoji?: string;
   note?: string;
-  recurrence?: 'daily' | 'weekly' | 'monthly' | Time;
+  repeat?: Time; // Also resets completion on todos
   tags?: string[];
 }
 
 export interface Todo extends Task {
   subtext: string;
   type: 'todo';
-  startDate?: Date;
+  start?: Date;
   due?: Date;
   remindAt?: Date;
-  repeat?: number;
-  softRepeat?: number;
-  completed: boolean;
-  category: string;
+  softRepeat?: Time; // First repeats when finished
+  completed?: boolean;
+  amount?: number;
+  category?: string;
 }
 
 export interface Event extends Task {
@@ -88,7 +91,7 @@ export const TodoItem = ({
 
               <View className="m-0 rounded-[4px] bg-accent/70 px-1.5 font-medium text-foreground">
                 <AppText>
-                  {item.startTime
+                  {item.start
                     .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                     .toLowerCase()}
                   {/*

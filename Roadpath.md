@@ -73,6 +73,12 @@ Examples:
 
 _Not to be confused with differend collections of todos - also a important feature_
 
+### Fun, funky streak notifications
+
+Track any repeating task, and if we notice a streak make AI generate a fun streak message, like: "🎉 Trash Master Extraordinaire! 🗑️ You've taken out the trash 10 weeks in a row! Keep up the stinky work! 💪"
+
+Just to add some fun into it all (:
+
 ## Visual identity
 
 OneTap should be modern, slick and simple yet still have a unique bit that makes it stand out from the rest. Not just look like a v0 build app
@@ -119,26 +125,28 @@ Some possible solutions for this would be:
 - "App idea: something that tracks how often I interrupt people."
 - "I need to cancel my Netflex subscription before the 5th May"
 - "I should try to catch up with jake every week or two"
+- "I gotta walk the dog twice every second day"
 
 ### Results
 
 "I should try to catch up with jake every week or two"
 
 ```ts
-text: 'Catch up wit jake';
+title: 'Catch up wit jake';
 type: 'todo';
 startDate: null;
 due: null;
 remindAt: null;
-repeat: null;
-softRepeat: 14; // Will try to make you do it every 14 days, but can be done before
+repeat: softRepeat: {
+  weeks: 2;
+} // Will try to make you do it every 14 days, but can be done before
 emoji: '👋';
 ```
 
 "I need to cancel my Netflex subscription before the 5th May"
 
 ```ts
-text: "Cancel Netflex"
+title: "Cancel Netflex"
 type: 'todo';
 startDate: null;
 due: Date(5th May);
@@ -151,27 +159,63 @@ emoji: '📺';
 "We are out of eggs again"
 
 ```ts
-text: "Eggs"
+title: 'Eggs';
 type: 'todo';
 startDate: null;
-due: Date(5th May);
-remindAt: Date(5th may); // This should only remind if it hasnt been ticked off
+due: null;
+remindAt: null;
 repeat: null;
 softRepeat: null;
-category: "Groceries"
+category: 'Groceries';
 emoji: '🥚';
 ```
 
 "Remind me to take out the trash on Thursday night."
 
 ```ts
-text: 'Eggs';
+title: 'Take thrash out';
 type: 'todo';
 startDate: null;
 due: Date('Thursday 6:00 pm');
 remindAt: null; // Soft remind should happen anyway like half an hour before
-repeat: 'Weekly'; // Usign string instead of time is usefull for months that dont allways have the same lenght
+repeat: {
+  weeks: 1;
+} // Weekly repeat
 softRepeat: null;
 category: 'Groceries';
 emoji: '🗑️';
 ```
+
+"I gotta walk the dog twice every second day"
+
+```ts
+title: 'Walk the dog';
+type: 'todo';
+startDate: Date(Today); // it starts today, i cant just walk the dog the day before (important for repeat)
+due: Date(Today); // Make sure it doesnt just continue until next time. I have to do it in twice in 1 day
+remindAt: null;
+repeat: {
+  days: 2;
+}
+amount: 2;
+softRepeat: null;
+emoji: '🐕';
+```
+
+"I want to try to solve 3 mathquizzes in under 7 days"
+
+soft but with reminder
+
+```ts
+title: 'Mathquizzes';
+type: 'todo';
+startDate: null; // Not needded
+due: null; // Just a personal challenge so doenst need a hard due.
+softDue: Date(Today + 7 days)
+remindAt: Date(Today + 7 days, morning);
+amount: 3;
+softRepeat: null;
+emoji: '🐕';
+```
+
+Possibly also with message: "Okay, you have till monday evening!"
