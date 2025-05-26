@@ -19,12 +19,14 @@ export const TodoItem = ({
   onSubtextChange,
   shouldFocus = false,
   updateTasks,
+  classname,
 }: {
   item: Todo | Event | TaskCategory;
   editing?: boolean;
   onSubtextChange?: (subtext: string) => void;
   shouldFocus?: boolean;
   updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
+  classname?: string;
 }) => {
   if (item.type === 'todo') {
     console.log('item.completed', item.completed);
@@ -97,7 +99,7 @@ export const TodoItem = ({
   }, [shouldFocus]);
 
   return (
-    <View className="flex-row justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
+    <View className={`flex-row justify-between py-2.5 ${classname}`}>
       <View className="flex-1">
         <View className="relative items-baseline justify-start">
           {!isCompleted ? (
@@ -167,7 +169,11 @@ export const TodoItem = ({
           ))}
         </View>
       )}
-      {item.type === 'category' && <ChevronRight size={25} className="text-foregroundMuted" />}
+      {item.type === 'category' && (
+        <View className="h-full items-center justify-center self-center">
+          <ChevronRight size={25} className=" text-foregroundMuted" />
+        </View>
+      )}
     </View>
   );
 };

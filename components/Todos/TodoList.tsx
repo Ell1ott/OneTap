@@ -24,19 +24,20 @@ export const TodoList = ({
   }, [lastAddedTodoId]);
 
   return (
-    <View className="-mx-6 border-b border-b-foregroundMuted/20">
+    <View className="bg-middleground rounded-xl px-4">
       {tasks
         .sort((a, b) => {
           const av = a.type === 'event' ? a.start.getTime() : Number.MAX_SAFE_INTEGER;
           const bv = b.type === 'event' ? b.start.getTime() : Number.MAX_SAFE_INTEGER;
           return av - bv;
         })
-        .map((task) => (
+        .map((task, i) => (
           <TodoItem
             key={task.id}
             item={task}
             shouldFocus={task.id === focusedTodoId}
             updateTasks={updateTasks}
+            classname={i != 0 ? 'border-t-[1.5px] border-t-foregroundMuted/15' : ''}
           />
         ))}
     </View>
