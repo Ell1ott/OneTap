@@ -16,6 +16,8 @@ export interface Todo extends Task {
   reminder?: Date;
   startDate?: Date;
   endDate?: Date;
+  repeat?: number;
+  softRepeat?: number;
 }
 
 export interface Event extends Task {
