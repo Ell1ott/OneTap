@@ -4,8 +4,8 @@ A file full of ideas, general direction and goals for the project
 
 ## Bare bones concept
 
-It’s an app where you press one button, talk, and it figures out what you said and puts it in the right place — like a todo list, calendar, diary, or stat-tracker.
-You don’t have to open different apps or type anything. Just speak and it handles it.
+It's an app where you press one button, talk, and it figures out what you said and puts it in the right place — like a todo list, calendar, diary, or stat-tracker.
+You don't have to open different apps or type anything. Just speak and it handles it.
 
 ## Ideas
 
@@ -99,7 +99,7 @@ Some possible solutions for this would be:
 
 ### Calendar
 
-## List of things people could tell OneTap:
+## Test Cases:
 
 - "ooo, i really like this spot"
 - "This would be really nice spot to have a picnic"
@@ -114,8 +114,64 @@ Some possible solutions for this would be:
 - "I got volleyball at 8 pm on thursday"
 - "My geo report has to be finished till on sunday"
 - "We are out of eggs again"
-- “Remind me to take out the trash on Thursday night.”
-- “Went hiking with Maya and the weather was perfect.”
-- “App idea: something that tracks how often I interrupt people.”
+- "Remind me to take out the trash on Thursday night."
+- "Went hiking with Maya and the weather was perfect."
+- "App idea: something that tracks how often I interrupt people."
 - "I need to cancel my Netflex subscription before the 5th May"
 - "I should try to catch up with jake every week or two"
+
+### Results
+
+"I should try to catch up with jake every week or two"
+
+```ts
+text: 'Catch up wit jake';
+type: 'todo';
+startDate: null;
+due: null;
+remindAt: null;
+repeat: null;
+softRepeat: 14; // Will try to make you do it every 14 days, but can be done before
+emoji: '👋';
+```
+
+"I need to cancel my Netflex subscription before the 5th May"
+
+```ts
+text: "Cancel Netflex"
+type: 'todo';
+startDate: null;
+due: Date(5th May);
+remindAt: Date(5th may); // This should only remind if it hasnt been ticked off
+repeat: null;
+softRepeat: null;
+emoji: '📺';
+```
+
+"We are out of eggs again"
+
+```ts
+text: "Eggs"
+type: 'todo';
+startDate: null;
+due: Date(5th May);
+remindAt: Date(5th may); // This should only remind if it hasnt been ticked off
+repeat: null;
+softRepeat: null;
+category: "Groceries"
+emoji: '🥚';
+```
+
+"Remind me to take out the trash on Thursday night."
+
+```ts
+text: 'Eggs';
+type: 'todo';
+startDate: null;
+due: Date('Thursday 6:00 pm');
+remindAt: null; // Soft remind should happen anyway like half an hour before
+repeat: 'Weekly'; // Usign string instead of time is usefull for months that dont allways have the same lenght
+softRepeat: null;
+category: 'Groceries';
+emoji: '🗑️';
+```
