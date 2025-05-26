@@ -16,7 +16,7 @@ interface AppTextProps extends TextProps {
   f?: boolean;
 }
 
-const AppText = ({ style, children, f, ...props }: AppTextProps) => {
+const AppText = React.forwardRef<Text, AppTextProps>(({ style, children, f, ...props }, ref) => {
   let newStyle: TextStyle[];
   if (Array.isArray(style)) {
     newStyle = [baseStyle.text, ...style];
@@ -25,10 +25,10 @@ const AppText = ({ style, children, f, ...props }: AppTextProps) => {
   }
 
   return (
-    <Text {...props} style={newStyle}>
+    <Text ref={ref} {...props} style={newStyle}>
       {children}
     </Text>
   );
-};
+});
 
 export default AppText;

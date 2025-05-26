@@ -30,7 +30,7 @@ export const TodoItem = ({
     console.log('item.completed', item.completed);
   }
   const inputRef = useRef<TextInput>(null);
-  const textRef = useRef<View>(null);
+  const textRef = useRef<Text>(null);
   const [textWidth, setTextWidth] = useState(0);
   // Animation for strikethrough effect
   const isCompleted = item.type === 'todo' && item.completed?.every(Boolean);
@@ -45,9 +45,11 @@ export const TodoItem = ({
     }
   }, [item.type === 'todo' ? item.completed : null]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isCompleted) {
+      // console.log('textRef', textRef.current);
       textRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        console.log('width', width);
         setTextWidth(width);
       });
     }
@@ -111,8 +113,10 @@ export const TodoItem = ({
               />
             </Animated.View>
           ) : (
-            <Animated.View ref={textRef} style={animatedTextStyle}>
-              <AppText className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
+            <Animated.View style={animatedTextStyle} collapsable={false}>
+              <AppText
+                ref={textRef}
+                className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
                 {item.title}
               </AppText>
             </Animated.View>
