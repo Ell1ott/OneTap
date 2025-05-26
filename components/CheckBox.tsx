@@ -23,7 +23,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
 
   return (
     <TouchableOpacity
-      className={`flex-row items-center px-2 ${disabled ? 'opacity-50' : ''}`}
+      className={`h-full flex-row items-center px-2 ${disabled ? 'opacity-50' : ''}`}
       onPress={disabled ? undefined : onToggle}
       activeOpacity={0.7}>
       <View
