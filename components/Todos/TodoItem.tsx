@@ -2,6 +2,7 @@ import { Text, View, TextInput } from 'react-native';
 import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
 import { useRef, useEffect } from 'react';
+import Checkbox from 'expo-checkbox';
 
 export interface Time {
   years?: number;
@@ -19,6 +20,12 @@ export interface Task {
   note?: string;
   repeat?: Time; // Also resets completion on todos
   tags?: string[];
+}
+
+export interface TaskCategory {
+  id: string;
+  name: string;
+  emoji?: string;
 }
 
 export interface Todo extends Task {
@@ -43,17 +50,28 @@ export interface Event extends Task {
 export const TodoItem = ({
   item,
   editing = false,
-  onTextChange,
   onSubtextChange,
   shouldFocus = false,
+  updateTasks,
 }: {
   item: Todo | Event;
   editing?: boolean;
-  onTextChange?: (text: string) => void;
   onSubtextChange?: (subtext: string) => void;
   shouldFocus?: boolean;
+  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event)[]>>;
 }) => {
   const inputRef = useRef<TextInput>(null);
+
+  function onTextChange(text: string) {
+    updateTodo({ title: text });
+  }
+
+  function updateTodo(updates: Partial<Todo | Event>) {
+    updateTasks(
+      (tasks) =>
+        [...tasks.map((t) => (t.id === item.id ? { ...t, ...updates } : t))] as (Todo | Event)[]
+    );
+  }
 
   useEffect(() => {
     if (shouldFocus && inputRef.current) {
@@ -102,6 +120,14 @@ export const TodoItem = ({
           </View>
         )}
       </View>
+      {item.type === 'todo' && (
+        <Checkbox
+          value={item.completed}
+          onValueChange={() => {
+            updateTodo({ completed: !item.completed });
+          }}
+        />
+      )}
     </View>
   );
 };
