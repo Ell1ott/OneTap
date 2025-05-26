@@ -36,6 +36,7 @@ export const TodoItem = ({
   const [textWidth, setTextWidth] = useState(0);
   // Animation for strikethrough effect
   const isCompleted = item.type === 'todo' && item.completed?.every(Boolean);
+  const isEditable = item.type !== 'category' && !isCompleted;
   const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
 
   useEffect(() => {
@@ -102,7 +103,7 @@ export const TodoItem = ({
     <View className={`flex-row justify-between py-2.5 ${classname}`}>
       <View className="flex-1">
         <View className="relative items-baseline justify-start">
-          {!isCompleted ? (
+          {isEditable ? (
             <Animated.View style={animatedTextStyle}>
               <TextInput
                 ref={inputRef}
