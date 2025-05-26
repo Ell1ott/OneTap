@@ -3,26 +3,35 @@ import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
 import { useRef, useEffect } from 'react';
 
+export interface Time {
+  days?: number;
+  hours?: number;
+  minutes?: number;
+}
+
 export interface Task {
   id: string;
   text: string;
   note?: string;
-  completed: boolean;
+  recurrence?: 'daily' | 'weekly' | 'monthly' | Time;
+  tags?: string[];
 }
 
 export interface Todo extends Task {
   subtext: string;
   type: 'todo';
-  reminder?: Date;
   startDate?: Date;
-  endDate?: Date;
+  due?: Date;
+  remindAt?: Date;
   repeat?: number;
   softRepeat?: number;
+  completed: boolean;
+  category: string;
 }
 
 export interface Event extends Task {
-  startTime: Date;
-  endTime?: Date;
+  start: Date;
+  end?: Date;
   cancelled?: boolean;
   type: 'event';
 }
