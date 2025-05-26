@@ -4,7 +4,7 @@ import { theme } from 'tailwind.config';
 import AppText from 'components/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
-import { Todo, Event } from 'components/Todos/TodoItem';
+import { Todo, Event, TaskCategory } from 'components/Todos/TodoItem';
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
 
@@ -12,7 +12,7 @@ export function HomeScreen() {
   console.log('current theme', theme);
 
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [tasksToday, setTasksToday] = useState<(Todo | Event)[]>([
+  const [tasksToday, setTasksToday] = useState<(Todo | Event | TaskCategory)[]>([
     {
       id: '1',
       title: 'Walk the dog',

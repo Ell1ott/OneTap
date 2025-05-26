@@ -24,7 +24,9 @@ export interface Task {
 
 export interface TaskCategory {
   id: string;
-  name: string;
+  title: string;
+  subtext?: string;
+  type: 'category';
   emoji?: string;
 }
 
@@ -54,11 +56,11 @@ export const TodoItem = ({
   shouldFocus = false,
   updateTasks,
 }: {
-  item: Todo | Event;
+  item: Todo | Event | TaskCategory;
   editing?: boolean;
   onSubtextChange?: (subtext: string) => void;
   shouldFocus?: boolean;
-  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event)[]>>;
+  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
 }) => {
   const inputRef = useRef<TextInput>(null);
 
@@ -66,10 +68,14 @@ export const TodoItem = ({
     updateTodo({ title: text });
   }
 
-  function updateTodo(updates: Partial<Todo | Event>) {
+  function updateTodo(updates: Partial<Todo | Event | TaskCategory>) {
     updateTasks(
       (tasks) =>
-        [...tasks.map((t) => (t.id === item.id ? { ...t, ...updates } : t))] as (Todo | Event)[]
+        [...tasks.map((t) => (t.id === item.id ? { ...t, ...updates } : t))] as (
+          | Todo
+          | Event
+          | TaskCategory
+        )[]
     );
   }
 

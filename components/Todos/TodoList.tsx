@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { Todo, Event, TodoItem } from './TodoItem';
+import { Todo, Event, TodoItem, TaskCategory } from './TodoItem';
 import { useEffect, useState } from 'react';
 
 export const TodoList = ({
@@ -7,8 +7,8 @@ export const TodoList = ({
   updateTasks,
   lastAddedTodoId,
 }: {
-  tasks: (Todo | Event)[];
-  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event)[]>>;
+  tasks: (Todo | Event | TaskCategory)[];
+  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
   lastAddedTodoId?: string;
 }) => {
   const [focusedTodoId, setFocusedTodoId] = useState<string | null>(null);
