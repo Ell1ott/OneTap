@@ -100,7 +100,7 @@ export const TodoItem = ({
   }, [shouldFocus]);
 
   return (
-    <View className={`flex-row justify-between py-2.5 ${classname}`}>
+    <View className={`flex-row justify-between py-2.5 pr-2 ${classname} `}>
       <View className="flex-1">
         <View className="relative items-baseline justify-start">
           {isEditable ? (

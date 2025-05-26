@@ -134,10 +134,11 @@ Some possible solutions for this would be:
 ```ts
 title: 'Catch up wit jake';
 type: 'todo';
-startDate: null;
+startDate: date(today);
 due: null;
 remindAt: null;
-repeat: softRepeat: {
+repeat: null;
+softRepeat: {
   weeks: 2;
 } // Will try to make you do it every 14 days, but can be done before
 emoji: '👋';
