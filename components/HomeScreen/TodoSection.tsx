@@ -21,7 +21,7 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTa
       ...tasks,
       {
         id: newId,
-        text: '',
+        title: '',
         type: 'todo',
         completed: false,
         subtext: '',

@@ -38,7 +38,10 @@ export const TodoList = ({
             onTextChange={(text) => {
               updateTasks(
                 (tasks) =>
-                  [...tasks.map((t) => (t.id === task.id ? { ...t, text } : t))] as (Todo | Event)[]
+                  [...tasks.map((t) => (t.id === task.id ? { ...t, title: text } : t))] as (
+                    | Todo
+                    | Event
+                  )[]
               );
             }}
           />

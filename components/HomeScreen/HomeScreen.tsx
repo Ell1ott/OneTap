@@ -15,14 +15,14 @@ export function HomeScreen() {
   const [tasksToday, setTasksToday] = useState<(Todo | Event)[]>([
     {
       id: '1',
-      text: 'Walk the dog',
+      title: 'Walk the dog',
       type: 'todo',
       subtext: 'Twice every day',
       completed: true,
     },
     {
       id: '2',
-      text: 'Volleyball practice',
+      title: 'Volleyball practice',
       type: 'event',
       startTime: new Date(new Date().setHours(17, 0, 0, 0)),
       completed: true,
@@ -46,14 +46,14 @@ export function HomeScreen() {
           tasks={[
             {
               id: '2',
-              text: 'Groceries',
+              title: 'Groceries',
               type: 'todo',
               subtext: 'Recommended, 9 items',
               completed: false,
             },
             {
               id: '3',
-              text: 'Homework',
+              title: 'Homework',
               type: 'todo',
               subtext: '5 total, 3 urgent',
               completed: false,
@@ -65,7 +65,7 @@ export function HomeScreen() {
           tasks={[
             {
               id: '4',
-              text: 'Clean Room',
+              title: 'Clean Room',
               type: 'todo',
               subtext: 'Done 4 days ago',
               completed: true,

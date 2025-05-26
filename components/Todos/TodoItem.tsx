@@ -11,7 +11,8 @@ export interface Time {
 
 export interface Task {
   id: string;
-  text: string;
+  title: string;
+  emoji?: string;
   note?: string;
   recurrence?: 'daily' | 'weekly' | 'monthly' | Time;
   tags?: string[];
@@ -65,14 +66,14 @@ export const TodoItem = ({
             ref={inputRef}
             className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
             onChangeText={onTextChange}
-            value={item.text}
+            value={item.title}
             placeholder="New task..."
             style={fontStyle}
             multiline={false}
           />
         ) : (
           <AppText className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
-            {item.text}
+            {item.title}
           </AppText>
         )}
         {item.type === 'todo' && (
