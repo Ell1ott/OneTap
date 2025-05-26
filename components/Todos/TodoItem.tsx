@@ -1,4 +1,10 @@
 import { Text, View, TextInput } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  interpolate,
+} from 'react-native-reanimated';
 import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
 import { useRef, useEffect } from 'react';
@@ -69,6 +75,38 @@ export const TodoItem = ({
   }
   const inputRef = useRef<TextInput>(null);
 
+  // Animation for strikethrough effect
+  const isCompleted = item.type === 'todo' && item.completed?.every(Boolean);
+  const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
+
+  useEffect(() => {
+    if (item.type === 'todo') {
+      const allCompleted = item.completed?.every(Boolean) || false;
+      strikethroughProgress.value = withTiming(allCompleted ? 1 : 0, {
+        duration: 300,
+      });
+    }
+  }, [item.type === 'todo' ? item.completed : null]);
+
+  const animatedTextStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(strikethroughProgress.value, [0, 1], [1, 0.6]);
+    return {
+      opacity,
+    };
+  });
+
+  const strikethroughStyle = useAnimatedStyle(() => {
+    const width = interpolate(strikethroughProgress.value, [0, 1], [0, 100]);
+    return {
+      width: `${width}%`,
+      height: 2,
+      position: 'absolute' as const,
+      top: '50%',
+      left: 0,
+      transform: [{ translateY: -1 }],
+    };
+  });
+
   function onTextChange(text: string) {
     updateTodo({ title: text });
   }
@@ -93,21 +131,30 @@ export const TodoItem = ({
   return (
     <View className="flex-row justify-between border-t border-t-foregroundMuted/20 px-6 py-2.5">
       <View className="flex-1">
-        {true ? (
-          <TextInput
-            ref={inputRef}
-            className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
-            onChangeText={onTextChange}
-            value={item.title}
-            placeholder="New task..."
-            style={fontStyle}
-            multiline={false}
-          />
-        ) : (
-          <AppText className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
-            {item.title}
-          </AppText>
-        )}
+        <View className="relative">
+          {!isCompleted ? (
+            <Animated.View style={animatedTextStyle}>
+              <TextInput
+                ref={inputRef}
+                className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
+                onChangeText={onTextChange}
+                value={item.title}
+                placeholder="New task..."
+                style={fontStyle}
+                multiline={false}
+              />
+            </Animated.View>
+          ) : (
+            <Animated.View style={animatedTextStyle} className="w-fit">
+              <AppText className="m-0 mx-0 w-fit p-0 text-xl font-medium leading-7 outline-none">
+                {item.title}
+              </AppText>
+              {item.type === 'todo' && (
+                <Animated.View style={strikethroughStyle} className="bg-foreground" />
+              )}
+            </Animated.View>
+          )}
+        </View>
         {item.type !== 'event' && (
           <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">
             {item.subtext}
