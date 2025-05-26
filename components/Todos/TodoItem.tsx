@@ -154,6 +154,9 @@ export const TodoItem = ({
             <CheckBox
               key={index}
               checked={completed}
+              classname={` ${index === 0 ? 'pl-6 -ml-6' : ''} ${
+                index === (item.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
+              }`}
               onToggle={() => {
                 console.log('onToggle', index);
                 const newCompleted = [...(item.completed || [])];

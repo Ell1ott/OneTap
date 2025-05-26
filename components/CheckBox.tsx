@@ -7,6 +7,7 @@ interface CheckBoxProps {
   onToggle?: () => void;
   disabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  classname?: string;
 }
 
 const CheckBox: React.FC<CheckBoxProps> = ({
@@ -14,6 +15,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
   onToggle = () => {},
   disabled = false,
   size = 'md',
+  classname = '',
 }) => {
   const sizeClasses: Record<string, string> = {
     sm: 'w-4 h-4',
@@ -23,7 +25,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
 
   return (
     <TouchableOpacity
-      className={`h-full flex-row items-center px-2 ${disabled ? 'opacity-50' : ''}`}
+      className={`h-full flex-row items-center px-2 ${disabled ? 'opacity-50' : ''} ${classname}`}
       onPress={disabled ? undefined : onToggle}
       activeOpacity={0.7}>
       <View
