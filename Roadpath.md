@@ -109,23 +109,23 @@ Some possible solutions for this would be:
 
 - [ ] "ooo, i really like this spot"
 - [ ] "This would be really nice spot to have a picnic"
-- [ ] "Tims birthday is tommorow"
+- [ ] "Tims birthday is tommorow" (somewhat)
 - [ ] "This cake is better eaten with a spoon - quote of the day"
 - [ ] "This super sweet guy i met just recommended this resturant to me"
 - [ ] "John said that the new Star Wars movie should be super good"
 - [ ] "Wow, Ant Man 3 looks like a sick movie"
-- [ ] "I gotta call Natalie 9 in the morning Tomorrow"
+- [x] "I gotta call Natalie 9 in the morning Tomorrow"
 - [ ] "Okay, i got this pretty sick idea, what if we build..."
-- [ ] "Really gotta remember to bring my charger tommorow"
-- [ ] "I got volleyball at 8 pm on thursday"
-- [ ] "My geo report has to be finished till on sunday"
-- [ ] "We are out of eggs again"
-- [ ] "Remind me to take out the trash on Thursday night."
+- [x] "Really gotta remember to bring my charger tommorow"
+- [x] "I got volleyball at 8 pm on thursday"
+- [x] "My geo report has to be finished till on sunday"
+- [x] "We are out of eggs again"
+- [x] "Remind me to take out the trash on Thursday night."
 - [ ] "Went hiking with Maya and the weather was perfect."
 - [ ] "App idea: something that tracks how often I interrupt people."
-- [ ] "I need to cancel my Netflex subscription before the 5th May"
-- [ ] "I should try to catch up with jake every week or two"
-- [ ] "I gotta walk the dog twice every second day"
+- [x] "I need to cancel my Netflex subscription before the 5th May"
+- [x] "I should try to catch up with jake every week or two"
+- [x] "I gotta walk the dog twice every second day"
 
 ### Results
 
