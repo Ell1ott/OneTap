@@ -134,7 +134,7 @@ export const TodoItem = ({
             <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
           )}
         </View>
-        {item.type !== 'event' && (
+        {item.type !== 'event' && item.subtext && (
           <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">
             {item.subtext}
           </AppText>
