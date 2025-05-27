@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { TodoItem } from './TodoItem';
-import { Task, Event } from './types';
+import { Task, Event } from '../classes';
 import { useEffect, useState } from 'react';
 
 export const TodoList = ({

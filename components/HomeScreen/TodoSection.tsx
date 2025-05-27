@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import AppText from '../AppText';
-import { TodoList } from '../Todos/TodoList';
-import { Todo, Event, TaskCategory, PartialDate, Task } from 'components/Todos/types';
+import { TodoList } from '../Todos/components/TodoList';
+import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
+import { PartialDate } from 'components/Todos/types';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';

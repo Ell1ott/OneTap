@@ -7,13 +7,13 @@ import Animated, {
   FadeIn,
   FadeOut,
 } from 'react-native-reanimated';
-import AppText, { fontStyle } from '../AppText';
-import { getRelativeDateString } from '../../utils/dateUtils';
+import AppText, { fontStyle } from '../../AppText';
+import { getRelativeDateString } from '../../../utils/dateUtils';
 import { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import CheckBox from 'components/CheckBox';
-import { Time, Task, TaskCategory, Todo, Event } from './types';
+import { Task, TaskCategory, Todo, Event } from '../classes';
 
 export const TodoItem = ({
   item,
