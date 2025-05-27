@@ -23,6 +23,7 @@ export class Todo extends Task {
     } else if (this.lastDone) {
       this.doneTimes = [this.lastDone];
     }
+    this.completed = data.completed || [false];
   }
 
   isToday = () => this.due?.isToday() || false;

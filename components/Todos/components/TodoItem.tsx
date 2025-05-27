@@ -1,4 +1,4 @@
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -14,6 +14,7 @@ import { ChevronRight } from 'lucide-react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import CheckBox from 'components/CheckBox';
 import { Task, TaskCategory, Todo, Event } from '../classes';
+import { useRouter } from 'expo-router';
 
 export const TodoItem = ({
   item,
@@ -30,6 +31,7 @@ export const TodoItem = ({
   updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   classname?: string;
 }) => {
+  const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
   const [textWidth, setTextWidth] = useState(0);
@@ -91,11 +93,18 @@ export const TodoItem = ({
     }
   }, [shouldFocus]);
 
+  const handleCategoryPress = () => {
+    if (item instanceof TaskCategory) {
+      router.push(`/category/${item.title.toLowerCase()}` as any);
+    }
+  };
+
+  const ItemWrapper = item instanceof TaskCategory ? Pressable : View;
+
   return (
-    <Animated.View
-      className={`flex-row justify-between py-2.5 pr-2 ${classname} `}
-      entering={FadeIn}
-      exiting={FadeOut}>
+    <ItemWrapper
+      {...(item instanceof TaskCategory && { onPress: handleCategoryPress })}
+      className={`flex-row justify-between py-2.5 pr-2 ${classname} `}>
       <View className="flex-1">
         <View className="relative items-baseline justify-start">
           {isEditable ? (
@@ -126,6 +135,6 @@ export const TodoItem = ({
         {item.renderSubtext()}
       </View>
       {item.renderEndContent(updateTodo)}
-    </Animated.View>
+    </ItemWrapper>
   );
 };
