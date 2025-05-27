@@ -36,6 +36,7 @@
         "react-dom": "^19.0.0",
         "react-native": "0.79.2",
         "react-native-gesture-handler": "^2.25.0",
+        "react-native-haptic-feedback": "^2.3.3",
         "react-native-reanimated": "^3.17.5",
         "react-native-safe-area-context": "^5.4.0",
         "react-native-screens": "^4.10.0",
@@ -1707,6 +1708,8 @@
     "react-native-edge-to-edge": ["react-native-edge-to-edge@1.6.0", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-2WCNdE3Qd6Fwg9+4BpbATUxCLcouF6YRY7K+J36KJ4l3y+tWN6XCqAC4DuoGblAAbb2sLkhEDp4FOlbOIot2Og=="],
 
     "react-native-gesture-handler": ["react-native-gesture-handler@2.25.0", "", { "dependencies": { "@egjs/hammerjs": "^2.0.17", "hoist-non-react-statics": "^3.3.0", "invariant": "^2.2.4" }, "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-NPjJi6mislXxvjxQPU9IYwBjb1Uejp8GvAbE1Lhh+xMIMEvmgAvVIp5cz1P+xAbV6uYcRRArm278+tEInGOqWg=="],
+
+    "react-native-haptic-feedback": ["react-native-haptic-feedback@2.3.3", "", { "peerDependencies": { "react-native": ">=0.60.0" } }, "sha512-svS4D5PxfNv8o68m9ahWfwje5NqukM3qLS48+WTdhbDkNUkOhP9rDfDSRHzlhk4zq+ISjyw95EhLeh8NkKX5vQ=="],
 
     "react-native-is-edge-to-edge": ["react-native-is-edge-to-edge@1.1.7", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-EH6i7E8epJGIcu7KpfXYXiV2JFIYITtq+rVS8uEb+92naMRBdxhTuS8Wn2Q7j9sqyO0B+Xbaaf9VdipIAmGW4w=="],
 

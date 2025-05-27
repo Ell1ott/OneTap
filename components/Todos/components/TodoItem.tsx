@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Pressable } from 'react-native';
+import { Text, View, TextInput, Pressable, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -16,7 +16,7 @@ import CheckBox from 'components/CheckBox';
 import { Task, TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
 import { HapticTab } from 'components/HapticTab';
-
+import { PlatformPressable } from '@react-navigation/elements';
 export const TodoItem = ({
   item,
   editing = false,
@@ -107,10 +107,11 @@ export const TodoItem = ({
     }
   };
 
-  const ItemWrapper = item instanceof TaskCategory ? HapticTab : Pressable;
-
   return (
-    <ItemWrapper onPress={handlePress} className="overflow-hidden rounded-t-lg px-4">
+    <Pressable
+      onPress={handlePress}
+      className="overflow-hidden rounded-t-lg px-4"
+      android_ripple={item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
       <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
         <View className="flex-1">
           <View className="relative items-baseline justify-start">
@@ -145,6 +146,6 @@ export const TodoItem = ({
         </View>
         {item.renderEndContent(updateTodo)}
       </View>
-    </ItemWrapper>
+    </Pressable>
   );
 };

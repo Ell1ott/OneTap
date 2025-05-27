@@ -4,7 +4,6 @@ import AppText from 'components/AppText';
 import { RichTextEditor } from 'components/diary/RichTextEditor';
 
 export default function TabTwoScreen() {
-  console.log(Platform.OS);
   return <RichTextEditor />;
 }
 
