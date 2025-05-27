@@ -214,7 +214,8 @@ export class Todo extends Task {
     if (this.softRepeat && this.lastDone) {
       const days = this.softRepeat.toDays() - this.daysSinceLastDone;
       if (days < 4) {
-        return `Done ${this.daysSinceLastDone} days ago`;
+        const rounded = Math.round(this.daysSinceLastDone);
+        return `Done ${rounded} days ago`;
       }
     }
     return this.note;

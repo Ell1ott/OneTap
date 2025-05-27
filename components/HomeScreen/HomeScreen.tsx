@@ -99,12 +99,7 @@ export function HomeScreen() {
         />
         <TodoSection
           title="Other"
-          tasks={tasks.filter(
-            (t) =>
-              !(t instanceof Todo && t.due?.isToday()) &&
-              !(t instanceof Event && isToday(t.start)) &&
-              !(t instanceof TaskCategory)
-          )}
+          tasks={tasks.filter((t) => !t.isToday() && !t.isPriority())}
           updateTasks={setTasks}
         />
       </View>
