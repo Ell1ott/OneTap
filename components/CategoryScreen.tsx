@@ -17,6 +17,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 
+import { BackHandler } from 'react-native';
+
 const screenWidth = Dimensions.get('window').width;
 
 // Mock data for different categories
@@ -183,6 +185,15 @@ export default function CategoryScreen({
 
   const categoryName = category?.charAt(0).toUpperCase() + category?.slice(1) || 'Category';
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      console.log('backHandler');
+      onClose();
+      return true;
+    });
+    return () => backHandler.remove();
+  }, []);
+
   // Gesture handler values
   const translateX = useSharedValue(0);
 
@@ -231,7 +242,7 @@ export default function CategoryScreen({
         translateX.value = withSpring(
           400,
           {
-            stiffness: 100,
+            stiffness: 300,
             damping: 20,
             velocity: event.velocityX,
           },
