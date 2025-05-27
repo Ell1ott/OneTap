@@ -15,6 +15,7 @@ import { ChevronLeft } from 'lucide-react-native';
 import CheckBox from 'components/CheckBox';
 import { Task, TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
+import { HapticTab } from 'components/HapticTab';
 
 export const TodoItem = ({
   item,
@@ -106,42 +107,44 @@ export const TodoItem = ({
     }
   };
 
+  const ItemWrapper = item instanceof TaskCategory ? HapticTab : Pressable;
+
   return (
-    <Pressable
-      onPress={handlePress}
-      className={`flex-row justify-between py-2.5 pr-2 ${classname} `}>
-      <View className="flex-1">
-        <View className="relative items-baseline justify-start">
-          {isEditable ? (
-            <Animated.View style={animatedTextStyle}>
-              <Pressable onPress={() => {}}>
-                <TextInput
-                  ref={inputRef}
-                  className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
-                  onChangeText={onTextChange}
-                  value={item.title}
-                  placeholder="New task..."
-                  style={fontStyle}
-                  multiline={false}
-                />
-              </Pressable>
-            </Animated.View>
-          ) : (
-            <Animated.View style={animatedTextStyle} collapsable={false}>
-              <AppText
-                ref={textRef}
-                className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
-                {item.title}
-              </AppText>
-            </Animated.View>
-          )}
-          {item instanceof Todo && (
-            <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
-          )}
+    <ItemWrapper onPress={handlePress} className="overflow-hidden rounded-t-lg px-4">
+      <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
+        <View className="flex-1">
+          <View className="relative items-baseline justify-start">
+            {isEditable ? (
+              <Animated.View style={animatedTextStyle}>
+                <Pressable onPress={() => {}}>
+                  <TextInput
+                    ref={inputRef}
+                    className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
+                    onChangeText={onTextChange}
+                    value={item.title}
+                    placeholder="New task..."
+                    style={fontStyle}
+                    multiline={false}
+                  />
+                </Pressable>
+              </Animated.View>
+            ) : (
+              <Animated.View style={animatedTextStyle} collapsable={false}>
+                <AppText
+                  ref={textRef}
+                  className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
+                  {item.title}
+                </AppText>
+              </Animated.View>
+            )}
+            {item instanceof Todo && (
+              <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
+            )}
+          </View>
+          {item.renderSubtext()}
         </View>
-        {item.renderSubtext()}
+        {item.renderEndContent(updateTodo)}
       </View>
-      {item.renderEndContent(updateTodo)}
-    </Pressable>
+    </ItemWrapper>
   );
 };

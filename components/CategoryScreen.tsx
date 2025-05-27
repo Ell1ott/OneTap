@@ -210,7 +210,8 @@ export default function CategoryScreen({
       }
     })
     .onEnd((event) => {
-      const shouldGoBack = event.translationX > 120 || event.velocityX > 800;
+      const shouldGoBack =
+        (event.translationX > 120 && event.velocityX < -100) || event.velocityX > 800;
 
       if (shouldGoBack) {
         // Animate out and navigate back
@@ -247,7 +248,14 @@ export default function CategoryScreen({
   return (
     <GestureHandlerRootView
       pointerEvents="box-none"
-      className="absolute left-0 top-0 z-10 h-full w-full flex-1">
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 10,
+      }}>
       {/* Background overlay */}
       <Animated.View
         style={[
@@ -261,7 +269,7 @@ export default function CategoryScreen({
           },
           backgroundStyle,
         ]}
-        pointerEvents="none"
+        pointerEvents="box-none"
       />
 
       <GestureDetector gesture={gestureHandler}>
