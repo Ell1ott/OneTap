@@ -30,9 +30,6 @@ export const TodoItem = ({
   updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   classname?: string;
 }) => {
-  if (item instanceof Todo) {
-    console.log('item.completed', item.completed);
-  }
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
   const [textWidth, setTextWidth] = useState(0);
@@ -53,13 +50,10 @@ export const TodoItem = ({
 
   useEffect(() => {
     if (isCompleted) {
-      // console.log('textRef', textRef.current);
       textRef.current?.measure((x, y, width, height, pageX, pageY) => {
-        console.log('width', width);
         setTextWidth(width);
       });
     }
-    console.log('textWidth', textWidth);
   }, [isCompleted]);
 
   const animatedTextStyle = useAnimatedStyle(() => {
