@@ -1,6 +1,8 @@
 import { Task } from './Task';
 import { PartialDate } from '../types/PartialDate';
 import { Time } from '../types/Time';
+import { View } from 'react-native';
+import CheckBox from 'components/CheckBox';
 
 export class Todo extends Task {
   start?: PartialDate;
@@ -52,4 +54,32 @@ export class Todo extends Task {
     }
     return this.note;
   }
+
+  onFinish = () => {
+    console.log('onFinish');
+  };
+
+  renderEndContent = (updateTodo: (updates: Partial<Todo>) => void) => (
+    <View className="flex-row items-center">
+      {this.completed?.map((completed, index) => (
+        <CheckBox
+          key={index}
+          checked={completed}
+          classname={` ${index === 0 ? 'pl-6 -ml-6' : ''} ${
+            index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
+          }`}
+          onToggle={() => {
+            console.log('onToggle', index);
+            const newCompleted = [...(this.completed || [])];
+            newCompleted[index] = !newCompleted[index];
+            updateTodo({ completed: newCompleted });
+
+            if (newCompleted.every(Boolean)) {
+              this.onFinish();
+            }
+          }}
+        />
+      ))}
+    </View>
+  );
 }

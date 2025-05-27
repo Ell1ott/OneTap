@@ -20,8 +20,8 @@ export class Event extends Task {
   renderSubtext = () => (
     <View className="mt-1 rounded-sm">
       <View className="flex-row items-center gap-x-1">
-        <AppText>at</AppText>
-        <View className="m-0 rounded-[4px] bg-accent/70 px-1.5 font-medium text-foreground">
+        <AppText>At</AppText>
+        <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foreground">
           <AppText>
             {this.start
               .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })

@@ -131,30 +131,7 @@ export const TodoItem = ({
         </View>
         {item.renderSubtext()}
       </View>
-      {item instanceof Todo && (
-        <View className="flex-row items-center">
-          {item.completed?.map((completed, index) => (
-            <CheckBox
-              key={index}
-              checked={completed}
-              classname={` ${index === 0 ? 'pl-6 -ml-6' : ''} ${
-                index === (item.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
-              }`}
-              onToggle={() => {
-                console.log('onToggle', index);
-                const newCompleted = [...(item.completed || [])];
-                newCompleted[index] = !newCompleted[index];
-                updateTodo({ completed: newCompleted });
-              }}
-            />
-          ))}
-        </View>
-      )}
-      {item instanceof TaskCategory && (
-        <View className="items-center justify-center self-center">
-          <ChevronRight size={25} className=" text-foregroundMuted" />
-        </View>
-      )}
+      {item.renderEndContent(updateTodo)}
     </Animated.View>
   );
 };

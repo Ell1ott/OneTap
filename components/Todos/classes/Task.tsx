@@ -1,5 +1,9 @@
 import AppText from 'components/AppText';
 import { Time } from '../types/Time';
+import { JSX } from 'react';
+import { TaskCategory } from './TaskCategory';
+import { Todo } from './Todo';
+import { Event } from './Event';
 
 export class Task {
   id: string;
@@ -29,6 +33,10 @@ export class Task {
       {this.subtext}
     </AppText>
   );
+
+  renderEndContent = (
+    updateTodo: (updates: Partial<Todo | Event | TaskCategory>) => void
+  ): JSX.Element | null => null;
 
   isToday = () => false;
   isPriority = () => false;
