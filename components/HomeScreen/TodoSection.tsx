@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import AppText from '../AppText';
 import { TodoList } from '../Todos/TodoList';
-import { Todo, Event, TaskCategory, PartialDate } from 'components/Todos/types';
+import { Todo, Event, TaskCategory, PartialDate, Task } from 'components/Todos/types';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';
 interface TodoSectionProps {
   title: string;
-  tasks: (Todo | Event | TaskCategory)[];
-  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
+  tasks: Task[];
+  updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTasks }) => {

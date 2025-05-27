@@ -4,7 +4,7 @@ import { theme } from 'tailwind.config';
 import AppText from 'components/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
-import { Todo, Event, TaskCategory, PartialDate, Time } from 'components/Todos/types';
+import { Todo, Event, TaskCategory, PartialDate, Time, Task } from 'components/Todos/types';
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
@@ -13,41 +13,38 @@ export function HomeScreen() {
   console.log('current theme', theme);
 
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [tasks, setTasks] = useState<(Todo | Event | TaskCategory)[]>([
-    {
+  const [tasks, setTasks] = useState<Task[]>([
+    new Todo({
       id: '1',
       title: 'Walk the dog',
-      type: 'todo',
+
       subtext: 'Twice every day',
       completed: [true, false],
-      repeat: {
+      repeat: new Time({
         days: 1,
-      },
+      }),
       amount: 2,
       due: new PartialDate({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
         day: new Date().getDate(),
       }),
-    },
-    {
+    }),
+    new Event({
       id: '2',
       title: 'Volleyball practice',
-      type: 'event',
       start: new Date(new Date().setHours(17, 0, 0, 0)),
-    },
-    {
+    }),
+    new Todo({
       id: '4',
       title: 'Clean Room',
-      type: 'todo',
       subtext: 'Done 4 days ago',
       completed: [true],
-    },
-    {
+    }),
+    new Todo({
       id: '5',
       title: 'Catch up with Jake',
       subtext: 'Every 2 weeks',
-      type: 'todo',
       due: undefined,
       remindAt: undefined,
       repeat: undefined,
@@ -56,24 +53,23 @@ export function HomeScreen() {
       }),
       lastDone: new PartialDate(new Date(new Date().setDate(3))),
       emoji: '👋',
-    },
-
-    {
+    }),
+    new TaskCategory({
       id: '2',
       title: 'Groceries',
       type: 'category',
       subtext: 'Recommended, 9 items',
-    },
-    {
+    }),
+    new TaskCategory({
       id: '3',
       title: 'Homework',
       type: 'category',
       subtext: '5 total, 3 urgent',
-    },
+    }),
   ]);
 
   tasks.forEach((t) => {
-    if (t.type === 'todo' && t.softRepeat) {
+    if (t instanceof Todo && t.softRepeat) {
       console.log('softRepeat', t.softRepeat.toDays());
       console.log('Days since last done', t.lastDone?.timeTo(new PartialDate(new Date())).toDays());
     }
@@ -97,7 +93,7 @@ export function HomeScreen() {
           title="Today"
           tasks={tasks.filter(
             (t) =>
-              (t.type === 'todo' && t.due?.isToday()) || (t.type === 'event' && isToday(t.start))
+              (t instanceof Todo && t.due?.isToday()) || (t instanceof Event && isToday(t.start))
           )}
           updateTasks={setTasks}
         />
@@ -105,8 +101,8 @@ export function HomeScreen() {
           title="Priority"
           tasks={tasks.filter(
             (t) =>
-              t.type === 'category' ||
-              (t.type === 'todo' &&
+              t instanceof TaskCategory ||
+              (t instanceof Todo &&
                 t.softRepeat?.toDays()! -
                   t.lastDone?.timeTo(new PartialDate(new Date())).toDays()! <
                   2)
@@ -117,9 +113,9 @@ export function HomeScreen() {
           title="Other"
           tasks={tasks.filter(
             (t) =>
-              !(t.type === 'todo' && t.due?.isToday()) &&
-              !(t.type === 'event' && isToday(t.start)) &&
-              t.type !== 'category'
+              !(t instanceof Todo && t.due?.isToday()) &&
+              !(t instanceof Event && isToday(t.start)) &&
+              !(t instanceof TaskCategory)
           )}
           updateTasks={setTasks}
         />

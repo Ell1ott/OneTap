@@ -23,33 +23,33 @@ export const TodoItem = ({
   updateTasks,
   classname,
 }: {
-  item: Todo | Event | TaskCategory;
+  item: Task;
   editing?: boolean;
   onSubtextChange?: (subtext: string) => void;
   shouldFocus?: boolean;
-  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
+  updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   classname?: string;
 }) => {
-  if (item.type === 'todo') {
+  if (item instanceof Todo) {
     console.log('item.completed', item.completed);
   }
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
   const [textWidth, setTextWidth] = useState(0);
   // Animation for strikethrough effect
-  const isCompleted = item.type === 'todo' && item.completed?.every(Boolean);
-  const isEditable = item.type !== 'category' && !isCompleted;
+  const isCompleted = item instanceof Todo && item.completed?.every(Boolean);
+  const isEditable = item instanceof Todo && !isCompleted;
   const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
   const scaleHeight = useSharedValue(0);
 
   useEffect(() => {
-    if (item.type === 'todo') {
+    if (item instanceof Todo) {
       const allCompleted = item.completed?.every(Boolean) || false;
       strikethroughProgress.value = withTiming(allCompleted ? 1 : 0, {
         duration: 300,
       });
     }
-  }, [item.type === 'todo' ? item.completed : null]);
+  }, [item instanceof Todo ? item.completed : null]);
 
   useEffect(() => {
     if (isCompleted) {
@@ -130,16 +130,16 @@ export const TodoItem = ({
               </AppText>
             </Animated.View>
           )}
-          {item.type === 'todo' && (
+          {item instanceof Todo && (
             <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
           )}
         </View>
-        {item.type !== 'event' && item.subtext && (
+        {item instanceof Todo && item.subtext && (
           <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">
             {item.subtext}
           </AppText>
         )}
-        {item.type === 'event' && (
+        {item instanceof Event && (
           <View className="mt-1 rounded-sm">
             <View className="flex-row items-center gap-x-1">
               <AppText>at</AppText>
@@ -156,7 +156,7 @@ export const TodoItem = ({
           </View>
         )}
       </View>
-      {item.type === 'todo' && (
+      {item instanceof Todo && (
         <View className="flex-row items-center">
           {item.completed?.map((completed, index) => (
             <CheckBox
@@ -175,7 +175,7 @@ export const TodoItem = ({
           ))}
         </View>
       )}
-      {item.type === 'category' && (
+      {item instanceof TaskCategory && (
         <View className="items-center justify-center self-center">
           <ChevronRight size={25} className=" text-foregroundMuted" />
         </View>

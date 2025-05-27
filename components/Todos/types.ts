@@ -125,26 +125,43 @@ export class PartialDate {
   }
 }
 
-export interface Task {
+export class Task {
   id: string;
   title: string;
   emoji?: string;
   note?: string;
   repeat?: Time; // Also resets completion on todos
   tags?: string[];
+
+  constructor(data: Task) {
+    this.id = data.id;
+    this.title = data.title;
+    this.emoji = data.emoji;
+    this.note = data.note;
+    this.repeat = data.repeat;
+    this.tags = data.tags;
+  }
 }
 
-export interface TaskCategory {
+export class TaskCategory {
   id: string;
   title: string;
   subtext?: string;
-  type: 'category';
+  type: 'category' = 'category';
   emoji?: string;
+
+  constructor(data: Partial<TaskCategory> & { id: string; title: string }) {
+    this.id = data.id;
+    this.title = data.title;
+    this.subtext = data.subtext;
+    this.type = 'category';
+    this.emoji = data.emoji;
+  }
 }
 
-export interface Todo extends Task {
+export class Todo extends Task {
   subtext: string;
-  type: 'todo';
+  type: 'todo' = 'todo';
   start?: PartialDate;
   due?: PartialDate;
   remindAt?: PartialDate;
@@ -153,11 +170,33 @@ export interface Todo extends Task {
   completed?: boolean[];
   amount?: number;
   category?: string;
+
+  constructor(data: Partial<Todo> & { id: string; title: string; subtext: string }) {
+    super(data);
+    this.subtext = data.subtext;
+    this.type = 'todo';
+    this.start = data.start;
+    this.due = data.due;
+    this.remindAt = data.remindAt;
+    this.lastDone = data.lastDone;
+    this.softRepeat = data.softRepeat;
+    this.completed = data.completed;
+    this.amount = data.amount;
+    this.category = data.category;
+  }
 }
 
-export interface Event extends Task {
+export class Event extends Task {
   start: Date;
   end?: Date;
   cancelled?: boolean;
-  type: 'event';
+  type: 'event' = 'event';
+
+  constructor(data: Partial<Event> & { id: string; title: string; start: Date }) {
+    super(data);
+    this.start = data.start;
+    this.end = data.end;
+    this.cancelled = data.cancelled;
+    this.type = 'event';
+  }
 }

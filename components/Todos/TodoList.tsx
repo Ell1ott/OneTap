@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { TodoItem } from './TodoItem';
-import { Todo, Event, TaskCategory } from './types';
+import { Task, Event } from './types';
 import { useEffect, useState } from 'react';
 
 export const TodoList = ({
@@ -8,8 +8,8 @@ export const TodoList = ({
   updateTasks,
   lastAddedTodoId,
 }: {
-  tasks: (Todo | Event | TaskCategory)[];
-  updateTasks: React.Dispatch<React.SetStateAction<(Todo | Event | TaskCategory)[]>>;
+  tasks: Task[];
+  updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   lastAddedTodoId?: string;
 }) => {
   const [focusedTodoId, setFocusedTodoId] = useState<string | null>(null);
@@ -24,11 +24,11 @@ export const TodoList = ({
   }, [lastAddedTodoId]);
 
   return (
-    <View className="bg-middleground rounded-xl px-4">
+    <View className="rounded-xl bg-middleground px-4">
       {tasks
         .sort((a, b) => {
-          const av = a.type === 'event' ? a.start.getTime() : Number.MAX_SAFE_INTEGER;
-          const bv = b.type === 'event' ? b.start.getTime() : Number.MAX_SAFE_INTEGER;
+          const av = a instanceof Event ? a.start.getTime() : Number.MAX_SAFE_INTEGER;
+          const bv = b instanceof Event ? b.start.getTime() : Number.MAX_SAFE_INTEGER;
           return av - bv;
         })
         .map((task, i) => (
