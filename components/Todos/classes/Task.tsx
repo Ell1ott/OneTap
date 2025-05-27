@@ -27,12 +27,13 @@ export class Task {
   }
 
   getSubtextClasses = () => '';
-  renderSubtext = () => (
-    <AppText
-      className={`-mt-0.5 font-medium italic text-foregroundMuted ${this.getSubtextClasses()}`}>
-      {this.subtext}
-    </AppText>
-  );
+  renderSubtext = () =>
+    this.subtext && (
+      <AppText
+        className={`-mt-0.5 font-medium italic text-foregroundMuted ${this.getSubtextClasses()}`}>
+        {this.subtext}
+      </AppText>
+    );
 
   renderEndContent = (
     updateTodo: (updates: Partial<Todo | Event | TaskCategory>) => void
