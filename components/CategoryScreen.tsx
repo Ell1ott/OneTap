@@ -219,7 +219,7 @@ export default function CategoryScreen({
         });
       } else {
         // Snap back to original position
-        translateX.value = withSpring(0, { damping: 20 });
+        translateX.value = withSpring(0, { damping: 20, velocity: event.velocityX });
       }
     });
 
