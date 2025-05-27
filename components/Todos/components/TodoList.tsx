@@ -7,10 +7,12 @@ export const TodoList = ({
   tasks,
   updateTasks,
   lastAddedTodoId,
+  onCategoryPress,
 }: {
   tasks: Task[];
   updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   lastAddedTodoId?: string;
+  onCategoryPress: (category: string) => void;
 }) => {
   const [focusedTodoId, setFocusedTodoId] = useState<string | null>(null);
 
@@ -38,6 +40,7 @@ export const TodoList = ({
             shouldFocus={task.id === focusedTodoId}
             updateTasks={updateTasks}
             classname={i != 0 ? 'border-t-[1.5px] border-t-foregroundMuted/15' : ''}
+            onCategoryPress={onCategoryPress}
           />
         ))}
     </View>

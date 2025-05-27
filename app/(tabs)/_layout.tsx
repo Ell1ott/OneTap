@@ -59,12 +59,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Calendar size={30} color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="category/[category]"
-        options={{
-          href: null,
-        }}
-      />
     </Tabs>
   );
 }

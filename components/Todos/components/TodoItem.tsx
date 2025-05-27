@@ -23,6 +23,7 @@ export const TodoItem = ({
   shouldFocus = false,
   updateTasks,
   classname,
+  onCategoryPress,
 }: {
   item: Task;
   editing?: boolean;
@@ -30,6 +31,7 @@ export const TodoItem = ({
   shouldFocus?: boolean;
   updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   classname?: string;
+  onCategoryPress: (category: string) => void;
 }) => {
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
@@ -100,7 +102,7 @@ export const TodoItem = ({
         updateTodo({ completed: [!item.completed[0]] });
       }
     } else if (item instanceof TaskCategory) {
-      router.push(`/category/${item.title.toLowerCase()}` as any);
+      onCategoryPress(item.title);
     }
   };
 

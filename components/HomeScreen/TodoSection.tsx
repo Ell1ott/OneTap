@@ -11,9 +11,15 @@ interface TodoSectionProps {
   title: string;
   tasks: Task[];
   updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  onCategoryPress: (category: string) => void;
 }
 
-export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTasks }) => {
+export const TodoSection: React.FC<TodoSectionProps> = ({
+  title,
+  tasks,
+  updateTasks,
+  onCategoryPress,
+}) => {
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string | undefined>();
 
   const handleAddTodo = () => {
@@ -41,7 +47,12 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTa
           <Plus size={20} />
         </HapticTab>
       </View>
-      <TodoList tasks={tasks} updateTasks={updateTasks} lastAddedTodoId={lastAddedTodoId} />
+      <TodoList
+        tasks={tasks}
+        updateTasks={updateTasks}
+        lastAddedTodoId={lastAddedTodoId}
+        onCategoryPress={onCategoryPress}
+      />
     </View>
   );
 };

@@ -5,9 +5,10 @@ import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { PartialDate, Time } from 'components/Todos/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
+import CategoryScreen from 'components/CategoryScreen';
 
 export function HomeScreen() {
   const [tasks, setTasks] = useState<Task[]>([
@@ -65,36 +66,50 @@ export function HomeScreen() {
     }),
   ]);
 
-  return (
-    <ScrollView
-      className="flex-1 bg-background"
-      contentContainerClassName="px-6 pt-16 pb-6"
-      keyboardDismissMode="on-drag">
-      <View className="mb-10">
-        <Greeting />
-        <AppText f className="text-base leading-5 text-foregroundMuted">
-          You have 3 assignments due today. And it's probably time for a trip to the grocery store,
-          as you have 9 items on your shopping list.
-        </AppText>
-      </View>
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
-      <View className="flex-1 gap-6">
-        <TodoSection
-          title="Today"
-          tasks={tasks.filter((t) => t.isToday())}
-          updateTasks={setTasks}
-        />
-        <TodoSection
-          title="Priority"
-          tasks={tasks.filter((t) => t.isPriority())}
-          updateTasks={setTasks}
-        />
-        <TodoSection
-          title="Other"
-          tasks={tasks.filter((t) => !t.isToday() && !t.isPriority())}
-          updateTasks={setTasks}
-        />
-      </View>
-    </ScrollView>
+  useEffect(() => {
+    console.log(openCategory);
+  }, [openCategory]);
+
+  return (
+    <>
+      {openCategory && (
+        <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
+      )}
+      <ScrollView
+        className="flex-1 bg-background"
+        contentContainerClassName="px-6 pt-16 pb-6"
+        keyboardDismissMode="on-drag">
+        <View className="mb-10">
+          <Greeting />
+          <AppText f className="text-base leading-5 text-foregroundMuted">
+            You have 3 assignments due today. And it's probably time for a trip to the grocery
+            store, as you have 9 items on your shopping list.
+          </AppText>
+        </View>
+
+        <View className="flex-1 gap-6">
+          <TodoSection
+            title="Today"
+            tasks={tasks.filter((t) => t.isToday())}
+            updateTasks={setTasks}
+            onCategoryPress={(category) => setOpenCategory(category)}
+          />
+          <TodoSection
+            title="Priority"
+            tasks={tasks.filter((t) => t.isPriority())}
+            updateTasks={setTasks}
+            onCategoryPress={(category) => setOpenCategory(category)}
+          />
+          <TodoSection
+            title="Other"
+            tasks={tasks.filter((t) => !t.isToday() && !t.isPriority())}
+            updateTasks={setTasks}
+            onCategoryPress={(category) => setOpenCategory(category)}
+          />
+        </View>
+      </ScrollView>
+    </>
   );
 }
