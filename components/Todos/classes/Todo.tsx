@@ -9,27 +9,29 @@ export class Todo extends Task {
   due?: PartialDate;
   remindAt?: PartialDate;
   lastDone?: PartialDate;
-  softRepeat?: Time; // First repeats when finished
+  doneTimes?: PartialDate[];
+  softRepeat?: Time | true; // First repeats when finished
   completed?: boolean[];
   amount?: number;
   category?: string;
 
-  constructor(data: Partial<Todo> & { id: string; title: string; note: string }) {
+  constructor(data: Partial<Todo> & { id: string; title: string }) {
     super(data);
-    this.note = data.note;
-    this.start = data.start;
-    this.due = data.due;
-    this.remindAt = data.remindAt;
-    this.lastDone = data.lastDone;
-    this.softRepeat = data.softRepeat;
-    this.completed = data.completed;
-    this.amount = data.amount;
-    this.category = data.category;
+    Object.assign(this, data);
+    if (this.doneTimes) {
+      this.lastDone = this.doneTimes?.[this.doneTimes.length - 1];
+    } else if (this.lastDone) {
+      this.doneTimes = [this.lastDone];
+    }
   }
 
   isToday = () => this.due?.isToday() || false;
   isPriority = () =>
-    !!(this.softRepeat && this.lastDone && this.softRepeat.toDays() - this.daysSinceLastDone < 2);
+    !!(
+      this.softRepeat instanceof Time &&
+      this.lastDone &&
+      this.softRepeat.toDays() - this.daysSinceLastDone < 2
+    );
 
   get daysSinceLastDone() {
     return this.lastDone?.timeTo(new PartialDate(new Date())).toDays() ?? 0;
@@ -37,7 +39,7 @@ export class Todo extends Task {
 
   // Tailwind classes used dynamically: bg-red-500
   getSubtextClasses = () => {
-    if (!this.softRepeat || !this.lastDone) return '';
+    if (!(this.softRepeat instanceof Time) || !this.lastDone) return '';
     const days = this.softRepeat.toDays() - this.daysSinceLastDone;
     if (days < -4) return 'text-red-500';
     if (days < 4) return 'text-[#FF6A00]/70';
@@ -46,17 +48,23 @@ export class Todo extends Task {
   };
   get subtext() {
     if (this.softRepeat && this.lastDone) {
-      const days = this.softRepeat.toDays() - this.daysSinceLastDone;
-      if (days < 4) {
-        const rounded = Math.round(this.daysSinceLastDone);
-        return `Done ${rounded} days ago`;
-      }
+      const rounded = Math.round(this.daysSinceLastDone);
+      if (rounded === 0) return 'Done today';
+      if (rounded === 1) return 'Done yesterday';
+      return `Done ${rounded} days ago`;
     }
     return this.note;
   }
 
-  onFinish = () => {
-    console.log('onFinish');
+  onToggle = (newCompleted: boolean[]) => {
+    if (newCompleted.every(Boolean)) {
+      this.doneTimes = [...(this.doneTimes || []), new PartialDate(new Date())];
+      console.log(this.doneTimes);
+    } else {
+      this.doneTimes = this.doneTimes?.filter((doneTime) => !doneTime.isToday());
+    }
+
+    this.lastDone = this.doneTimes?.[this.doneTimes.length - 1];
   };
 
   renderEndContent = (updateTodo: (updates: Partial<Todo>) => void) => (
@@ -73,9 +81,7 @@ export class Todo extends Task {
             newCompleted[index] = !newCompleted[index];
             updateTodo({ completed: newCompleted });
 
-            if (newCompleted.every(Boolean)) {
-              this.onFinish();
-            }
+            this.onToggle(newCompleted);
           }}
         />
       ))}

@@ -35,8 +35,10 @@ export function HomeScreen() {
     new Todo({
       id: '4',
       title: 'Clean Room',
-      note: 'Done 4 days ago',
-      completed: [true],
+      doneTimes: [new PartialDate(new Date(new Date().setDate(23)))],
+      // note: 'Done 4 days ago',
+      softRepeat: true,
+      completed: [false],
     }),
     new Todo({
       id: '5',
