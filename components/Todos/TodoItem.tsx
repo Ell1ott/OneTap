@@ -176,7 +176,7 @@ export const TodoItem = ({
         </View>
       )}
       {item.type === 'category' && (
-        <View className="h-full items-center justify-center self-center">
+        <View className="items-center justify-center self-center">
           <ChevronRight size={25} className=" text-foregroundMuted" />
         </View>
       )}
