@@ -129,25 +129,7 @@ export const TodoItem = ({
             <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
           )}
         </View>
-        {item instanceof Todo && item.note && (
-          <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">{item.note}</AppText>
-        )}
-        {item instanceof Event && (
-          <View className="mt-1 rounded-sm">
-            <View className="flex-row items-center gap-x-1">
-              <AppText>at</AppText>
-              <View className="m-0 rounded-[4px] bg-accent/70 px-1.5 font-medium text-foreground">
-                <AppText>
-                  {item.start
-                    .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-                    .toLowerCase()}
-                  {/*
-                   {' ' + getRelativeDateString(item.startTime)} */}
-                </AppText>
-              </View>
-            </View>
-          </View>
-        )}
+        {item.renderSubtext()}
       </View>
       {item instanceof Todo && (
         <View className="flex-row items-center">

@@ -57,13 +57,11 @@ export function HomeScreen() {
     new TaskCategory({
       id: '2',
       title: 'Groceries',
-      type: 'category',
       note: 'Recommended, 9 items',
     }),
     new TaskCategory({
       id: '3',
       title: 'Homework',
-      type: 'category',
       note: '5 total, 3 urgent',
     }),
   ]);
@@ -91,22 +89,12 @@ export function HomeScreen() {
       <View className="flex-1 gap-6">
         <TodoSection
           title="Today"
-          tasks={tasks.filter(
-            (t) =>
-              (t instanceof Todo && t.due?.isToday()) || (t instanceof Event && isToday(t.start))
-          )}
+          tasks={tasks.filter((t) => t.isToday())}
           updateTasks={setTasks}
         />
         <TodoSection
           title="Priority"
-          tasks={tasks.filter(
-            (t) =>
-              t instanceof TaskCategory ||
-              (t instanceof Todo &&
-                t.softRepeat?.toDays()! -
-                  t.lastDone?.timeTo(new PartialDate(new Date())).toDays()! <
-                  2)
-          )}
+          tasks={tasks.filter((t) => t.isPriority())}
           updateTasks={setTasks}
         />
         <TodoSection

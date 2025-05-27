@@ -1,3 +1,7 @@
+import AppText from 'components/AppText';
+import { View } from 'react-native';
+import { isToday } from 'utils/dateUtils';
+
 export class Time {
   years?: number;
   months?: number;
@@ -133,7 +137,7 @@ export class Task {
   repeat?: Time; // Also resets completion on todos
   tags?: string[];
 
-  constructor(data: Task) {
+  constructor(data: Partial<Task> & { id: string; title: string }) {
     this.id = data.id;
     this.title = data.title;
     this.emoji = data.emoji;
@@ -141,22 +145,29 @@ export class Task {
     this.repeat = data.repeat;
     this.tags = data.tags;
   }
+
+  get subtext() {
+    return this.note;
+  }
+
+  getSubtextClasses = () => '';
+  renderSubtext = () => (
+    <AppText
+      className={`-mt-0.5 font-medium italic text-foregroundMuted ${this.getSubtextClasses()}`}>
+      {this.subtext}
+    </AppText>
+  );
+
+  isToday = () => false;
+  isPriority = () => false;
 }
 
-export class TaskCategory {
-  id: string;
-  title: string;
-  note?: string;
-  type: 'category' = 'category';
-  emoji?: string;
-
+export class TaskCategory extends Task {
   constructor(data: Partial<TaskCategory> & { id: string; title: string }) {
-    this.id = data.id;
-    this.title = data.title;
-    this.note = data.note;
-    this.type = 'category';
-    this.emoji = data.emoji;
+    super(data);
   }
+
+  isPriority = () => true;
 }
 
 export class Todo extends Task {
@@ -181,6 +192,33 @@ export class Todo extends Task {
     this.amount = data.amount;
     this.category = data.category;
   }
+
+  isToday = () => this.due?.isToday() || false;
+  isPriority = () =>
+    !!(this.softRepeat && this.lastDone && this.softRepeat.toDays() - this.daysSinceLastDone < 2);
+
+  get daysSinceLastDone() {
+    return this.lastDone?.timeTo(new PartialDate(new Date())).toDays() ?? 0;
+  }
+
+  // Tailwind classes used dynamically: bg-red-500
+  getSubtextClasses = () => {
+    if (!this.softRepeat || !this.lastDone) return '';
+    const days = this.softRepeat.toDays() - this.daysSinceLastDone;
+    if (days < -4) return 'text-red-500';
+    if (days < 4) return 'text-[#FF6A00]/70';
+
+    return '';
+  };
+  get subtext() {
+    if (this.softRepeat && this.lastDone) {
+      const days = this.softRepeat.toDays() - this.daysSinceLastDone;
+      if (days < 4) {
+        return `Done ${this.daysSinceLastDone} days ago`;
+      }
+    }
+    return this.note;
+  }
 }
 
 export class Event extends Task {
@@ -194,4 +232,23 @@ export class Event extends Task {
     this.end = data.end;
     this.cancelled = data.cancelled;
   }
+
+  isToday = () => isToday(this.start);
+
+  renderSubtext = () => (
+    <View className="mt-1 rounded-sm">
+      <View className="flex-row items-center gap-x-1">
+        <AppText>at</AppText>
+        <View className="m-0 rounded-[4px] bg-accent/70 px-1.5 font-medium text-foreground">
+          <AppText>
+            {this.start
+              .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+              .toLowerCase()}
+            {/*
+           {' ' + getRelativeDateString(item.startTime)} */}
+          </AppText>
+        </View>
+      </View>
+    </View>
+  );
 }
