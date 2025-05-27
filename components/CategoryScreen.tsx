@@ -1,5 +1,5 @@
 import AppText from 'components/AppText';
-import { View, ScrollView, Pressable } from 'react-native';
+import { View, ScrollView, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
@@ -13,8 +13,11 @@ import Animated, {
   runOnJS,
   withSpring,
   interpolate,
+  useAnimatedReaction,
 } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
+
+const screenWidth = Dimensions.get('window').width;
 
 // Mock data for different categories
 const getMockDataForCategory = (categoryName: string): Task[] => {
@@ -187,6 +190,16 @@ export default function CategoryScreen({
     translateX.value = 0;
   }, [category]);
 
+  // Monitor translateX value and close when threshold is reached
+  useAnimatedReaction(
+    () => translateX.value,
+    (value) => {
+      if (value > screenWidth - 30) {
+        runOnJS(onClose)();
+      }
+    }
+  );
+
   const handleAddTask = () => {
     const newId = `new_${Date.now()}`;
     const newTask = new Todo({
@@ -211,13 +224,21 @@ export default function CategoryScreen({
     })
     .onEnd((event) => {
       const shouldGoBack =
-        (event.translationX > 120 && event.velocityX < -100) || event.velocityX > 800;
+        (event.translationX > 10 && event.velocityX > -100) || event.velocityX > 800;
 
       if (shouldGoBack) {
         // Animate out and navigate back
-        translateX.value = withSpring(400, { damping: 20, velocity: event.velocityX }, () => {
-          runOnJS(onClose)();
-        });
+        translateX.value = withSpring(
+          400,
+          {
+            stiffness: 100,
+            damping: 20,
+            velocity: event.velocityX,
+          },
+          () => {
+            runOnJS(onClose)();
+          }
+        );
       } else {
         // Snap back to original position
         translateX.value = withSpring(0, { damping: 20, velocity: event.velocityX });
@@ -247,7 +268,8 @@ export default function CategoryScreen({
 
   return (
     <GestureHandlerRootView
-      pointerEvents="box-none"
+      pointerEvents="none"
+      removeClippedSubviews={true}
       style={{
         position: 'absolute',
         top: 0,
@@ -258,6 +280,7 @@ export default function CategoryScreen({
       }}>
       {/* Background overlay */}
       <Animated.View
+        removeClippedSubviews={true}
         style={[
           {
             position: 'absolute',
@@ -269,7 +292,7 @@ export default function CategoryScreen({
           },
           backgroundStyle,
         ]}
-        pointerEvents="box-none"
+        pointerEvents="none"
       />
 
       <GestureDetector gesture={gestureHandler}>
