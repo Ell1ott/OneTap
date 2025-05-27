@@ -74,7 +74,7 @@ export class Todo extends Task {
         <CheckBox
           key={index}
           checked={completed}
-          classname={` ${index === 0 ? 'pl-6 -ml-6' : ''} ${
+          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${
             index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
           }`}
           onToggle={() => {

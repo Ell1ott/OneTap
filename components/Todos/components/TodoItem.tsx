@@ -93,37 +93,42 @@ export const TodoItem = ({
     }
   }, [shouldFocus]);
 
-  const handleCategoryPress = () => {
-    if (item instanceof TaskCategory) {
+  const handlePress = () => {
+    if (item instanceof Todo) {
+      console.log(item.completed);
+      if (item.completed?.length === 1) {
+        updateTodo({ completed: [!item.completed[0]] });
+      }
+    } else if (item instanceof TaskCategory) {
       router.push(`/category/${item.title.toLowerCase()}` as any);
     }
   };
 
-  const ItemWrapper = item instanceof TaskCategory ? Pressable : View;
-
   return (
-    <ItemWrapper
-      {...(item instanceof TaskCategory && { onPress: handleCategoryPress })}
+    <Pressable
+      onPress={handlePress}
       className={`flex-row justify-between py-2.5 pr-2 ${classname} `}>
       <View className="flex-1">
         <View className="relative items-baseline justify-start">
           {isEditable ? (
             <Animated.View style={animatedTextStyle}>
-              <TextInput
-                ref={inputRef}
-                className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
-                onChangeText={onTextChange}
-                value={item.title}
-                placeholder="New task..."
-                style={fontStyle}
-                multiline={false}
-              />
+              <Pressable onPress={() => {}}>
+                <TextInput
+                  ref={inputRef}
+                  className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
+                  onChangeText={onTextChange}
+                  value={item.title}
+                  placeholder="New task..."
+                  style={fontStyle}
+                  multiline={false}
+                />
+              </Pressable>
             </Animated.View>
           ) : (
             <Animated.View style={animatedTextStyle} collapsable={false}>
               <AppText
                 ref={textRef}
-                className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none">
+                className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
                 {item.title}
               </AppText>
             </Animated.View>
@@ -135,6 +140,6 @@ export const TodoItem = ({
         {item.renderSubtext()}
       </View>
       {item.renderEndContent(updateTodo)}
-    </ItemWrapper>
+    </Pressable>
   );
 };
