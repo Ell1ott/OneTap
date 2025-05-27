@@ -4,6 +4,8 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   interpolate,
+  FadeIn,
+  FadeOut,
 } from 'react-native-reanimated';
 import AppText, { fontStyle } from '../AppText';
 import { getRelativeDateString } from '../../utils/dateUtils';
@@ -38,6 +40,7 @@ export const TodoItem = ({
   const isCompleted = item.type === 'todo' && item.completed?.every(Boolean);
   const isEditable = item.type !== 'category' && !isCompleted;
   const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
+  const scaleHeight = useSharedValue(0);
 
   useEffect(() => {
     if (item.type === 'todo') {
@@ -100,7 +103,10 @@ export const TodoItem = ({
   }, [shouldFocus]);
 
   return (
-    <View className={`flex-row justify-between py-2.5 pr-2 ${classname} `}>
+    <Animated.View
+      className={`flex-row justify-between py-2.5 pr-2 ${classname} `}
+      entering={FadeIn}
+      exiting={FadeOut}>
       <View className="flex-1">
         <View className="relative items-baseline justify-start">
           {isEditable ? (
@@ -137,14 +143,13 @@ export const TodoItem = ({
           <View className="mt-1 rounded-sm">
             <View className="flex-row items-center gap-x-1">
               <AppText>at</AppText>
-
               <View className="m-0 rounded-[4px] bg-accent/70 px-1.5 font-medium text-foreground">
                 <AppText>
                   {item.start
                     .toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                     .toLowerCase()}
                   {/*
-                 {' ' + getRelativeDateString(item.startTime)} */}
+                   {' ' + getRelativeDateString(item.startTime)} */}
                 </AppText>
               </View>
             </View>
@@ -175,6 +180,6 @@ export const TodoItem = ({
           <ChevronRight size={25} className=" text-foregroundMuted" />
         </View>
       )}
-    </View>
+    </Animated.View>
   );
 };
