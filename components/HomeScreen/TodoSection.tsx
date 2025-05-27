@@ -19,14 +19,13 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, updateTa
     const newId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
     updateTasks((tasks) => [
       ...tasks,
-      {
+      new Todo({
         id: newId,
         title: '',
-        type: 'todo',
         completed: [false],
-        subtext: '',
+        note: '',
         due: new PartialDate(new Date()),
-      },
+      }),
     ]);
     setLastAddedTodoId(newId);
   };

@@ -18,14 +18,14 @@ import { Time, Task, TaskCategory, Todo, Event } from './types';
 export const TodoItem = ({
   item,
   editing = false,
-  onSubtextChange,
+  onnoteChange,
   shouldFocus = false,
   updateTasks,
   classname,
 }: {
   item: Task;
   editing?: boolean;
-  onSubtextChange?: (subtext: string) => void;
+  onnoteChange?: (note: string) => void;
   shouldFocus?: boolean;
   updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   classname?: string;
@@ -87,12 +87,7 @@ export const TodoItem = ({
 
   function updateTodo(updates: Partial<Todo | Event | TaskCategory>) {
     updateTasks(
-      (tasks) =>
-        [...tasks.map((t) => (t.id === item.id ? { ...t, ...updates } : t))] as (
-          | Todo
-          | Event
-          | TaskCategory
-        )[]
+      (tasks) => [...tasks.map((t) => (t.id === item.id ? Object.assign(t, updates) : t))] as Task[]
     );
   }
 
@@ -134,10 +129,8 @@ export const TodoItem = ({
             <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
           )}
         </View>
-        {item instanceof Todo && item.subtext && (
-          <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">
-            {item.subtext}
-          </AppText>
+        {item instanceof Todo && item.note && (
+          <AppText className="-mt-0.5 font-medium italic text-foregroundMuted">{item.note}</AppText>
         )}
         {item instanceof Event && (
           <View className="mt-1 rounded-sm">

@@ -18,7 +18,7 @@ export function HomeScreen() {
       id: '1',
       title: 'Walk the dog',
 
-      subtext: 'Twice every day',
+      note: 'Twice every day',
       completed: [true, false],
       repeat: new Time({
         days: 1,
@@ -38,13 +38,13 @@ export function HomeScreen() {
     new Todo({
       id: '4',
       title: 'Clean Room',
-      subtext: 'Done 4 days ago',
+      note: 'Done 4 days ago',
       completed: [true],
     }),
     new Todo({
       id: '5',
       title: 'Catch up with Jake',
-      subtext: 'Every 2 weeks',
+      note: 'Every 2 weeks',
       due: undefined,
       remindAt: undefined,
       repeat: undefined,
@@ -58,13 +58,13 @@ export function HomeScreen() {
       id: '2',
       title: 'Groceries',
       type: 'category',
-      subtext: 'Recommended, 9 items',
+      note: 'Recommended, 9 items',
     }),
     new TaskCategory({
       id: '3',
       title: 'Homework',
       type: 'category',
-      subtext: '5 total, 3 urgent',
+      note: '5 total, 3 urgent',
     }),
   ]);
 

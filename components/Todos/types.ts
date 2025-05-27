@@ -146,22 +146,20 @@ export class Task {
 export class TaskCategory {
   id: string;
   title: string;
-  subtext?: string;
+  note?: string;
   type: 'category' = 'category';
   emoji?: string;
 
   constructor(data: Partial<TaskCategory> & { id: string; title: string }) {
     this.id = data.id;
     this.title = data.title;
-    this.subtext = data.subtext;
+    this.note = data.note;
     this.type = 'category';
     this.emoji = data.emoji;
   }
 }
 
 export class Todo extends Task {
-  subtext: string;
-  type: 'todo' = 'todo';
   start?: PartialDate;
   due?: PartialDate;
   remindAt?: PartialDate;
@@ -171,10 +169,9 @@ export class Todo extends Task {
   amount?: number;
   category?: string;
 
-  constructor(data: Partial<Todo> & { id: string; title: string; subtext: string }) {
+  constructor(data: Partial<Todo> & { id: string; title: string; note: string }) {
     super(data);
-    this.subtext = data.subtext;
-    this.type = 'todo';
+    this.note = data.note;
     this.start = data.start;
     this.due = data.due;
     this.remindAt = data.remindAt;
@@ -190,13 +187,11 @@ export class Event extends Task {
   start: Date;
   end?: Date;
   cancelled?: boolean;
-  type: 'event' = 'event';
 
   constructor(data: Partial<Event> & { id: string; title: string; start: Date }) {
     super(data);
     this.start = data.start;
     this.end = data.end;
     this.cancelled = data.cancelled;
-    this.type = 'event';
   }
 }
