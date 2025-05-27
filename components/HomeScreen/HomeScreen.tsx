@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, Pressable, Text } from 'react-native';
-import { theme } from 'tailwind.config';
 import AppText from 'components/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
@@ -11,9 +10,6 @@ import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
 
 export function HomeScreen() {
-  console.log('current theme', theme);
-
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [tasks, setTasks] = useState<Task[]>([
     new Todo({
       id: '1',
@@ -66,13 +62,6 @@ export function HomeScreen() {
       note: '5 total, 3 urgent',
     }),
   ]);
-
-  tasks.forEach((t) => {
-    if (t instanceof Todo && t.softRepeat) {
-      console.log('softRepeat', t.softRepeat.toDays());
-      console.log('Days since last done', t.lastDone?.timeTo(new PartialDate(new Date())).toDays());
-    }
-  });
 
   return (
     <ScrollView

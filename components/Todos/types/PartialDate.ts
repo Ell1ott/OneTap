@@ -43,7 +43,6 @@ export class PartialDate {
   timeTo(date: PartialDate): Time {
     // Calculate the this date and the function date
     const dis = date.toDate().getTime() - this.toDate().getTime();
-    console.log('dis', dis);
     return new Time({
       minutes: dis / 1000 / 60,
     });

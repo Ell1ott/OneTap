@@ -69,7 +69,6 @@ export class Todo extends Task {
             index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
           }`}
           onToggle={() => {
-            console.log('onToggle', index);
             const newCompleted = [...(this.completed || [])];
             newCompleted[index] = !newCompleted[index];
             updateTodo({ completed: newCompleted });
