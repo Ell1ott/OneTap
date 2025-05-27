@@ -36,7 +36,8 @@ export default function TabLayout() {
         tabBarIconStyle: {
           height: 60,
         },
-      }}>
+      }}
+      backBehavior="history">
       <Tabs.Screen
         name="diary"
         options={{

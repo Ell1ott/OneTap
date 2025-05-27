@@ -190,7 +190,7 @@ export default function CategoryScreen() {
   return (
     <ScrollView
       className="flex-1 bg-background"
-      contentContainerClassName="px-6 pt-16 pb-6"
+      contentContainerClassName="px-6 pt-16 pb-6 flex-1"
       keyboardDismissMode="on-drag">
       {/* Header */}
       <View className="mb-6">
@@ -208,18 +208,17 @@ export default function CategoryScreen() {
         </AppText>
       </View>
 
-      {/* Add Task Button */}
-      <Pressable
-        onPress={handleAddTask}
-        className="mb-6 flex-row items-center justify-center rounded-xl bg-middleground p-4">
-        <Plus size={20} className="mr-2 text-foregroundMuted" />
-        <AppText className="text-foregroundMuted">Add new task</AppText>
-      </Pressable>
-
       {/* Tasks List */}
       {tasks.length > 0 && (
         <TodoList tasks={tasks} updateTasks={setTasks} lastAddedTodoId={lastAddedTodoId} />
       )}
+      {/* Add Task Button */}
+      <Pressable
+        onPress={handleAddTask}
+        className="mt-auto flex-row items-center justify-center rounded-xl bg-middleground p-4">
+        <Plus size={20} className="mr-2 text-foregroundMuted" />
+        <AppText className="text-foregroundMuted">Add new task</AppText>
+      </Pressable>
     </ScrollView>
   );
 }
