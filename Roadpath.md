@@ -220,3 +220,22 @@ emoji: '🐕';
 ```
 
 Possibly also with message: "Okay, you have till monday evening!"
+
+## Actual AI integration:
+
+### STT (speech to text)
+
+We want to start out by transcribing what the user says, to then be able to parse on this information to the LLM later. An option would also be to use a multi-modal model that supports speech, but it currently seems to be too exensive to be worth it.
+
+Currently we are using Deepgram, which seems to give fast and accurate results compared to its speed. Whisper (one of the large versions) seems to give even more procise answers, but is too slow for real time
+
+### LLM (large language model)
+
+Options:
+
+- OpenAI GPT-4.1 nano (does have image support)
+- Groq - possibly deepseek r1 - would be fast
+- Deepseek - cheap, but privacy concerns
+
+All of the above do support tool use / function calling
+

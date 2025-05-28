@@ -6,7 +6,8 @@
     "scheme": "onetap",
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "bundler": "metro",
+      "output": "server"
     },
     "experiments": {
       "tsconfigPaths": true,
