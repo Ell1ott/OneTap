@@ -44,6 +44,60 @@ export const Tapadoodle = () => {
     };
   });
 
+  function Open() {
+    setIsOpen(true);
+    height.value = withSpring(100, {
+      damping: 30,
+      stiffness: 200,
+    });
+    width.value = withSpring(screenWidth - expandedPadding * 2, {
+      damping: 30,
+      stiffness: 200,
+    });
+    borderRadius.value = withSpring(25, {
+      damping: 30,
+      stiffness: 200,
+    });
+    y.value = withSpring(expandedPadding, {
+      damping: 30,
+      stiffness: 200,
+    });
+    backgroundOpacity.value = withSpring(1, {
+      damping: 30,
+      stiffness: 200,
+    });
+  }
+
+  function Close() {
+    height.value = withSpring(56, {
+      damping: 30,
+      stiffness: 200,
+    });
+    width.value = withSpring(56, {
+      damping: 30,
+      stiffness: 200,
+    });
+    borderRadius.value = withSpring(56 / 2, {
+      damping: 30,
+      stiffness: 200,
+    });
+    y.value = withSpring(8, {
+      damping: 30,
+      stiffness: 200,
+    });
+    backgroundOpacity.value = withSpring(
+      0,
+      {
+        damping: 30,
+        stiffness: 200,
+        restDisplacementThreshold: 0.05,
+      },
+      () => {
+        setIsOpen(false);
+      }
+    );
+  }
+
   return (
     <Animated.View
       className="absolute bottom-0 z-10 items-center self-center"
@@ -52,7 +106,7 @@ export const Tapadoodle = () => {
         { height: isOpen ? '100%' : 70, width: isOpen ? '100%' : 128 },
       ]}>
       <Pressable
-        className="absolute bottom-0 z-10 items-center justify-end self-center"
+        className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center"
         onPressIn={() => {
           shadowOpacity.value = withSpring(0.2, {
             damping: 10,
@@ -60,34 +114,12 @@ export const Tapadoodle = () => {
             velocity: 0.5,
           });
         }}
-        onPress={() => {
-          setIsOpen(true);
-          console.log('pressed');
-          height.value = withSpring(100, {
-            damping: 30,
-            stiffness: 200,
-          });
-          width.value = withSpring(screenWidth - expandedPadding * 2, {
-            damping: 30,
-            stiffness: 200,
-          });
-          borderRadius.value = withSpring(25, {
-            damping: 30,
-            stiffness: 200,
-          });
-          y.value = withSpring(expandedPadding, {
-            damping: 30,
-            stiffness: 200,
-          });
-          backgroundOpacity.value = withSpring(1, {
-            damping: 30,
-            stiffness: 200,
-          });
-        }}>
+        onPress={() => (isOpen ? Close() : Open())}>
         <Animated.View
           className="absolute rounded-full bg-middleground shadow-2xl"
-          style={[animatedStyle]}
-        />
+          style={[animatedStyle]}>
+          <Pressable onPress={Open} className="h-full w-full"></Pressable>
+        </Animated.View>
       </Pressable>
     </Animated.View>
   );
