@@ -2,17 +2,20 @@ import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { View, Text, Animated, Platform } from 'react-native';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
+import AppText from 'components/base/AppText';
 
 interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
-  apiKey: string; // Deepgram API key
+  textClassName?: string;
 }
+
+const apiKey = process.env.EXPO_PUBLIC_DEEPGRAM_API_KEY;
 
 export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   isRecording,
   audioData,
-  apiKey,
+  textClassName,
 }) => {
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
@@ -23,7 +26,6 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
   // Store animation values in a ref to persist across renders
   const animationsRef = useRef<Map<string, Animated.Value>>(new Map());
-
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
     if (!apiKey) return;
@@ -142,20 +144,13 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   };
 
   return (
-    <View className="mt-4 w-full rounded-lg bg-gray-100 p-4">
-      <View className="mb-2 flex-row justify-between">
-        <Text className="text-sm" style={{ color: 'rgba(107, 114, 128, 0.5)' }}>
-          Transcription
-        </Text>
-
-        <Text className={`text-xs ${isConnected ? 'text-green-600' : 'text-gray-500'}`}>
-          {connectionStatus}
-        </Text>
-      </View>
-      <Text className="text-lg">
-        {transcriptionIndexes.map((indexes, a) => {
+    <Text className="text-lg">
+      {transcriptionIndexes.length == 1 ? (
+        <AppText className={textClassName + ' text-foreground/40'}>Could you please...</AppText>
+      ) : (
+        transcriptionIndexes.map((indexes, a) => {
           return (
-            <Text key={a}>
+            <Text key={a} className={textClassName}>
               {indexes.map((index, b) => {
                 // Create unique key for this text segment
                 const segmentKey = `text-${a}-${b}`;
@@ -175,9 +170,9 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
               })}{' '}
             </Text>
           );
-        })}
-      </Text>
-    </View>
+        })
+      )}
+    </Text>
   );
 };
 

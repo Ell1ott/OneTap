@@ -8,7 +8,7 @@ import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
 import { useChat } from '@ai-sdk/react';
 import { fetch as expoFetch } from 'expo/fetch';
-import { Tapadoodle } from 'components/Tapadoodle';
+import { TapadoodleBox } from 'components/TapadoodleBox';
 export default function TabLayout() {
   // Get the foregroundMuted color from the theme
   // const { messages, error, handleInputChange, input, handleSubmit, append } = useChat({
@@ -84,7 +84,7 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-      <Tapadoodle />
+      <TapadoodleBox />
     </>
   );
 }

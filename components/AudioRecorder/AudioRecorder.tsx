@@ -39,11 +39,7 @@ export const AudioRecorder: React.FC = () => {
 
       {/* Transcription component */}
       <View className="mt-8 w-3/4">
-        <DeepgramTranscriber
-          isRecording={isRecording}
-          audioData={transcriptionData}
-          apiKey={deepgramApiKey}
-        />
+        <DeepgramTranscriber isRecording={isRecording} audioData={transcriptionData} />
       </View>
     </View>
   );
