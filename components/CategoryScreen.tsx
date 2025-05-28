@@ -279,7 +279,7 @@ export default function CategoryScreen({
 
   return (
     <GestureHandlerRootView
-      pointerEvents="none"
+      pointerEvents="box-none"
       removeClippedSubviews={true}
       style={{
         position: 'absolute',
