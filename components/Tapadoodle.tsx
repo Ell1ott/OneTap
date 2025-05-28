@@ -17,20 +17,6 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
     requestPermissions();
   }, []);
 
-  const handlePressOut = () => {
-    const newActiveState = !active;
-    setActive(newActiveState);
-
-    if (newActiveState) {
-      beginRecording((newScale) => {
-        setVolumeScale(newScale);
-      });
-    } else {
-      endRecording();
-      setVolumeScale(undefined);
-    }
-  };
-
   const scale = useSharedValue(1);
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -39,16 +25,20 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   });
 
   useEffect(() => {
-    console.log(volumeScale, active);
-    if (active && volumeScale !== undefined) {
+    if (isOpen && volumeScale !== undefined) {
       scale.value = withSpring(volumeScale, { damping: 100, stiffness: 400 });
     }
-  }, [volumeScale, active]);
+  }, [volumeScale, isOpen]);
 
   useEffect(() => {
     console.log(isOpen);
     if (isOpen) {
-      handlePressOut();
+      beginRecording((newScale) => {
+        setVolumeScale(newScale);
+      });
+    } else {
+      endRecording();
+      setVolumeScale(undefined);
     }
   }, [isOpen]);
 
@@ -62,7 +52,11 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
       {/* <AppText className="text-xl font-medium text-foregroundMuted/50">
       Could you please...
     </AppText> */}
-      <DeepgramTranscriber textClassName="text-xl font-medium" isRecording={false} />
+      <DeepgramTranscriber
+        textClassName="text-xl font-medium"
+        audioData={transcriptionData}
+        isRecording={isOpen}
+      />
     </View>
   );
 };
