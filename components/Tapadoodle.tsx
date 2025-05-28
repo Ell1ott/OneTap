@@ -5,6 +5,7 @@ import Animated, {
   withSpring,
   useSharedValue,
   interpolateColor,
+  withDelay,
 } from 'react-native-reanimated';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
@@ -96,6 +97,20 @@ export const Tapadoodle = () => {
         setIsOpen(false);
       }
     );
+
+    setTimeout(() => {
+      shadowOpacity.value = withSpring(0, {
+        damping: 30,
+        stiffness: 50,
+      });
+    }, 300);
+  }
+  function handlePressIn() {
+    shadowOpacity.value = withSpring(0.2, {
+      damping: 10,
+      stiffness: 200,
+      velocity: 0.5,
+    });
   }
 
   return (
@@ -107,18 +122,12 @@ export const Tapadoodle = () => {
       ]}>
       <Pressable
         className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center"
-        onPressIn={() => {
-          shadowOpacity.value = withSpring(0.2, {
-            damping: 10,
-            stiffness: 200,
-            velocity: 0.5,
-          });
-        }}
+        onPressIn={handlePressIn}
         onPress={() => (isOpen ? Close() : Open())}>
         <Animated.View
           className="absolute rounded-full bg-middleground shadow-2xl"
           style={[animatedStyle]}>
-          <Pressable onPress={Open} className="h-full w-full"></Pressable>
+          <Pressable onPress={Open} onPressIn={handlePressIn} className="h-full w-full"></Pressable>
         </Animated.View>
       </Pressable>
     </Animated.View>
