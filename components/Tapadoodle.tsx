@@ -4,6 +4,7 @@ import { DeepgramTranscriber } from './AudioRecorder/DeepgramTranscriber';
 import { useEffect, useState } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import AppText from './base/AppText';
 
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const [active, setActive] = useState<boolean>(false);
@@ -36,27 +37,40 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
       beginRecording((newScale) => {
         setVolumeScale(newScale);
       });
-    } else {
+    } else if (isRecording) {
+      console.log('ending recording');
       endRecording();
-      setVolumeScale(undefined);
+      setVolumeScale(1);
     }
   }, [isOpen]);
 
   return (
-    <View className="h-full flex-row items-center gap-6">
-      <View className="h-full justify-center">
-        <Animated.View style={animatedStyles}>
-          <TapadoodleSvg width={35} height={33} />
-        </Animated.View>
-      </View>
-      {/* <AppText className="text-xl font-medium text-foregroundMuted/50">
-      Could you please...
-    </AppText> */}
-      <DeepgramTranscriber
-        textClassName="text-xl font-medium"
-        audioData={transcriptionData}
-        isRecording={isOpen}
-      />
-    </View>
+    // <View className="h-full flex-row gap-6">
+    //   <View className="h-full justify-center">
+    //     <Animated.View style={animatedStyles}>
+    //       <TapadoodleSvg width={35} height={33} />
+    //     </Animated.View>
+    //   </View>
+    //   {/* <AppText className="text-xl font-medium text-foregroundMuted/50">
+    //   Could you please...
+    // </AppText> */}
+
+    // </View>
+    // <View className="h-full flex-1 items-center justify-center">
+    //   <DeepgramTranscriber
+    //     textClassName="text-xl font-medium leading-6 overflow-visible"
+    //     audioData={transcriptionData}
+    //     isRecording={isOpen}
+    //   />
+    // </View>
+    <AppText className="text-xl">
+      Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle
+      Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle
+      Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle
+      Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle
+      Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle
+      Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle Tapadoodle
+      Tapadoodle
+    </AppText>
   );
 };

@@ -7,6 +7,7 @@ import Animated, {
   interpolateColor,
   withDelay,
   useAnimatedReaction,
+  runOnJS,
 } from 'react-native-reanimated';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import TapadoodleSvg from '../assets/tapadoodle.svg';
@@ -43,9 +44,9 @@ export const TapadoodleBox = () => {
       width: width.value,
       borderRadius: borderRadius.value,
       bottom: y.value,
-      paddingLeft: paddingX.value,
+      // paddingLeft: paddingX.value,
       paddingRight: paddingX.value,
-      paddingTop: paddingY.value,
+      // paddingTop: paddingY.value,
       paddingBottom: paddingY.value,
     };
   });
@@ -60,6 +61,13 @@ export const TapadoodleBox = () => {
     };
   });
 
+  const testAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      height: height.value,
+      paddingBottom: 15,
+    };
+  });
+
   function Open() {
     setIsOpen(true);
     height.value = withSpring(100, SPRING_CONFIG);
@@ -67,7 +75,8 @@ export const TapadoodleBox = () => {
     borderRadius.value = withSpring(20, SPRING_CONFIG);
     y.value = withSpring(expandedPadding, SPRING_CONFIG);
     backgroundOpacity.value = withSpring(1, SPRING_CONFIG);
-    paddingX.value = withSpring(30, SPRING_CONFIG);
+    paddingX.value = withSpring(25, SPRING_CONFIG);
+    paddingY.value = withSpring(25, SPRING_CONFIG);
   }
 
   function Close() {
@@ -83,7 +92,7 @@ export const TapadoodleBox = () => {
         restDisplacementThreshold: 0.05,
       },
       () => {
-        setIsOpen(false);
+        runOnJS(setIsOpen)(false);
       }
     );
 
@@ -98,26 +107,34 @@ export const TapadoodleBox = () => {
       velocity: 0.5,
     });
   }
+
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
   return (
-    <Animated.View
-      className="absolute bottom-0 z-10 items-center self-center"
-      style={[
-        animatedBackgroundStyle,
-        { height: isOpen ? '100%' : 70, width: isOpen ? '100%' : 128 },
-      ]}>
-      <Pressable
-        className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center"
-        onPressIn={handlePressIn}
-        onPress={() => (isOpen ? Close() : Open())}>
-        <AnimatedPressable
-          className="absolute h-full overflow-hidden rounded-full bg-middleground shadow-2xl"
-          style={[animatedStyle]}
-          onPress={Open}
-          onPressIn={handlePressIn}>
-          <Tapadoodle isOpen={isOpen} />
-        </AnimatedPressable>
-      </Pressable>
-    </Animated.View>
+    <>
+      <Animated.View
+        className="absolute top-10 h-10 w-10 items-center self-center bg-red-500"
+        style={testAnimatedStyle}>
+        <AppText className="text-xl font-medium leading-6">Tapadoodle</AppText>
+      </Animated.View>
+      <Animated.View
+        className="absolute bottom-0 z-10 items-center self-center"
+        style={[
+          animatedBackgroundStyle,
+          { height: isOpen ? '100%' : 70, width: isOpen ? '100%' : 128 },
+        ]}>
+        <Pressable
+          className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center"
+          onPressIn={handlePressIn}
+          onPress={() => (isOpen ? Close() : Open())}>
+          <AnimatedPressable
+            className="absolute h-full rounded-full bg-middleground shadow-2xl"
+            style={[animatedStyle]}
+            onPress={Open}
+            onPressIn={handlePressIn}>
+            <Tapadoodle isOpen={isOpen} />
+          </AnimatedPressable>
+        </Pressable>
+      </Animated.View>
+    </>
   );
 };

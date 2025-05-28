@@ -26,6 +26,8 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
   // Store animation values in a ref to persist across renders
   const animationsRef = useRef<Map<string, Animated.Value>>(new Map());
+  const textRef = useRef<Text>(null);
+
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
     if (!apiKey) return;
@@ -143,14 +145,29 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
     return animationsRef.current.get(segmentKey)!;
   };
 
+  const handleTextLayout = (event: any) => {
+    const { height, width } = event.nativeEvent.layout;
+    const lineHeight = 24; // Approximate line height for text-lg
+    const estimatedLines = Math.ceil(height / lineHeight);
+    console.log('Text dimensions:', {
+      height,
+      width,
+      estimatedLines,
+      text: transcripts[0],
+    });
+  };
+
   return (
-    <Text className="text-lg">
+    <Text ref={textRef} onLayout={handleTextLayout} className={`text-lg ${textClassName}`}>
       {transcriptionIndexes.length == 1 ? (
-        <AppText className={textClassName + ' text-foreground/40'}>Could you please...</AppText>
+        <AppText className={' text-foreground/40'}>
+          Could you please... hej med dig jeg hedder kaj og er bare så mega sej hej med dig jeg
+          hedder kaj og er bare så mega sej hej med dig jeg hedder kaj og er bare så mega sej
+        </AppText>
       ) : (
         transcriptionIndexes.map((indexes, a) => {
           return (
-            <Text key={a} className={textClassName}>
+            <Text key={a}>
               {indexes.map((index, b) => {
                 // Create unique key for this text segment
                 const segmentKey = `text-${a}-${b}`;
