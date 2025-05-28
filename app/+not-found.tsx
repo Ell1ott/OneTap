@@ -1,4 +1,4 @@
-import AppText from 'components/AppText';
+import AppText from 'components/base/AppText';
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 

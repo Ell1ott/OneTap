@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Platform, useColorScheme } from 'react-native';
+import { Platform, Pressable, StyleSheet, useColorScheme, View } from 'react-native';
 
 import { HapticTab } from 'components/HapticTab';
 import TabBarBackground from 'components/ui/TabBarBackground';
@@ -8,6 +8,7 @@ import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
 import { useChat } from '@ai-sdk/react';
 import { fetch as expoFetch } from 'expo/fetch';
+import { Tapadoodle } from 'components/Tapadoodle';
 export default function TabLayout() {
   // Get the foregroundMuted color from the theme
   // const { messages, error, handleInputChange, input, handleSubmit, append } = useChat({
@@ -30,55 +31,60 @@ export default function TabLayout() {
   // }, [messages]);
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: 'black',
-        tabBarInactiveTintColor: '#8C8C8C',
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarShowLabel: false,
-        tabBarHideOnKeyboard: true,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: 'black',
+          tabBarInactiveTintColor: '#8C8C8C',
+          headerShown: false,
+          tabBarButton: HapticTab,
+          tabBarBackground: TabBarBackground,
+          tabBarShowLabel: false,
+          tabBarHideOnKeyboard: true,
+          tabBarStyle: Platform.select({
+            ios: {
+              // Use a transparent background on iOS to show the blur effect
+              position: 'absolute',
+            },
+            default: {
+              height: 70,
+              border: 'none',
+              // paddingLeft: 10,
+              // paddingRight: 10,
+              paddingHorizontal: 30,
+            },
+          }),
+          tabBarIconStyle: {
+            height: 60,
           },
-          default: {
-            height: 70,
-            border: 'none',
-            // paddingLeft: 10,
-            // paddingRight: 10,
-            paddingHorizontal: 30,
-          },
-        }),
-
-        tabBarIconStyle: {
-          height: 60,
-        },
-      }}
-      backBehavior="history">
-      <Tabs.Screen
-        name="diary"
-        options={{
-          title: 'Diary',
-          tabBarIcon: ({ color }) => <Feather size={30} color={color} />,
         }}
-      />
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <Plane size={30} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="calender"
-        options={{
-          title: 'Calender',
-          tabBarIcon: ({ color }) => <Calendar size={30} color={color} />,
-        }}
-      />
-    </Tabs>
+        backBehavior="history">
+        <Tabs.Screen
+          name="diary"
+          options={{
+            title: 'Diary',
+            tabBarIcon: ({ color }) => <Feather size={30} color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Home',
+            tabBarIcon: ({ color }) => <Plane size={30} color={color} />,
+            tabBarButton: (props) => (
+              <View className="-m-100" style={[StyleSheet.absoluteFillObject]} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="calender"
+          options={{
+            title: 'Calender',
+            tabBarIcon: ({ color }) => <Calendar size={30} color={color} />,
+          }}
+        />
+      </Tabs>
+      <Tapadoodle />
+    </>
   );
 }
