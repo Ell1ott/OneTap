@@ -25,9 +25,9 @@ export default function TabLayout() {
   //   });
   // }, []);
 
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
+  // useEffect(() => {
+  //   console.log(messages);
+  // }, [messages]);
 
   return (
     <Tabs
