@@ -8,6 +8,12 @@ import Animated, {
   withDelay,
 } from 'react-native-reanimated';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import TapadoodleSvg from '../assets/tapadoodle.svg';
+
+const SPRING_CONFIG = {
+  damping: 30,
+  stiffness: 200,
+};
 
 export const Tapadoodle = () => {
   const shadowOpacity = useSharedValue(0);
@@ -47,50 +53,22 @@ export const Tapadoodle = () => {
 
   function Open() {
     setIsOpen(true);
-    height.value = withSpring(100, {
-      damping: 30,
-      stiffness: 200,
-    });
-    width.value = withSpring(screenWidth - expandedPadding * 2, {
-      damping: 30,
-      stiffness: 200,
-    });
-    borderRadius.value = withSpring(25, {
-      damping: 30,
-      stiffness: 200,
-    });
-    y.value = withSpring(expandedPadding, {
-      damping: 30,
-      stiffness: 200,
-    });
-    backgroundOpacity.value = withSpring(1, {
-      damping: 30,
-      stiffness: 200,
-    });
+    height.value = withSpring(100, SPRING_CONFIG);
+    width.value = withSpring(screenWidth - expandedPadding * 2, SPRING_CONFIG);
+    borderRadius.value = withSpring(20, SPRING_CONFIG);
+    y.value = withSpring(expandedPadding, SPRING_CONFIG);
+    backgroundOpacity.value = withSpring(1, SPRING_CONFIG);
   }
 
   function Close() {
-    height.value = withSpring(56, {
-      damping: 30,
-      stiffness: 200,
-    });
-    width.value = withSpring(56, {
-      damping: 30,
-      stiffness: 200,
-    });
-    borderRadius.value = withSpring(56 / 2, {
-      damping: 30,
-      stiffness: 200,
-    });
-    y.value = withSpring(8, {
-      damping: 30,
-      stiffness: 200,
-    });
+    height.value = withSpring(56, SPRING_CONFIG);
+    width.value = withSpring(56, SPRING_CONFIG);
+    borderRadius.value = withSpring(56 / 2, SPRING_CONFIG);
+    y.value = withSpring(8, SPRING_CONFIG);
     backgroundOpacity.value = withSpring(
       0,
       {
-        damping: 30,
-        stiffness: 200,
+        ...SPRING_CONFIG,
         restDisplacementThreshold: 0.05,
       },
       () => {
@@ -99,10 +77,7 @@ export const Tapadoodle = () => {
     );
 
     setTimeout(() => {
-      shadowOpacity.value = withSpring(0, {
-        damping: 30,
-        stiffness: 50,
-      });
+      shadowOpacity.value = withSpring(0, SPRING_CONFIG);
     }, 300);
   }
   function handlePressIn() {
@@ -127,7 +102,9 @@ export const Tapadoodle = () => {
         <Animated.View
           className="absolute rounded-full bg-middleground shadow-2xl"
           style={[animatedStyle]}>
-          <Pressable onPress={Open} onPressIn={handlePressIn} className="h-full w-full"></Pressable>
+          <Pressable onPress={Open} onPressIn={handlePressIn} className="m-3 h-full w-full">
+            <TapadoodleSvg width={35} height={33} />
+          </Pressable>
         </Animated.View>
       </Pressable>
     </Animated.View>
