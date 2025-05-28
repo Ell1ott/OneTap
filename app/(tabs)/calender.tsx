@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet, View } from 'react-native';
 
-import AppText from 'components/AppText';
+import AppText from 'components/base/AppText';
 
 export default function TabTwoScreen() {
   return (

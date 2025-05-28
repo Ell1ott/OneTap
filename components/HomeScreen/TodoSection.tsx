@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import AppText from '../AppText';
+import AppText from '../base/AppText';
 import { TodoList } from '../Todos/components/TodoList';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { PartialDate } from 'components/Todos/types';

@@ -2,7 +2,7 @@ import { Task } from './Task';
 import { PartialDate } from '../types/PartialDate';
 import { Time } from '../types/Time';
 import { View } from 'react-native';
-import CheckBox from 'components/CheckBox';
+import CheckBox from 'components/base/CheckBox';
 
 export class Todo extends Task {
   start?: PartialDate;

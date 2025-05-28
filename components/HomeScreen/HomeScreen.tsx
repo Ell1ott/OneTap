@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Pressable, Text } from 'react-native';
-import AppText from 'components/AppText';
+import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';

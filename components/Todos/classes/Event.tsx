@@ -1,4 +1,4 @@
-import AppText from 'components/AppText';
+import AppText from 'components/base/AppText';
 import { View } from 'react-native';
 import { isToday } from 'utils/dateUtils';
 import { Task } from './Task';

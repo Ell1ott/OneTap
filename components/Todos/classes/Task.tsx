@@ -1,4 +1,4 @@
-import AppText from 'components/AppText';
+import AppText from 'components/base/AppText';
 import { Time } from '../types/Time';
 import { JSX } from 'react';
 import { TaskCategory } from './TaskCategory';

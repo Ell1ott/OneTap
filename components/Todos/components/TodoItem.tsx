@@ -7,12 +7,12 @@ import Animated, {
   FadeIn,
   FadeOut,
 } from 'react-native-reanimated';
-import AppText, { fontStyle } from '../../AppText';
+import AppText, { fontStyle } from '../../base/AppText';
 import { getRelativeDateString } from '../../../utils/dateUtils';
 import { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react-native';
 import { ChevronLeft } from 'lucide-react-native';
-import CheckBox from 'components/CheckBox';
+import CheckBox from 'components/base/CheckBox';
 import { Task, TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
 import { HapticTab } from 'components/HapticTab';
