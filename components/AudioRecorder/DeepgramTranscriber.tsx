@@ -161,8 +161,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
     <Text ref={textRef} onLayout={handleTextLayout} className={`text-lg ${textClassName}`}>
       {transcriptionIndexes.length == 1 ? (
         <AppText className={' text-foreground/40'}>
-          Could you please... hej med dig jeg hedder kaj og er bare så mega sej hej med dig jeg
-          hedder kaj og er bare så mega sej hej med dig jeg hedder kaj og er bare
+          Could you please...
         </AppText>
       ) : (
         transcriptionIndexes.map((indexes, a) => {

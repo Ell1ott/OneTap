@@ -55,11 +55,13 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
         </Animated.View>
       </View>
 
-      <DeepgramTranscriber
-        textClassName="text-xl font-medium leading-6 overflow-visible flex-1"
-        audioData={transcriptionData}
-        isRecording={isOpen}
-      />
+      <View className='items-center justify-center min-h-10 flex-1'>
+        <DeepgramTranscriber
+          textClassName="text-xl font-medium leading-6 overflow-visible"
+          audioData={transcriptionData}
+          isRecording={isOpen}
+        />
+      </View>
     </View>
 
   );
