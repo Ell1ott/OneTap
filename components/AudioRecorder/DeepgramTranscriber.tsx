@@ -162,7 +162,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       {transcriptionIndexes.length == 1 ? (
         <AppText className={' text-foreground/40'}>
           Could you please... hej med dig jeg hedder kaj og er bare så mega sej hej med dig jeg
-          hedder kaj og er bare så mega sej hej med dig jeg hedder kaj og er bare så mega sej
+          hedder kaj og er bare så mega sej hej med dig jeg hedder kaj og er bare
         </AppText>
       ) : (
         transcriptionIndexes.map((indexes, a) => {
