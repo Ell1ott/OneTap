@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View, Pressable, Text } from 'react-native';
+import { View, Pressable, Text, LayoutChangeEvent, findNodeHandle, UIManager } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { PartialDate, Time } from 'components/Todos/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
 import CategoryScreen from 'components/CategoryScreen';
@@ -67,10 +67,26 @@ export function HomeScreen() {
   ]);
 
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const textRef = useRef<React.ElementRef<typeof AppText>>(null);
 
   useEffect(() => {
     console.log(openCategory);
   }, [openCategory]);
+
+  useEffect(() => {
+    if (textRef.current) {
+      const node = findNodeHandle(textRef.current);
+      if (node) {
+        UIManager.measure(node, (_x: number, _y: number, width: number, height: number, pageX: number, pageY: number) => {
+          console.log('Text height:', height);
+        });
+      }
+    }
+  }, []);
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    console.log('Text height 2.0:', event.nativeEvent.layout.height);
+  };
 
   return (
     <>
@@ -82,6 +98,14 @@ export function HomeScreen() {
         contentContainerClassName="px-6 pt-16 pb-6"
         keyboardDismissMode="on-drag">
         <View className="mb-10">
+          <View className="h-20 w-20 bg-red-500" style={{
+            overflow: 'hidden',
+
+          }}>
+            <View className='bg-blue-500 h-80 w-10 ml-14' style={{ overflow: 'visible' }}>
+              <AppText f ref={textRef} onLayout={handleLayout} className="text-base leading-5 text-foregroundMuted">Hello hello hello hello hello</AppText>
+            </View>
+          </View>
           <Greeting />
           <AppText f className="text-base leading-5 text-foregroundMuted">
             You have 3 assignments due today. And it's probably time for a trip to the grocery
