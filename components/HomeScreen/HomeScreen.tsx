@@ -98,14 +98,6 @@ export function HomeScreen() {
         contentContainerClassName="px-6 pt-16 pb-6"
         keyboardDismissMode="on-drag">
         <View className="mb-10">
-          <View className="h-20 w-20 bg-red-500" style={{
-            overflow: 'hidden',
-
-          }}>
-            <View className='bg-blue-500 h-80 w-10 ml-14' style={{ overflow: 'visible' }}>
-              <AppText f ref={textRef} onLayout={handleLayout} className="text-base leading-5 text-foregroundMuted">Hello hello hello hello hello</AppText>
-            </View>
-          </View>
           <Greeting />
           <AppText f className="text-base leading-5 text-foregroundMuted">
             You have 3 assignments due today. And it's probably time for a trip to the grocery
