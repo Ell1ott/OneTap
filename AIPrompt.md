@@ -40,7 +40,7 @@ emoji: 'relevant emoji';
 **repeat**: Repeats the task over a specific time frame
 
 **repeatSoftly**:
-- `true`: beneficial to complete even if late
+- `true`: beneficial to complete even if late or done a day later
 - `false`: completion doesn't matter after the repeat period
 
 **amount**: How many times the task needs to be done (in one period/session)
@@ -64,12 +64,6 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 - "every week" → repeat: { weeks: 1 }
 - "every second day" → repeat: { days: 2 }
 - "monthly" → repeat: { months: 1 }
-
-### Soft vs Hard Requirements
-- "I should try to..." → use `softDue` or `repeatSoftly: true`
-- "I need to..." → use `due` or `repeat`
-- "remind me to..." → set `remindAt`
-- "every week or two" → `repeat: { "weeks": 2 }, repeatSoftly: true`
 
 **Amount Detection:**
 - "twice every day" → amount: 2
@@ -113,7 +107,6 @@ REMEMBER to only use exact days and numbers. NOTHING vague
   "softDue": null,
   "remindAt": "Date(May 4th, morning)",
   "repeat": null,
-  "repeatSoftly": false,
   "amount": null,
   "category": null,
   "emoji": "📺"
@@ -132,7 +125,6 @@ REMEMBER to only use exact days and numbers. NOTHING vague
   "softDue": null,
   "remindAt": null,
   "repeat": null,
-  "repeatSoftly": false,
   "amount": null,
   "category": "groceries",
   "emoji": "🥚"
@@ -170,7 +162,6 @@ REMEMBER to only use exact days and numbers. NOTHING vague
   "softDue": null,
   "remindAt": null,
   "repeat": { "days": 2 },
-  "repeatSoftly": false,
   "amount": 2,
   "category": null,
   "emoji": "🐕"
@@ -189,7 +180,6 @@ REMEMBER to only use exact days and numbers. NOTHING vague
   "softDue": null,
   "remindAt": "Date(next Monday 2:30 pm)",
   "repeat": null,
-  "repeatSoftly": false,
   "amount": null,
   "category": null,
   "emoji": "🏥"
@@ -208,7 +198,6 @@ REMEMBER to only use exact days and numbers. NOTHING vague
   "softDue": "Date(today + 7 days)",
   "remindAt": "Date(today + 6 days, morning)",
   "repeat": null,
-  "repeatSoftly": false,
   "amount": 3,
   "category": "homework",
   "emoji": "🧮"
