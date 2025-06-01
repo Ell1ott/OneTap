@@ -11,6 +11,7 @@ export class Todo extends Task {
   lastDone?: PartialDate;
   doneTimes?: PartialDate[];
   softRepeat?: Time | true; // First repeats when finished
+  softDue?: PartialDate
   completed?: boolean[];
   amount?: number;
   category?: string;
