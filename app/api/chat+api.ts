@@ -247,7 +247,7 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 - Choose emojis that clearly represent the task
 - Amount is only for tasks that need to be done multiple times in one period
 
-Now please parse the following input: "I wanna call tim more often. Optimally every week"
+Now please parse the following input: "I got volleyball practice next tuesday at 16.30"
 `
 
 const { partialObjectStream } = streamObject({
