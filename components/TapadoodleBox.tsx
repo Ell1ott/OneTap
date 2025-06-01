@@ -24,6 +24,7 @@ export const TapadoodleBox = () => {
   const screenWidth = Dimensions.get('window').width;
 
   const [isOpen, setIsOpen] = useState(false);
+  // const [dynamicHeight, setDynamicHeight] = useState(false);
 
   const expandedPadding = 24;
 
@@ -38,6 +39,8 @@ export const TapadoodleBox = () => {
   const paddingY = useSharedValue(10);
 
   const childrenRef = useRef<View>(null);
+
+  const openWidth = useRef(0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -71,21 +74,24 @@ export const TapadoodleBox = () => {
   });
 
   function AnimateSprings(isOpen: boolean) {
-    height.value = withSpring(isOpen ? 100 : 56, SPRING_CONFIG);
-    width.value = withSpring(isOpen ? screenWidth - expandedPadding * 2 : 56, SPRING_CONFIG);
+    height.value = withSpring(isOpen ? 45 + 17 * 2 : 52, SPRING_CONFIG);
+
     borderRadius.value = withSpring(isOpen ? 20 : 56 / 2, SPRING_CONFIG);
     y.value = withSpring(isOpen ? expandedPadding : 8, SPRING_CONFIG);
     backgroundOpacity.value = withSpring(isOpen ? 1 : 0, SPRING_CONFIG);
-    paddingX.value = withSpring(isOpen ? 20 : 10, SPRING_CONFIG);
-    paddingY.value = withSpring(isOpen ? 20 : 10, SPRING_CONFIG);
+    paddingX.value = withSpring(isOpen ? 17 : 10, SPRING_CONFIG);
+    paddingY.value = withSpring(isOpen ? 17 : 10, SPRING_CONFIG);
   }
   function Open() {
     setIsOpen(true);
     AnimateSprings(true);
+    openWidth.current = screenWidth - expandedPadding * 2;
+    width.value = withSpring(openWidth.current, SPRING_CONFIG);
   }
 
   function Close() {
     AnimateSprings(false);
+    width.value = withSpring(52, SPRING_CONFIG);
 
     backgroundOpacity.value = withSpring(
       0,
@@ -112,7 +118,7 @@ export const TapadoodleBox = () => {
 
   const handleLayout = (event: LayoutChangeEvent) => {
     console.log('Heigh of children: ', event.nativeEvent.layout.height);
-    if (isOpen) {
+    if (width.value === openWidth.current) {
       height.value = withSpring(
         event.nativeEvent.layout.height + paddingY.value * 2,
         SPRING_CONFIG
