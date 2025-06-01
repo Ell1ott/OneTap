@@ -34,8 +34,8 @@ export const TapadoodleBox = () => {
   const width = useSharedValue(56);
   const borderRadius = useSharedValue(56 / 2);
   const y = useSharedValue(8);
-  const paddingX = useSharedValue(12);
-  const paddingY = useSharedValue(12);
+  const paddingX = useSharedValue(10);
+  const paddingY = useSharedValue(10);
 
   const childrenRef = useRef<View>(null);
 
@@ -70,23 +70,23 @@ export const TapadoodleBox = () => {
     };
   });
 
+  function AnimateSprings(isOpen: boolean) {
+    height.value = withSpring(isOpen ? 100 : 56, SPRING_CONFIG);
+    width.value = withSpring(isOpen ? screenWidth - expandedPadding * 2 : 56, SPRING_CONFIG);
+    borderRadius.value = withSpring(isOpen ? 20 : 56 / 2, SPRING_CONFIG);
+    y.value = withSpring(isOpen ? expandedPadding : 8, SPRING_CONFIG);
+    backgroundOpacity.value = withSpring(isOpen ? 1 : 0, SPRING_CONFIG);
+    paddingX.value = withSpring(isOpen ? 20 : 10, SPRING_CONFIG);
+    paddingY.value = withSpring(isOpen ? 20 : 10, SPRING_CONFIG);
+  }
   function Open() {
     setIsOpen(true);
-    height.value = withSpring(100, SPRING_CONFIG);
-    width.value = withSpring(screenWidth - expandedPadding * 2, SPRING_CONFIG);
-    borderRadius.value = withSpring(20, SPRING_CONFIG);
-    y.value = withSpring(expandedPadding, SPRING_CONFIG);
-    backgroundOpacity.value = withSpring(1, SPRING_CONFIG);
-    paddingX.value = withSpring(20, SPRING_CONFIG);
-    paddingY.value = withSpring(20, SPRING_CONFIG);
+    AnimateSprings(true);
   }
 
   function Close() {
-    height.value = withSpring(56, SPRING_CONFIG);
-    width.value = withSpring(56, SPRING_CONFIG);
-    borderRadius.value = withSpring(56 / 2, SPRING_CONFIG);
-    y.value = withSpring(8, SPRING_CONFIG);
-    paddingX.value = withSpring(12, SPRING_CONFIG);
+    AnimateSprings(false);
+
     backgroundOpacity.value = withSpring(
       0,
       {
@@ -111,11 +111,13 @@ export const TapadoodleBox = () => {
   }
 
   const handleLayout = (event: LayoutChangeEvent) => {
-    console.log("Heigh of children: ", event.nativeEvent.layout.height);
+    console.log('Heigh of children: ', event.nativeEvent.layout.height);
     if (isOpen) {
-      height.value = withSpring(event.nativeEvent.layout.height + paddingY.value * 2, SPRING_CONFIG);
+      height.value = withSpring(
+        event.nativeEvent.layout.height + paddingY.value * 2,
+        SPRING_CONFIG
+      );
     }
-
   };
 
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -141,7 +143,7 @@ export const TapadoodleBox = () => {
             style={[animatedStyle]}
             onPress={Open}
             onPressIn={handlePressIn}>
-            <View className='h-[20rem] w-full'>
+            <View className="h-[20rem] w-full">
               <View ref={childrenRef} onLayout={handleLayout}>
                 <Tapadoodle isOpen={isOpen} />
               </View>

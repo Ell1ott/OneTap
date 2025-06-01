@@ -117,31 +117,30 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
   // Get the complete transcript text
   const getCompleteTranscript = () => {
-    // return transcripts.filter(t => t.trim() !== '').join(' ').trim();
-    return t;
+    return transcripts
+      .filter((t) => t.trim() !== '')
+      .join(' ')
+      .trim();
+    // return t;
   };
 
-  const exampleTexts = "Hey, I really wanna talk more with Tim. I would optimally call him every 5 days".split(' ');
-  const i = useRef<number>(0);
-  useEffect(() => {
-    setInterval(() => {
-      setT((t) => {
-        return t + " " + exampleTexts[i.current];
-      })
-      i.current = (i.current + 1) % exampleTexts.length;
-    }, 100);
-  }, []);
+  // const exampleTexts = "Hey, I really wanna talk more with Tim. I would optimally call him every 5 days".split(' ');
+  // const i = useRef<number>(0);
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     setT((t) => {
+  //       return t + " " + exampleTexts[i.current];
+  //     })
+  //     i.current = (i.current + 1) % exampleTexts.length;
+  //   }, 100);
+  // }, []);
 
   return (
     <FadeInText
       text={getCompleteTranscript()}
       splitMode="words"
       className={`text-lg ${textClassName}`}
-      fallbackContent={
-        <AppText className="text-foreground/40">
-          Could you please...
-        </AppText>
-      }
+      fallbackContent={<AppText className="text-foreground/40">Could you please...</AppText>}
     />
   );
 };

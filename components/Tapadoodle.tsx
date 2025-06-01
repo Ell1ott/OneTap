@@ -47,15 +47,12 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
 
   return (
-
     <View className="flex-row gap-6">
-      <View className="h-full justify-start">
-        <Animated.View style={animatedStyles}>
-          <TapadoodleSvg width={35} height={33} />
-        </Animated.View>
-      </View>
+      <Animated.View style={animatedStyles} className="my-2 justify-center self-start">
+        <TapadoodleSvg width={35} height={33} />
+      </Animated.View>
 
-      <View className='justify-center min-h-10 flex-1'>
+      <View className="min-h-10 flex-1 justify-center">
         <DeepgramTranscriber
           textClassName="text-xl font-medium leading-6 overflow-visible"
           audioData={transcriptionData}
@@ -63,6 +60,5 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
         />
       </View>
     </View>
-
   );
 };
