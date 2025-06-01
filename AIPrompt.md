@@ -32,7 +32,7 @@ emoji: 'relevant emoji';
 **softDue**: Flexible target date - goal to complete by but not critical
 **remindAt**: Specific time to send a reminder notification
 
-**repeat**: Hard recurring schedule (must happen every X period) and resets the completetion to not done when repeating
+**repeat**: Hard recurring schedule (must happen every X period) and resets the completetion to not done when repeating. Only use if it doesn't matter anymore if it is done or not after this time period
 **softRepeat**: Flexible recurring suggestion (try to do every X period, but flexible)
 
 **amount**: How many times the task needs to be done (in one period/day)
