@@ -11,10 +11,11 @@ type: 'todo' | 'event';
 note: String;
 start: Date(specific date) | null;
 end: Date(specific date) | null;
+due: Date(specific date) | null;
 softDue: Date(specific date) | null;
 remindAt: Date(specific date and time) | null;
 repeat: { days: number } | { weeks: number } | { months: number } | null;
-softRepeat: { days: number } | { weeks: number } | { months: number } | null;
+repeatSoftly: Boolean
 amount: number | null;
 category: 'groceries' | 'homework' | null;
 emoji: 'relevant emoji';
@@ -24,135 +25,193 @@ emoji: 'relevant emoji';
 
 **title**: Short, casual description of the task/event
 **type**: 
-- 'todo' for tasks, action items, things to do
-- 'event' for appointments, meetings, scheduled activities
-**note** Extra information, ONLY if necesarry. Otherwise leave blank
-**start**: When the task/event begins (important for repeating tasks)
+- `todo` for tasks, action items, things to do
+- `event` for appointments, meetings, scheduled activities with specific start/end times
+
+**note**: Extra information, ONLY if necessary. Otherwise leave empty
+
+**start**: When the task/event begins (required for events, important for repeating tasks)
+
+**end**: When the event ends (only for events with duration, otherwise null)
 **due**: Hard deadline - must be completed by this date/time
 **softDue**: Flexible target date - goal to complete by but not critical
 **remindAt**: Specific time to send a reminder notification
 
-**repeat**: Hard recurring schedule (must happen every X period) and resets the completetion to not done when repeating. Only use if it doesn't matter anymore if it is done or not after this time period
-**softRepeat**: Flexible recurring suggestion (try to do every X period, but flexible)
+**repeat**: Repeats the task over a specific time frame
 
-**amount**: How many times the task needs to be done (in one period/day)
-**category**: Logical grouping (Groceries, Work, Health, etc.)
+**repeatSoftly**:
+- `true`: beneficial to complete even if late
+- `false`: completion doesn't matter after the repeat period
+
+**amount**: How many times the task needs to be done (in one period/session)
+
+**category**: Available categories are `groceries` and `homework`. Extract from context or set to null.
+
 **emoji**: Single relevant emoji that represents the task
 
 ## PARSING RULES
 
-**Date/Time Parsing:**
-ALWAYS write strings as a naturel string. for example:
-- "today" → Date(today)
-- "tomorrow" → Date(tomorrow)
-- "Thursday night" → Date(next Thursday 6:00 pm)
-- "before the 5th May" → due: Date(5th May)
+### Date/Time Parsing
+Always write dates as natural language strings:
+- "today" → `"Date(today)"`
+- "tomorrow" → `"Date(tomorrow)"`
+- "Thursday night" → `"Date(next Thursday 8:00 pm)"`
+- "before May 5th" → `due: "Date(May 5th)"`
+- "next Monday at 3pm" → `"Date(next Monday 3:00 pm)"`
 
-
-**Repetetion Parsing
+### Repetition Parsing
 - "every week" → repeat: { weeks: 1 }
 - "every second day" → repeat: { days: 2 }
+- "monthly" → repeat: { months: 1 }
 
-**Soft vs Hard Requirements:**
-- "I should try to..." → softRepeat/softDue
-- "I need to..." → due/repeat
-- "remind me to..." → remindAt
-- "every week or two" → softRepeat: { weeks: 2 }
+### Soft vs Hard Requirements
+- "I should try to..." → use `softDue` or `repeatSoftly: true`
+- "I need to..." → use `due` or `repeat`
+- "remind me to..." → set `remindAt`
+- "every week or two" → `repeat: { "weeks": 2 }, repeatSoftly: true`
 
 **Amount Detection:**
 - "twice every day" → amount: 2
 - "3 mathquizzes" → amount: 3
 - Single tasks → amount: null
 
-**Categories:**
-- The user has the following categories: Groceries and Homework
-- Extract from context or item type
+### Event vs Todo Logic
+- **Events**: Have specific times, durations, or are appointments
+- **Todos**: Tasks to complete, may have deadlines but not fixed time slots
 
 ## EXAMPLES
 
-**Input:** "I should try to catch up with jake every week or two"
-```
-title: 'Catch up with jake';
-type: 'todo';
-start: Date(today);
-due: null;
-remindAt: null;
-repeat: null;
-softRepeat: { weeks: 2 };
-amount: null;
-category: 'Personal';
-emoji: '👋';
+**Input:** "I should try to catch up with Jake every week or two"
+```json
+{
+  "title": "Catch up with Jake",
+  "type": "todo",
+  "note": "",
+  "start": "Date(today)",
+  "end": null,
+  "due": null,
+  "softDue": null,
+  "remindAt": null,
+  "repeat": { "weeks": 2 },
+  "repeatSoftly": true,
+  "amount": null,
+  "category": null,
+  "emoji": "👋"
+}
 ```
 
-**Input:** "I need to cancel my Netflix subscription before the 5th May"
-```
-title: 'Cancel Netflix';
-type: 'todo';
-start: null;
-due: Date(5th May);
-remindAt: Date(5th May);
-repeat: null;
-softRepeat: null;
-amount: null;
-category: 'Finance';
-emoji: '📺';
+**Input:** "I need to cancel my Netflix subscription before May 5th"
+```json
+{
+  "title": "Cancel Netflix subscription",
+  "type": "todo",
+  "note": "",
+  "start": null,
+  "end": null,
+  "due": "Date(May 5th)",
+  "softDue": null,
+  "remindAt": "Date(May 4th, morning)",
+  "repeat": null,
+  "repeatSoftly": false,
+  "amount": null,
+  "category": null,
+  "emoji": "📺"
+}
 ```
 
 **Input:** "We are out of eggs again"
-```
-title: 'Eggs';
-type: 'todo';
-start: null;
-due: null;
-remindAt: null;
-repeat: null;
-softRepeat: null;
-amount: null;
-category: 'Groceries';
-emoji: '🥚';
-```
-
-**Input:** "Remind me to take out the trash on Thursday night"
-```
-title: 'Take trash out';
-type: 'todo';
-start: null;
-due: Date(Thursday 6:00 pm);
-remindAt: null;
-repeat: { weeks: 1 };
-softRepeat: null;
-amount: null;
-category: 'Household';
-emoji: '🗑️';
+```json
+{
+  "title": "Buy eggs",
+  "type": "todo",
+  "note": "",
+  "start": null,
+  "end": null,
+  "due": null,
+  "softDue": null,
+  "remindAt": null,
+  "repeat": null,
+  "repeatSoftly": false,
+  "amount": null,
+  "category": "groceries",
+  "emoji": "🥚"
+}
 ```
 
-**Input:** "I gotta walk the dog twice every second day"
+**Input:** "Remind me to take out the trash every Thursday night"
+```json
+{
+  "title": "Take out trash",
+  "type": "todo",
+  "note": "",
+  "start": "Date(next Thursday)",
+  "end": null,
+  "due": null,
+  "softDue": null,
+  "remindAt": "Date(next Thursday 8:00 pm)",
+  "repeat": { "weeks": 1 },
+  "repeatSoftly": false,
+  "amount": null,
+  "category": null,
+  "emoji": "🗑️"
+}
 ```
-title: 'Walk the dog';
-type: 'todo';
-start: Date(today);
-due: Date(today);
-remindAt: null;
-repeat: { days: 2 };
-softRepeat: null;
-amount: 2;
-category: 'Personal';
-emoji: '🐕';
+
+**Input:** "I need to walk the dog twice every second day"
+```json
+{
+  "title": "Walk the dog",
+  "type": "todo",
+  "note": "",
+  "start": "Date(today)",
+  "end": null,
+  "due": null,
+  "softDue": null,
+  "remindAt": null,
+  "repeat": { "days": 2 },
+  "repeatSoftly": false,
+  "amount": 2,
+  "category": null,
+  "emoji": "🐕"
+}
+```
+
+**Input:** "Doctor appointment next Monday at 3pm"
+```json
+{
+  "title": "Doctor appointment",
+  "type": "event",
+  "note": "",
+  "start": "Date(next Monday 3:00 pm)",
+  "end": null
+  "due": null,
+  "softDue": null,
+  "remindAt": "Date(next Monday 2:30 pm)",
+  "repeat": null,
+  "repeatSoftly": false,
+  "amount": null,
+  "category": null,
+  "emoji": "🏥"
+}
 ```
 
 **Input:** "I want to try to solve 3 math quizzes in under 7 days"
-```
-title: 'Math quizzes';
-type: 'todo';
-start: null;
-due: null;
-softDue: Date(today + 7 days);
-remindAt: Date(today + 7 days, morning);
-repeat: null;
-softRepeat: null;
-amount: 3;
-category: 'Education';
-emoji: '🧮';
+```json
+{
+  "title": "Math quizzes",
+  "type": "todo",
+  "note": "",
+  "start": null,
+  "end": null,
+  "due": null,
+  "softDue": "Date(today + 7 days)",
+  "remindAt": "Date(today + 6 days, morning)",
+  "repeat": null,
+  "repeatSoftly": false,
+  "amount": 3,
+  "category": "homework",
+  "emoji": "🧮"
+}
 ```
 
 ## SPECIAL NOTES
