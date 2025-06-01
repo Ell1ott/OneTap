@@ -25,7 +25,7 @@ emoji: 'relevant emoji';
 
 **title**: Short, casual description of the task/event
 **type**: 
-- `todo` for tasks, action items, things to do
+- `todo` for tasks, and things that have to be done
 - `event` for appointments, meetings, scheduled activities with specific start/end times
 
 **note**: Extra information, ONLY if necessary. Otherwise leave empty
@@ -52,12 +52,13 @@ emoji: 'relevant emoji';
 ## PARSING RULES
 
 ### Date/Time Parsing
-Always write dates as natural language strings:
 - "today" → `"Date(today)"`
 - "tomorrow" → `"Date(tomorrow)"`
 - "Thursday night" → `"Date(next Thursday 8:00 pm)"`
 - "before May 5th" → `due: "Date(May 5th)"`
 - "next Monday at 3pm" → `"Date(next Monday 3:00 pm)"`
+- "In about 3 days" -> "Date(Today + 3 days)"
+REMEMBER to only use exact days and numbers. NOTHING vague 
 
 ### Repetition Parsing
 - "every week" → repeat: { weeks: 1 }
@@ -222,5 +223,3 @@ Always write dates as natural language strings:
 - For grocery items, default category to 'Groceries'
 - Choose emojis that clearly represent the task
 - Amount is only for tasks that need to be done multiple times in one period
-
-Now parse the following user input:
