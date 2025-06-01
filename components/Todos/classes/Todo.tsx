@@ -6,7 +6,7 @@ import CheckBox from 'components/base/CheckBox';
 
 export class Todo extends Task {
   start?: PartialDate;
-  due?: PartialDate;
+  end?: PartialDate; // Due date if it is todo, and end of event if it's a event
   remindAt?: PartialDate;
   lastDone?: PartialDate;
   doneTimes?: PartialDate[];
@@ -26,7 +26,7 @@ export class Todo extends Task {
     this.completed = data.completed || [false];
   }
 
-  isToday = () => this.due?.isToday() || false;
+  isToday = () => this.end?.isToday() || false;
   isPriority = () =>
     !!(
       this.softRepeat instanceof Time &&
@@ -74,9 +74,8 @@ export class Todo extends Task {
         <CheckBox
           key={index}
           checked={completed}
-          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${
-            index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
-          }`}
+          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
+            }`}
           onToggle={() => {
             const newCompleted = [...(this.completed || [])];
             newCompleted[index] = !newCompleted[index];

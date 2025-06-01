@@ -74,7 +74,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
         new Todo({
           id: 'h1',
           title: 'Math Assignment Chapter 5',
-          due: new PartialDate({
+          end: new PartialDate({
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
             day: new Date().getDate(),
@@ -86,7 +86,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
           id: 'h2',
           title: 'History Essay',
           note: 'World War II causes and effects',
-          due: new PartialDate({
+          end: new PartialDate({
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
             day: new Date().getDate() + 2,
@@ -117,7 +117,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
         new Todo({
           id: 'w1',
           title: 'Finish quarterly report',
-          due: new PartialDate({
+          end: new PartialDate({
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
             day: new Date().getDate() + 1,

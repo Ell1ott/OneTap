@@ -22,7 +22,7 @@ export function HomeScreen() {
         days: 1,
       }),
       amount: 2,
-      due: new PartialDate({
+      end: new PartialDate({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
         day: new Date().getDate(),
@@ -45,7 +45,7 @@ export function HomeScreen() {
       id: '5',
       title: 'Catch up with Jake',
       note: 'Every 2 weeks',
-      due: undefined,
+      end: undefined,
       remindAt: undefined,
       repeat: undefined,
       softRepeat: new Time({

@@ -31,7 +31,7 @@ export const TodoSection: React.FC<TodoSectionProps> = ({
         title: '',
         completed: [false],
         note: '',
-        due: new PartialDate(new Date()),
+        end: new PartialDate(new Date()),
       }),
     ]);
     setLastAddedTodoId(newId);
