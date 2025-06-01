@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Animated, Platform } from 'react-native';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
 import AppText from 'components/base/AppText';
+import FadeInText from 'components/base/FadeInText';
 
 interface DeepgramTranscriberProps {
   isRecording: boolean;
@@ -19,14 +19,9 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 }) => {
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
-  const [transcriptionIndexes, setTranscriptionIndexes] = useState<number[][]>([[]]);
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
-
-  // Store animation values in a ref to persist across renders
-  const animationsRef = useRef<Map<string, Animated.Value>>(new Map());
-  const textRef = useRef<Text>(null);
 
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
@@ -65,23 +60,13 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
           setTranscript(transcriptText);
           setTranscripts((prev) => {
             const newTranscripts = [...prev];
-
             newTranscripts[newTranscripts.length - 1] = transcriptText;
             if (data.is_final) {
               newTranscripts.push('');
             }
-
             return newTranscripts;
           });
           console.log('newTranscription', transcriptText);
-          setTranscriptionIndexes((prevIndexes) => {
-            const newIndexes = [...prevIndexes];
-            newIndexes[newIndexes.length - 1].push(transcriptText.length);
-            if (data.is_final) {
-              newIndexes.push([]);
-            }
-            return newIndexes;
-          });
         }
       });
 
@@ -128,67 +113,36 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
     }
   }, [isRecording, audioData, socket, isConnected]);
 
-  // Helper function to get or create an animation value for a specific text segment
-  const getAnimationValue = (segmentKey: string): Animated.Value => {
-    if (!animationsRef.current.has(segmentKey)) {
-      const anim = new Animated.Value(0);
-      animationsRef.current.set(segmentKey, anim);
+  const [t, setT] = useState<string>('');
 
-      // Start fade-in animation with different configurations for mobile vs web
-      Animated.timing(anim, {
-        toValue: 1,
-        duration: 350,
-        useNativeDriver: false, // Need to disable native driver for color interpolation
-      }).start();
-    }
-
-    return animationsRef.current.get(segmentKey)!;
+  // Get the complete transcript text
+  const getCompleteTranscript = () => {
+    // return transcripts.filter(t => t.trim() !== '').join(' ').trim();
+    return t;
   };
 
-  const handleTextLayout = (event: any) => {
-    const { height, width } = event.nativeEvent.layout;
-    const lineHeight = 24; // Approximate line height for text-lg
-    const estimatedLines = Math.ceil(height / lineHeight);
-    console.log('Text dimensions:', {
-      height,
-      width,
-      estimatedLines,
-      text: transcripts[0],
-    });
-  };
+  const exampleTexts = "Hey, I really wanna talk more with Tim. I would optimally call him every 5 days".split(' ');
+  const i = useRef<number>(0);
+  useEffect(() => {
+    setInterval(() => {
+      setT((t) => {
+        return t + " " + exampleTexts[i.current];
+      })
+      i.current = (i.current + 1) % exampleTexts.length;
+    }, 100);
+  }, []);
 
   return (
-    <Text ref={textRef} onLayout={handleTextLayout} className={`text-lg ${textClassName}`}>
-      {transcriptionIndexes.length == 1 ? (
-        <AppText className={' text-foreground/40'}>
+    <FadeInText
+      text={getCompleteTranscript()}
+      splitMode="words"
+      className={`text-lg ${textClassName}`}
+      fallbackContent={
+        <AppText className="text-foreground/40">
           Could you please...
         </AppText>
-      ) : (
-        transcriptionIndexes.map((indexes, a) => {
-          return (
-            <Text key={a}>
-              {indexes.map((index, b) => {
-                // Create unique key for this text segment
-                const segmentKey = `text-${a}-${b}`;
-                const animValue = getAnimationValue(segmentKey);
-
-                // Use color interpolation instead of opacity
-                const textColor = animValue.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['rgba(0,0,0,0)', 'rgba(0,0,0,1)'],
-                });
-
-                return (
-                  <Animated.Text key={segmentKey} style={{ color: textColor }}>
-                    {transcripts[a].slice(indexes[b - 1] || 0, index)}
-                  </Animated.Text>
-                );
-              })}{' '}
-            </Text>
-          );
-        })
-      )}
-    </Text>
+      }
+    />
   );
 };
 

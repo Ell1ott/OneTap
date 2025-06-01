@@ -250,18 +250,18 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 Now please parse the following input: "I got volleyball practice next tuesday at 16.30"
 `
 
-const { partialObjectStream } = streamObject({
-  model: openai('gpt-4.1-mini'),
-  output: 'no-schema',
-  prompt: AIPrompt,
-  onError: (e) => console.log(e)
+// const { partialObjectStream } = streamObject({
+//   model: openai('gpt-4.1-mini'),
+//   output: 'no-schema',
+//   prompt: AIPrompt,
+//   onError: (e) => console.log(e)
 
-});
+// });
 
 
 
-for await (const partialObject of partialObjectStream) {
-  console.clear();
-  console.log(partialObject);
+// for await (const partialObject of partialObjectStream) {
+//   console.clear();
+//   console.log(partialObject);
   
-}
+// }
