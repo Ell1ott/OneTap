@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import AppText from 'components/base/AppText';
 import { Calendar, Clock, Repeat, AlertCircle } from 'lucide-react-native';
 
-interface TodoPreviewCardProps {
+interface Todo {
   title: string;
   type: 'todo' | 'event';
   emoji?: string;
@@ -17,20 +17,14 @@ interface TodoPreviewCardProps {
   category?: string | null;
 }
 
-export const TodoPreviewCard = ({
-  title,
-  type,
-  emoji,
-  note,
-  start,
-  end,
-  due,
-  softDue,
-  remindAt,
-  repeat,
-  amount,
-  category,
-}: TodoPreviewCardProps) => {
+interface TodoPreviewCardProps {
+  todo: Todo;
+}
+
+export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {
+  const { title, type, emoji, note, start, end, due, softDue, remindAt, repeat, amount, category } =
+    todo;
+
   const formatDate = (dateString: string | null) => {
     if (!dateString) return null;
     try {

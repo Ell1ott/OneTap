@@ -31,22 +31,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
       {object?.msg && (
         <FadeInText className="text-lg leading-5" endOpacity={0.7} text={object?.msg || ''} />
       )}
-      {object?.title && (
-        <TodoPreviewCard
-          title={object.title}
-          type={object.type}
-          emoji={object.emoji}
-          note={object.note}
-          start={object.start}
-          end={object.end}
-          due={object.due}
-          softDue={object.softDue}
-          remindAt={object.remindAt}
-          repeat={object.repeat}
-          amount={object.amount}
-          category={object.category}
-        />
-      )}
+      {object?.title && <TodoPreviewCard todo={object} />}
     </View>
   );
 };

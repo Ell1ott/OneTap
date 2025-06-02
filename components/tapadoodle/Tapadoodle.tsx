@@ -54,7 +54,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <>
-      <View className="flex-row gap-4">
+      <View className="mb-2 flex-row gap-4">
         <Animated.View style={animatedStyles} className="my-2 justify-center self-start">
           <TapadoodleSvg width={35} height={33} />
         </Animated.View>
