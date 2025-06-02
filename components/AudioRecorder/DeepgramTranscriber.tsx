@@ -66,8 +66,10 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
           setTranscripts((prev) => {
             const newTranscripts = [...prev];
             newTranscripts[newTranscripts.length - 1] = transcriptText;
-            if (data.speech_final) {
+            if (data.is_final) {
               newTranscripts.push('');
+            }
+            if (data.speech_final) {
               setIsFinished(true);
             }
             return newTranscripts;
@@ -133,6 +135,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   useEffect(() => {
     if (isFinished) {
       finishCallback?.(getCompleteTranscript());
+      setIsFinished(false);
     }
   }, [isFinished]);
 
