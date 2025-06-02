@@ -27,6 +27,7 @@ export const TapadoodleBox = () => {
   // const [dynamicHeight, setDynamicHeight] = useState(false);
 
   const expandedPadding = 24;
+  const openWidth = screenWidth - expandedPadding * 2;
 
   const backgroundOpacity = useSharedValue(0);
 
@@ -36,11 +37,9 @@ export const TapadoodleBox = () => {
   const borderRadius = useSharedValue(56 / 2);
   const y = useSharedValue(8);
   const paddingX = useSharedValue(10);
-  const paddingY = useSharedValue(10);
+  const paddingY = useSharedValue(7);
 
   const childrenRef = useRef<View>(null);
-
-  const openWidth = useRef(0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -80,13 +79,12 @@ export const TapadoodleBox = () => {
     y.value = withSpring(isOpen ? expandedPadding : 8, SPRING_CONFIG);
     backgroundOpacity.value = withSpring(isOpen ? 1 : 0, SPRING_CONFIG);
     paddingX.value = withSpring(isOpen ? 17 : 10, SPRING_CONFIG);
-    paddingY.value = withSpring(isOpen ? 17 : 10, SPRING_CONFIG);
+    paddingY.value = withSpring(isOpen ? 17 : 5, SPRING_CONFIG);
   }
   function Open() {
     setIsOpen(true);
     AnimateSprings(true);
-    openWidth.current = screenWidth - expandedPadding * 2;
-    width.value = withSpring(openWidth.current, SPRING_CONFIG);
+    width.value = withSpring(openWidth, SPRING_CONFIG);
   }
 
   function Close() {
@@ -118,7 +116,7 @@ export const TapadoodleBox = () => {
 
   const handleLayout = (event: LayoutChangeEvent) => {
     console.log('Heigh of children: ', event.nativeEvent.layout.height);
-    if (width.value === openWidth.current) {
+    if (width.value === openWidth) {
       height.value = withSpring(
         event.nativeEvent.layout.height + paddingY.value * 2,
         SPRING_CONFIG
@@ -131,9 +129,7 @@ export const TapadoodleBox = () => {
     <>
       <Animated.View
         className="absolute top-10 h-10 w-10 items-center self-center"
-        style={testAnimatedStyle}>
-        <AppText className="text-xl font-medium leading-6">Tapadoodle</AppText>
-      </Animated.View>
+        style={testAnimatedStyle}></Animated.View>
       <Animated.View
         className="absolute bottom-0 z-10 items-center self-center"
         style={[
@@ -145,11 +141,11 @@ export const TapadoodleBox = () => {
           onPressIn={handlePressIn}
           onPress={() => (isOpen ? Close() : Open())}>
           <AnimatedPressable
-            className="absolute h-full rounded-full bg-middleground shadow-2xl"
+            className="absolute h-full overflow-hidden rounded-full bg-middleground shadow-2xl"
             style={[animatedStyle]}
             onPress={Open}
             onPressIn={handlePressIn}>
-            <View className="h-[20rem] w-full">
+            <View className="h-[20rem] w-full" style={{ width: openWidth - 17 * 2 }}>
               <View ref={childrenRef} onLayout={handleLayout}>
                 <Tapadoodle isOpen={isOpen} />
               </View>
