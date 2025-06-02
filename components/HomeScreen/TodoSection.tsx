@@ -7,33 +7,28 @@ import { PartialDate } from 'components/Todos/types';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';
+import { useTasksStore } from 'stores/tasksStore';
+
 interface TodoSectionProps {
   title: string;
   tasks: Task[];
-  updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   onCategoryPress: (category: string) => void;
 }
 
-export const TodoSection: React.FC<TodoSectionProps> = ({
-  title,
-  tasks,
-  updateTasks,
-  onCategoryPress,
-}) => {
+export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, onCategoryPress }) => {
+  const { addTask } = useTasksStore();
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string | undefined>();
 
   const handleAddTodo = () => {
     const newId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
-    updateTasks((tasks) => [
-      ...tasks,
-      new Todo({
-        id: newId,
-        title: '',
-        completed: [false],
-        note: '',
-        end: new PartialDate(new Date()),
-      }),
-    ]);
+    const newTodo = new Todo({
+      id: newId,
+      title: '',
+      completed: [false],
+      note: '',
+      end: new PartialDate(new Date()),
+    });
+    addTask(newTodo);
     setLastAddedTodoId(newId);
   };
 
@@ -47,12 +42,7 @@ export const TodoSection: React.FC<TodoSectionProps> = ({
           <Plus size={20} />
         </HapticTab>
       </View>
-      <TodoList
-        tasks={tasks}
-        updateTasks={updateTasks}
-        lastAddedTodoId={lastAddedTodoId}
-        onCategoryPress={onCategoryPress}
-      />
+      <TodoList tasks={tasks} lastAddedTodoId={lastAddedTodoId} onCategoryPress={onCategoryPress} />
     </View>
   );
 };

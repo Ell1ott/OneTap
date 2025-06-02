@@ -5,12 +5,10 @@ import { useEffect, useState } from 'react';
 
 export const TodoList = ({
   tasks,
-  updateTasks,
   lastAddedTodoId,
   onCategoryPress,
 }: {
   tasks: Task[];
-  updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   lastAddedTodoId?: string;
   onCategoryPress: (category: string) => void;
 }) => {
@@ -38,7 +36,6 @@ export const TodoList = ({
             key={task.id}
             item={task}
             shouldFocus={task.id === focusedTodoId}
-            updateTasks={updateTasks}
             classname={i != 0 ? 'border-t-[1.5px] border-t-foregroundMuted/15' : ''}
             onCategoryPress={onCategoryPress}
           />

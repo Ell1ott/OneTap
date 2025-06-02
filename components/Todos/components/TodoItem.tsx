@@ -17,12 +17,13 @@ import { Task, TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
 import { HapticTab } from 'components/HapticTab';
 import { PlatformPressable } from '@react-navigation/elements';
+import { useTasksStore } from 'stores/tasksStore';
+
 export const TodoItem = ({
   item,
   editing = false,
   onnoteChange,
   shouldFocus = false,
-  updateTasks,
   classname,
   onCategoryPress,
 }: {
@@ -30,10 +31,10 @@ export const TodoItem = ({
   editing?: boolean;
   onnoteChange?: (note: string) => void;
   shouldFocus?: boolean;
-  updateTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   classname?: string;
   onCategoryPress: (category: string) => void;
 }) => {
+  const { updateTask } = useTasksStore();
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
@@ -85,9 +86,10 @@ export const TodoItem = ({
   }
 
   function updateTodo(updates: Partial<Todo | Event | TaskCategory>) {
-    updateTasks(
-      (tasks) => [...tasks.map((t) => (t.id === item.id ? Object.assign(t, updates) : t))] as Task[]
-    );
+    updateTask(item.id, (task) => {
+      Object.assign(task, updates);
+      return task;
+    });
   }
 
   useEffect(() => {

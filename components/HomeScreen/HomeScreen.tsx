@@ -12,17 +12,8 @@ import CategoryScreen from 'components/CategoryScreen';
 import { useTasksStore } from 'stores/tasksStore';
 
 export function HomeScreen() {
-  const { tasks, setTasks: setTasksStore } = useTasksStore();
+  const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
-
-  // Wrapper function to match React.Dispatch<React.SetStateAction<Task[]>> signature
-  const setTasks = (value: React.SetStateAction<Task[]>) => {
-    if (typeof value === 'function') {
-      setTasksStore(value(tasks));
-    } else {
-      setTasksStore(value);
-    }
-  };
 
   return (
     <>
@@ -45,19 +36,16 @@ export function HomeScreen() {
           <TodoSection
             title="Today"
             tasks={tasks.filter((t) => t.isToday())}
-            updateTasks={setTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Priority"
             tasks={tasks.filter((t) => t.isPriority())}
-            updateTasks={setTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Other"
             tasks={tasks.filter((t) => !t.isToday() && !t.isPriority())}
-            updateTasks={setTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>
