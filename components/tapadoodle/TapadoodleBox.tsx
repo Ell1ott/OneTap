@@ -11,8 +11,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import TapadoodleSvg from '../assets/tapadoodle.svg';
-import AppText from './base/AppText';
-import DeepgramTranscriber from './AudioRecorder/DeepgramTranscriber';
+import AppText from '../base/AppText';
+import DeepgramTranscriber from '../AudioRecorder/DeepgramTranscriber';
 import { Tapadoodle } from './Tapadoodle';
 const SPRING_CONFIG = {
   damping: 30,

@@ -8,7 +8,7 @@ interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
   textClassName?: string;
-  finishCallback?: () => void;
+  finishCallback?: (transcript: string) => void;
 }
 
 const apiKey = process.env.EXPO_PUBLIC_DEEPGRAM_API_KEY;
@@ -24,6 +24,8 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
+
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
@@ -66,7 +68,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
             newTranscripts[newTranscripts.length - 1] = transcriptText;
             if (data.speech_final) {
               newTranscripts.push('');
-              finishCallback?.();
+              setIsFinished(true);
             }
             return newTranscripts;
           });
@@ -127,6 +129,12 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       .trim();
     // return t;
   };
+
+  useEffect(() => {
+    if (isFinished) {
+      finishCallback?.(getCompleteTranscript());
+    }
+  }, [isFinished]);
 
   // const exampleTexts = "Hey, I really wanna talk more with Tim. I would optimally call him every 5 days".split(' ');
   // const i = useRef<number>(0);

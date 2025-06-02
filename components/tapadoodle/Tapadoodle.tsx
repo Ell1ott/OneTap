@@ -1,10 +1,10 @@
 import { View } from 'react-native';
 import TapadoodleSvg from '../assets/tapadoodle.svg';
-import { DeepgramTranscriber } from './AudioRecorder/DeepgramTranscriber';
+import { DeepgramTranscriber } from '../AudioRecorder/DeepgramTranscriber';
 import { useEffect, useRef, useState } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import AppText from './base/AppText';
+import AppText from '../base/AppText';
 
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const [active, setActive] = useState<boolean>(false);
@@ -61,8 +61,8 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
           textClassName="text-xl leading-6 overflow-visible"
           audioData={transcriptionData}
           isRecording={isRecording}
-          finishCallback={() => {
-            console.log('finished transcribing');
+          finishCallback={(transcript) => {
+            console.log('finished transcribing', transcript);
             stopRecording();
           }}
         />

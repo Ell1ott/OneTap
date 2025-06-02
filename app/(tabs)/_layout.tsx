@@ -8,7 +8,7 @@ import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
 import { experimental_useObject, useChat } from '@ai-sdk/react';
 import { fetch as expoFetch } from 'expo/fetch';
-import { TapadoodleBox } from 'components/TapadoodleBox';
+import { TapadoodleBox } from 'components/tapadoodle/TapadoodleBox';
 import { z } from 'zod';
 export default function TabLayout() {
   // Get the foregroundMuted color from the theme
