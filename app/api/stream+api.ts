@@ -95,7 +95,7 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
   "note": "",
   "start": "Date(today)",
   "end": null,
-  "due": null,
+  "due": "Date(today + 2 weeks)",
   "softDue": null,
   "remindAt": null,
   "repeat": { "weeks": 2 },
@@ -171,9 +171,9 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
   "title": "Walk the dog",
   "type": "todo",
   "note": "",
-  "start": "Date(today)",
+  "start": "Date(today + 1 day)",
   "end": null,
-  "due": "Date(today)",
+  "due": "Date(today + 1 day)", // because it has to be completed the SAME day
   "softDue": null,
   "remindAt": null,
   "repeat": { "days": 2 },
@@ -222,12 +222,9 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
 \`\`\`
 
 ## SPECIAL NOTES
-- Use casual, shortened language for titles
 - start is important for repeating tasks (when the cycle begins)
 - Soft reminders happen automatically ~30min before due times
 - If someone says "remind me", set remindAt even if they don't specify when
-- For grocery items, default category to 'Groceries'
-- Choose emojis that clearly represent the task
 - Amount is only for tasks that need to be done multiple times in one period
 - The input will be a transcript of a voice message, some words may be misheard or misinterpreted, make sure to correct them, based on whats realistically said.
 `;
@@ -239,6 +236,8 @@ export async function POST(req: Request) {
 
   const ObjectStream = streamObject({
     model: openai('gpt-4.1-mini'),
+    temperature: 1.5,
+
     output: 'no-schema',
     messages: [
       {
