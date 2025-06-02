@@ -16,8 +16,8 @@ msg: String;
 title: String;
 type: 'todo' | 'event';
 note: String;
-start: Date(specific date) | null;
-end: Date(specific date) | null;
+start: Date(specific date) | Date(specific date)[] | null;
+end: Date(specific date) | Date(specific date)[] | null;
 due: Date(specific date) | null;
 softDue: Date(specific date) | null;
 remindAt: Date(specific date and time) | null;
@@ -40,9 +40,9 @@ emoji: 'relevant emoji';
 
 **note**: Extra information, ONLY if necessary. Otherwise leave empty
 
-**start**: When the task/event begins (required for events, important for repeating tasks)
+**start**: When the task/event begins (required for events, important for repeating tasks). Can be a single date or an array of dates.
 
-**end**: When the event ends (only for events with duration, otherwise null)
+**end**: When the event ends (only for events with duration, otherwise null). Can be a single date or an array of dates.
 **due**: Hard deadline - must be completed by this date/time
 **softDue**: Flexible target date - goal to complete by but not critical
 **remindAt**: Specific time to send a reminder notification

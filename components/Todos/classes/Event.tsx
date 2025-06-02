@@ -5,18 +5,46 @@ import { Task } from './Task';
 import { HumanDate } from '../types';
 
 export class Event extends Task {
-  start: HumanDate;
-  end?: HumanDate;
+  start: HumanDate[];
+  end?: HumanDate[];
   cancelled?: boolean;
 
-  constructor(data: Partial<Event> & { id: string; title: string; start: HumanDate }) {
+  constructor(
+    data: Partial<Task> & {
+      id: string;
+      title: string;
+      start: HumanDate | HumanDate[];
+      end?: HumanDate | HumanDate[];
+      cancelled?: boolean;
+    }
+  ) {
     super(data);
-    this.start = data.start;
-    this.end = data.end;
+    if (data.start instanceof HumanDate) {
+      this.start = [data.start];
+    } else {
+      this.start = data.start;
+    }
+    if (data.end instanceof HumanDate) {
+      this.end = [data.end];
+    } else {
+      this.end = data.end;
+    }
+
     this.cancelled = data.cancelled;
   }
 
-  isToday = () => this.start.isToday();
+  getNextStart = () => {
+    const now = new Date();
+    return this.start.sort((a, b) => -a.timeTo(now).toDays() - -b.timeTo(now).toDays())[0];
+  };
+
+  getNextEnd = () => {
+    const now = new Date();
+    const futureDates = this.end?.filter((date) => date.timeTo(now).toDays() > 0);
+    return futureDates?.sort((a, b) => a.timeTo(now).toDays() - b.timeTo(now).toDays())[0];
+  };
+
+  isToday = () => this.getNextStart().isToday();
 
   renderSubtext = () => (
     <View className="rounded-sm">
@@ -25,13 +53,13 @@ export class Event extends Task {
   );
 
   renderTimeInfo = () => {
-    if (this.start.isToday()) {
+    if (this.getNextStart().isToday()) {
       return (
         <>
           <AppText>At</AppText>
           <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foreground">
             <AppText>
-              {this.start.date.toLocaleTimeString('en-US', {
+              {this.getNextStart().date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
@@ -43,14 +71,14 @@ export class Event extends Task {
       );
     }
 
-    const atString = this.start.isTimeKnown
+    const atString = this.getNextStart().isTimeKnown
       ? ' at ' +
-        this.start.date.toLocaleTimeString('en-US', {
+        this.getNextStart().date.toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
         })
       : '';
-    if (this.start.isTomorrow()) {
+    if (this.getNextStart().isTomorrow()) {
       return (
         <>
           <AppText>Tomorrow{atString}</AppText>
@@ -58,14 +86,14 @@ export class Event extends Task {
       );
     }
 
-    const daysToNow = -this.start.timeTo(new Date()).toDays();
+    const daysToNow = -this.getNextStart().timeTo(new Date()).toDays();
 
     console.log('daysToNow', daysToNow);
 
     if (daysToNow < 7) {
       return (
         <AppText>
-          {this.start.date.toLocaleDateString('en-US', { weekday: 'long' })}
+          {this.getNextStart().date.toLocaleDateString('en-US', { weekday: 'long' })}
           {atString}
         </AppText>
       );
@@ -76,7 +104,7 @@ export class Event extends Task {
 
     return (
       <AppText>
-        {this.start.toLocaleString()}
+        {this.getNextStart().toLocaleString()}
         {' - '}
         in {weeksToNow} weeks{days > 0 && ` and ${days} days`}
       </AppText>

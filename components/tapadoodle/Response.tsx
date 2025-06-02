@@ -43,8 +43,12 @@ export const Response = ({ transcript }: { transcript: string }) => {
       title: todo.title,
       emoji: todo.emoji,
       note: todo.note,
-      start: todo.start ? HumanDate.fromNaturalString(todo.start) : undefined,
-      end: todo.end ? HumanDate.fromNaturalString(todo.end) : undefined,
+      start: todo.start
+        ? HumanDate.fromNaturalString(Array.isArray(todo.start) ? todo.start[0] : todo.start)
+        : undefined,
+      end: todo.end
+        ? HumanDate.fromNaturalString(Array.isArray(todo.end) ? todo.end[0] : todo.end)
+        : undefined,
       softDue: todo.softDue ? HumanDate.fromNaturalString(todo.softDue) : undefined,
       remindAt: todo.remindAt ? HumanDate.fromNaturalString(todo.remindAt) : undefined,
       repeat: todo.repeat && !todo.repeatSoftly ? new Time(todo.repeat) : undefined,
@@ -54,17 +58,31 @@ export const Response = ({ transcript }: { transcript: string }) => {
     });
   };
 
+  const toHumanDateArray = (date: string | string[] | null): HumanDate[] | undefined => {
+    if (!date) return undefined;
+    if (Array.isArray(date)) {
+      return date
+        .map((date) => HumanDate.fromNaturalString(date))
+        .filter((date) => date !== undefined);
+    }
+    const humanDate = HumanDate.fromNaturalString(date);
+    if (!humanDate) return undefined;
+    return [humanDate];
+  };
+
   const toEventClass = (event: TodoAIData) => {
     if (!event.start) return null;
-    const start = HumanDate.fromNaturalString(event.start);
-    if (!start) return null;
+
+    const starts = toHumanDateArray(event.start);
+
+    if (!starts) return null;
     return new Event({
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       title: event.title,
       emoji: event.emoji,
       note: event.note,
-      start: start,
-      end: event.end ? HumanDate.fromNaturalString(event.end) : undefined,
+      start: starts,
+      end: event.end ? toHumanDateArray(event.end) : undefined,
     });
   };
   const object = _object as any;

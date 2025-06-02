@@ -9,9 +9,9 @@ export interface TodoAIData {
   type: 'todo' | 'event';
   emoji?: string;
   note?: string;
-  start?: string | null;
-  end?: string | null;
-  due?: string | null;
+  start?: string | string[] | null;
+  end?: string | string[] | null;
+  due?: string | string[] | null;
   softDue?: string | null;
   remindAt?: string | null;
   repeat?: { days?: number; weeks?: number; months?: number } | null;
@@ -24,8 +24,11 @@ interface TodoPreviewCardProps {
   todo: TodoAIData;
 }
 
-const formatDate = (dateString: string | null) => {
+const formatDate = (dateString: string | string[] | null) => {
   if (!dateString) return null;
+  if (Array.isArray(dateString)) {
+    return dateString.map((date) => HumanDate.fromNaturalString(date)?.toLocaleString()).join(', ');
+  }
   const date = HumanDate.fromNaturalString(dateString);
   if (!date) return null;
   return date.toLocaleString();
