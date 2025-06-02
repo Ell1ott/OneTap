@@ -64,11 +64,11 @@ emoji: 'relevant emoji';
 ### Date/Time Parsing
 - "today" → \`"Date(today)"\`
 - "tomorrow" → \`"Date(tomorrow)"\`
-- "Thursday night" → \`"Date(Thursday 8:00 pm)"\`
+- "Thursday night" → \`"Date(this Thursday 8:00 pm)"\`
 - "before May 5th" → \`due: "Date(May 5th)"\`
-- "next Monday at 3pm" → \`"Date(next Monday 3:00 pm)"\`
+- "next Friday at 3pm" → \`"Date(next Friday 3:00 pm)"\`
 - "In about 3 days" -> "Date(Today + 3 days)"
-REMEMBER to only use exact days and numbers. ONLY use next if specified by the user.
+REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the user.
 
 ### Repetition Parsing
 - "every week" → repeat: { weeks: 1 }
@@ -151,11 +151,11 @@ REMEMBER to only use exact days and numbers. ONLY use next if specified by the u
   "title": "Take out trash",
   "type": "todo",
   "note": "",
-  "start": "Date(Thursday)",
+  "start": "Date(this Thursday)",
   "end": null,
-  "due": "Date(Thursday)",
+  "due": "Date(this Thursday)",
   "softDue": null,
-  "remindAt": "Date(Thursday 8:00 pm)",
+  "remindAt": "Date(this Thursday 8:00 pm)",
   "repeat": { "weeks": 1 },
   "repeatSoftly": false,
   "amount": null,
