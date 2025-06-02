@@ -16,6 +16,14 @@
     "plugins": [
       "@siteed/expo-audio-studio",
       [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
+      [
         "expo-font",
         {
           "android": {
