@@ -8,7 +8,7 @@ import { TodoAIData, TodoPreviewCard } from './TodoPreviewCard';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
 import { Todo } from 'components/Todos/classes';
 import { PartialDate, Time } from 'components/Todos/types';
-import { parseDate } from 'utils/dateUtils';
+import { parseNaturalDate } from 'utils/dateUtils';
 export const Response = ({ transcript }: { transcript: string }) => {
   const [responseMessage, setResponseMessage] = useState<string>('');
   const {
@@ -30,10 +30,14 @@ export const Response = ({ transcript }: { transcript: string }) => {
       title: todo.title,
       emoji: todo.emoji,
       note: todo.note,
-      start: todo.start ? new PartialDate(parseDate(todo.start) || undefined) : undefined,
-      end: todo.end ? new PartialDate(parseDate(todo.end) || undefined) : undefined,
-      softDue: todo.softDue ? new PartialDate(parseDate(todo.softDue) || undefined) : undefined,
-      remindAt: todo.remindAt ? new PartialDate(parseDate(todo.remindAt) || undefined) : undefined,
+      start: todo.start ? new PartialDate(parseNaturalDate(todo.start) || undefined) : undefined,
+      end: todo.end ? new PartialDate(parseNaturalDate(todo.end) || undefined) : undefined,
+      softDue: todo.softDue
+        ? new PartialDate(parseNaturalDate(todo.softDue) || undefined)
+        : undefined,
+      remindAt: todo.remindAt
+        ? new PartialDate(parseNaturalDate(todo.remindAt) || undefined)
+        : undefined,
       repeat: todo.repeat && !todo.repeatSoftly ? new Time(todo.repeat) : undefined,
       softRepeat: todo.repeatSoftly && todo.repeat ? new Time(todo.repeat) : undefined,
       amount: todo.amount || undefined,

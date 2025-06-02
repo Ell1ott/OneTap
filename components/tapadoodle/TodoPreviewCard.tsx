@@ -3,6 +3,7 @@ import AppText from 'components/base/AppText';
 import { Calendar, Clock, Repeat, AlertCircle } from 'lucide-react-native';
 import { Todo } from 'components/Todos/classes';
 import { PartialDate, Time } from 'components/Todos/types';
+import { parseNaturalDate } from 'utils/dateUtils';
 
 export interface TodoAIData {
   title: string;
@@ -26,7 +27,8 @@ interface TodoPreviewCardProps {
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return null;
-  const date = new Date(dateString);
+  const date = parseNaturalDate(dateString);
+  if (!date) return null;
   return date.toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
@@ -50,7 +52,7 @@ export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {
 
   // const typeColor =
   //   type === 'event' ? 'bg-blue-500/20 border-blue-500/30' : 'bg-accent/20 border-accent/30';
-  const typeIcon = type === 'event' ? 'bg-blue-500/30' : 'bg-accent/30';
+  const typeIcon = type === 'event' ? 'bg-yellow-300/90' : 'bg-accent/30';
 
   return (
     <View className={`mt-3 rounded-lg bg-background/70 p-3`}>

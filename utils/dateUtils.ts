@@ -75,7 +75,7 @@ export const isSameDay = (date1: Date, date2: Date): boolean => {
   );
 };
 
-export const parseDate = (dateString: string | null) => {
+export const parseNaturalDate = (dateString: string | null) => {
   if (!dateString) return null;
   try {
     // Remove 'Date(' and ')' wrapper if present
@@ -91,6 +91,7 @@ export const parseDate = (dateString: string | null) => {
       // Fallback to regular Date constructor
       date = new Date(cleanDateString);
     }
+    return date;
   } catch {
     return null;
   }
