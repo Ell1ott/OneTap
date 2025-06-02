@@ -19,11 +19,23 @@ export class HumanDate {
   timeTo(dateObj: HumanDate | Date): Time {
     // Calculate the this date and the function date
     const date = dateObj instanceof Date ? dateObj : dateObj.date;
-    const dis = date.getTime() - this.date.getTime();
+    const dis = this.isTimeKnown
+      ? date.getTime() - this.date.getTime()
+      : date.setHours(0, 0, 0, 0) - this.date.setHours(0, 0, 0, 0);
     return new Time({
       minutes: dis / 1000 / 60,
     });
   }
+
+  toLocaleString = () => {
+    return this.date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: this.isTimeKnown ? '2-digit' : undefined,
+      minute: this.isTimeKnown ? '2-digit' : undefined,
+    });
+  };
 
   isToday = () => isToday(this.date);
   isTomorrow = () => isTomorrow(this.date);

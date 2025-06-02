@@ -25,7 +25,7 @@ export class Todo extends Task {
     } else if (this.lastDone) {
       this.doneTimes = [this.lastDone];
     }
-    this.completed = data.completed || [false];
+    this.completed = data.completed || (this.amount ? Array(this.amount).fill(false) : [false]);
   }
 
   isToday = () => this.end?.isToday() || false;

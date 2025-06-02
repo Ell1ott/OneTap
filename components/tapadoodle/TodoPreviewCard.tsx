@@ -2,8 +2,7 @@ import { View } from 'react-native';
 import AppText from 'components/base/AppText';
 import { Calendar, Clock, Repeat, AlertCircle } from 'lucide-react-native';
 import { Todo } from 'components/Todos/classes';
-import { PartialDate, Time } from 'components/Todos/types';
-import { parseNaturalDate } from 'utils/dateUtils';
+import { HumanDate } from 'components/Todos/types';
 
 export interface TodoAIData {
   title: string;
@@ -27,15 +26,9 @@ interface TodoPreviewCardProps {
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return null;
-  const date = parseNaturalDate(dateString);
+  const date = HumanDate.fromNaturalString(dateString);
   if (!date) return null;
-  return date.toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  return date.toLocaleString();
 };
 
 export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {

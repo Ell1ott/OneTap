@@ -47,6 +47,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
         sample_rate: 16000, // Match the recorder's sample rate
         channels: 1, // Mono audio
         endpointing: 1000,
+        utterance_end_ms: 1000,
       });
 
       // Currently researching which model is best for this use case
@@ -61,6 +62,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
       connection.on(LiveTranscriptionEvents.Transcript, (data) => {
         const transcriptText: string = data.channel.alternatives[0].transcript;
+        console.log('transcriptText', data);
         if (transcriptText) {
           setTranscript(transcriptText);
           setTranscripts((prev) => {
@@ -69,13 +71,15 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
             if (data.is_final) {
               newTranscripts.push('');
             }
-            if (data.speech_final) {
-              setIsFinished(true);
-            }
             return newTranscripts;
           });
           console.log('newTranscription', transcriptText);
         }
+      });
+
+      connection.on(LiveTranscriptionEvents.UtteranceEnd, (data) => {
+        console.log('utteranceEnd', data);
+        setIsFinished(true);
       });
 
       connection.on('error', (error) => {
