@@ -8,6 +8,7 @@ interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
   textClassName?: string;
+  finishCallback?: () => void;
 }
 
 const apiKey = process.env.EXPO_PUBLIC_DEEPGRAM_API_KEY;
@@ -16,6 +17,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   isRecording,
   audioData,
   textClassName,
+  finishCallback,
 }) => {
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
@@ -42,6 +44,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
         encoding: 'linear16', // For PCM 16-bit audio
         sample_rate: 16000, // Match the recorder's sample rate
         channels: 1, // Mono audio
+        endpointing: 1000,
       });
 
       // Currently researching which model is best for this use case
@@ -61,8 +64,9 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
           setTranscripts((prev) => {
             const newTranscripts = [...prev];
             newTranscripts[newTranscripts.length - 1] = transcriptText;
-            if (data.is_final) {
+            if (data.speech_final) {
               newTranscripts.push('');
+              finishCallback?.();
             }
             return newTranscripts;
           });

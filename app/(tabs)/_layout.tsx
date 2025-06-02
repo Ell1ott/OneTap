@@ -40,7 +40,7 @@ export default function TabLayout() {
   }, [object]);
 
   useEffect(() => {
-    submit('hi');
+    submit('I got volleyball practice half past 5 tmrw');
   }, []);
 
   return (

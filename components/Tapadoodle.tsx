@@ -38,11 +38,15 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
         setVolumeScale(newScale);
       });
     } else if (isRecording) {
-      console.log('ending recording');
-      endRecording();
-      setVolumeScale(1);
+      stopRecording();
     }
   }, [isOpen]);
+
+  function stopRecording() {
+    console.log('ending recording');
+    endRecording();
+    setVolumeScale(1);
+  }
 
   const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
 
@@ -56,7 +60,11 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
         <DeepgramTranscriber
           textClassName="text-xl leading-6 overflow-visible"
           audioData={transcriptionData}
-          isRecording={isOpen}
+          isRecording={isRecording}
+          finishCallback={() => {
+            console.log('finished transcribing');
+            stopRecording();
+          }}
         />
       </View>
     </View>
