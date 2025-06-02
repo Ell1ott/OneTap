@@ -5,10 +5,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import AppText from '../base/AppText';
+import { Response } from './response';
 
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const [active, setActive] = useState<boolean>(false);
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
+  const [transcript, setTranscript] = useState<string>('');
 
   const { transcriptionData, isRecording, requestPermissions, beginRecording, endRecording } =
     useAudioRecording();
@@ -64,8 +66,10 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
           finishCallback={(transcript) => {
             console.log('finished transcribing', transcript);
             stopRecording();
+            setTranscript(transcript);
           }}
         />
+        {transcript && <Response transcript={transcript} />}
       </View>
     </View>
   );

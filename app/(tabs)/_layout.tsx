@@ -30,18 +30,6 @@ export default function TabLayout() {
   // useEffect(() => {
   //   console.log(messages);
   // }, [messages]);
-  const { object, submit, isLoading } = experimental_useObject({
-    api: '/api/stream',
-    schema: z.unknown(),
-  });
-
-  useEffect(() => {
-    console.log(object);
-  }, [object]);
-
-  useEffect(() => {
-    submit('I got volleyball practice half past 5 tmrw');
-  }, []);
 
   return (
     <>
