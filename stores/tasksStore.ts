@@ -49,6 +49,22 @@ const createInitialTasks = (): Task[] => [
     lastDone: new HumanDate(new Date(new Date().setDate(3))),
     emoji: '👋',
   }),
+  new Todo({
+    id: '6',
+    title: 'Buy milk',
+    note: 'Get the organic one',
+    completed: [false],
+    category: 'groceries',
+    emoji: '🥛',
+  }),
+  new Todo({
+    id: '7',
+    title: 'Get fresh vegetables',
+    note: 'Carrots, broccoli, spinach',
+    completed: [false],
+    category: 'groceries',
+    emoji: '🥬',
+  }),
   new TaskCategory({
     id: '2',
     title: 'Groceries',

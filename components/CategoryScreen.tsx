@@ -16,150 +16,11 @@ import Animated, {
   useAnimatedReaction,
 } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
+import { useTasksStore } from 'stores/tasksStore';
 
 import { BackHandler } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
-
-// Mock data for different categories
-const getMockDataForCategory = (categoryName: string): Task[] => {
-  switch (categoryName.toLowerCase()) {
-    case 'groceries':
-      return [
-        new Todo({
-          id: 'g1',
-          title: 'Buy milk',
-          completed: [false],
-          category: 'groceries',
-        }),
-        new Todo({
-          id: 'g2',
-          title: 'Get bread',
-          completed: [true],
-          category: 'groceries',
-        }),
-        new Todo({
-          id: 'g3',
-          title: 'Fresh vegetables',
-          note: 'Carrots, broccoli, spinach',
-          completed: [false],
-          category: 'groceries',
-        }),
-        new Todo({
-          id: 'g4',
-          title: 'Chicken breast',
-          completed: [false],
-          category: 'groceries',
-        }),
-        new Todo({
-          id: 'g5',
-          title: 'Pasta and sauce',
-          completed: [false],
-          category: 'groceries',
-        }),
-        new TaskCategory({
-          id: 'gc1',
-          title: 'Pantry Items',
-          note: '4 items',
-        }),
-        new TaskCategory({
-          id: 'gc2',
-          title: 'Frozen Foods',
-          note: '2 items',
-        }),
-      ];
-
-    case 'homework':
-      return [
-        new Todo({
-          id: 'h1',
-          title: 'Math Assignment Chapter 5',
-          end: new HumanDate(new Date(new Date()), true),
-          completed: [false],
-          category: 'homework',
-        }),
-        new Todo({
-          id: 'h2',
-          title: 'History Essay',
-          note: 'World War II causes and effects',
-          end: new HumanDate(new Date(new Date()), true),
-          completed: [false],
-          category: 'homework',
-        }),
-        new Todo({
-          id: 'h3',
-          title: 'Chemistry Lab Report',
-          completed: [true],
-          category: 'homework',
-        }),
-        new Event({
-          id: 'h4',
-          title: 'Group Study Session',
-          start: new HumanDate(new Date(new Date().setHours(19, 0, 0, 0)), true),
-        }),
-        new TaskCategory({
-          id: 'hc1',
-          title: 'Science Projects',
-          note: '2 urgent',
-        }),
-      ];
-
-    case 'work':
-      return [
-        new Todo({
-          id: 'w1',
-          title: 'Finish quarterly report',
-          end: HumanDate.fromNaturalString('tomorrow'),
-          completed: [false],
-          category: 'work',
-        }),
-        new Todo({
-          id: 'w2',
-          title: 'Review team performance',
-          completed: [false],
-          category: 'work',
-        }),
-        new Event({
-          id: 'w3',
-          title: 'Team Meeting',
-          start: HumanDate.fromNaturalString('tomorrow 2pm')!,
-        }),
-        new Todo({
-          id: 'w4',
-          title: 'Update project documentation',
-          completed: [true],
-          category: 'work',
-        }),
-        new TaskCategory({
-          id: 'wc1',
-          title: 'Client Projects',
-          note: '5 active',
-        }),
-      ];
-
-    default:
-      return [
-        new Todo({
-          id: 'd1',
-          title: `Sample task for ${categoryName}`,
-          completed: [false],
-          category: categoryName,
-        }),
-        new Todo({
-          id: 'd2',
-          title: 'Another sample task',
-          note: 'This is a note',
-          completed: [false],
-          category: categoryName,
-        }),
-        new TaskCategory({
-          id: 'dc1',
-          title: 'Subcategory',
-          note: '3 items',
-        }),
-      ];
-  }
-};
 
 export default function CategoryScreen({
   category,
@@ -168,8 +29,18 @@ export default function CategoryScreen({
   category: string;
   onClose: () => void;
 }) {
-  const [tasks, setTasks] = useState<Task[]>(getMockDataForCategory(category || ''));
+  const { tasks, addTask } = useTasksStore();
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
+
+  // Filter tasks by category
+  const categoryTasks = tasks.filter((task) => {
+    if (task instanceof Todo) {
+      return task.category?.toLowerCase() === category.toLowerCase();
+    }
+    // For TaskCategory items, you might want to include them based on some logic
+    // For now, let's exclude them from category filtering
+    return false;
+  });
 
   const categoryName = category?.charAt(0).toUpperCase() + category?.slice(1) || 'Category';
 
@@ -207,7 +78,7 @@ export default function CategoryScreen({
       completed: [false],
       category: category || '',
     });
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+    addTask(newTask);
     setLastAddedTodoId(newId);
   };
 
@@ -258,11 +129,11 @@ export default function CategoryScreen({
     };
   });
 
-  const completedCount = tasks.filter(
+  const completedCount = categoryTasks.filter(
     (task) => task instanceof Todo && task.completed?.every(Boolean)
   ).length;
 
-  const totalTodos = tasks.filter((task) => task instanceof Todo).length;
+  const totalTodos = categoryTasks.filter((task) => task instanceof Todo).length;
   const pendingCount = totalTodos - completedCount;
 
   return (
@@ -312,14 +183,30 @@ export default function CategoryScreen({
               <AppText className="text-base leading-5 text-foregroundMuted">
                 {pendingCount > 0
                   ? `${pendingCount} task${pendingCount !== 1 ? 's' : ''} remaining${completedCount > 0 ? `, ${completedCount} completed` : ''}`
-                  : 'All tasks completed! 🎉'}
+                  : totalTodos > 0
+                    ? 'All tasks completed! 🎉'
+                    : 'No tasks yet'}
               </AppText>
             </View>
 
             {/* Tasks List */}
-            {tasks.length > 0 && (
-              <TodoList tasks={tasks} lastAddedTodoId={lastAddedTodoId} onCategoryPress={onClose} />
+            {categoryTasks.length > 0 && (
+              <TodoList
+                tasks={categoryTasks}
+                lastAddedTodoId={lastAddedTodoId}
+                onCategoryPress={onClose}
+              />
             )}
+
+            {/* Empty state when no tasks */}
+            {categoryTasks.length === 0 && (
+              <View className="flex-1 items-center justify-center">
+                <AppText className="mb-4 text-center text-foregroundMuted">
+                  No tasks in this category yet.{'\n'}Add your first task below!
+                </AppText>
+              </View>
+            )}
+
             {/* Add Task Button */}
             <Pressable
               onPress={handleAddTask}
