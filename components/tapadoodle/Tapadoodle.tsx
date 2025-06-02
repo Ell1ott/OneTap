@@ -39,8 +39,11 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
       beginRecording((newScale) => {
         setVolumeScale(newScale);
       });
-    } else if (isRecording) {
-      stopRecording();
+    } else {
+      setTranscript(null);
+      if (isRecording) {
+        stopRecording();
+      }
     }
   }, [isOpen]);
 
