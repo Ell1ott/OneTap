@@ -54,7 +54,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
 
       <View className="min-h-10 flex-1 justify-center">
         <DeepgramTranscriber
-          textClassName="text-xl font-medium leading-6 overflow-visible"
+          textClassName="text-xl leading-6 overflow-visible"
           audioData={transcriptionData}
           isRecording={isOpen}
         />
