@@ -42,22 +42,31 @@ export class Event extends Task {
         </>
       );
     }
+
+    const atString = this.start.isTimeKnown
+      ? ' at ' +
+        this.start.date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      : '';
     if (this.start.isTomorrow()) {
       return (
         <>
-          <AppText>
-            Tomorrow
-            {this.start.isTimeKnown
-              ? ' at ' +
-                this.start.date.toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })
-              : ''}
-          </AppText>
+          <AppText>Tomorrow{atString}</AppText>
         </>
       );
     }
+
+    if (-this.start.timeTo(new Date()).toDays() < 7) {
+      return (
+        <AppText>
+          {this.start.date.toLocaleDateString('en-US', { weekday: 'long' })}
+          {atString}
+        </AppText>
+      );
+    }
+
     return <AppText>{this.start.date.toLocaleDateString('en-US', { weekday: 'long' })}</AppText>;
   };
 }
