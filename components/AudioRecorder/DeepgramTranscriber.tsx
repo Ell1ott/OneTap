@@ -39,7 +39,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       const deepgram = createClient(apiKey);
 
       const connection = deepgram.listen.live({
-        language: 'en',
+        language: 'multi',
         model: 'nova-3',
         smart_format: true,
         interim_results: true,
