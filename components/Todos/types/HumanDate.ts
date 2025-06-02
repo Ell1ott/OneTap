@@ -1,4 +1,4 @@
-import { isToday, parseNaturalDate } from 'utils/dateUtils';
+import { isToday, isTomorrow, parseNaturalDate } from 'utils/dateUtils';
 import { Time } from './Time';
 
 export class HumanDate {
@@ -26,4 +26,5 @@ export class HumanDate {
   }
 
   isToday = () => isToday(this.date);
+  isTomorrow = () => isTomorrow(this.date);
 }

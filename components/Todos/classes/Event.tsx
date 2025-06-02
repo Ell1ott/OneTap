@@ -19,17 +19,45 @@ export class Event extends Task {
   isToday = () => this.start.isToday();
 
   renderSubtext = () => (
-    <View className="mt-1 rounded-sm">
-      <View className="flex-row items-center gap-x-1">
-        <AppText>At</AppText>
-        <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foreground">
-          <AppText>
-            {this.start.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-            {/*
-           {' ' + getRelativeDateString(item.startTime)} */}
-          </AppText>
-        </View>
-      </View>
+    <View className="rounded-sm">
+      <View className="flex-row items-center gap-x-1">{this.renderTimeInfo()}</View>
     </View>
   );
+
+  renderTimeInfo = () => {
+    if (this.start.isToday()) {
+      return (
+        <>
+          <AppText>At</AppText>
+          <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foreground">
+            <AppText>
+              {this.start.date.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+              {/*
+           {' ' + getRelativeDateString(item.startTime)} */}
+            </AppText>
+          </View>
+        </>
+      );
+    }
+    if (this.start.isTomorrow()) {
+      return (
+        <>
+          <AppText>
+            Tomorrow
+            {this.start.isTimeKnown
+              ? ' at ' +
+                this.start.date.toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })
+              : ''}
+          </AppText>
+        </>
+      );
+    }
+    return <AppText>{this.start.date.toLocaleDateString('en-US', { weekday: 'long' })}</AppText>;
+  };
 }
