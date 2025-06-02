@@ -129,7 +129,7 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 \`\`\`json
 {
   "msg": "Added eggs to your shopping list! Time for some cooking adventures!",
-  "title": "Buy eggs",
+  "title": "Eggs", // No need to specify "buy" or "get" due to the category
   "type": "todo",
   "note": "",
   "start": null,
@@ -229,6 +229,7 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 - For grocery items, default category to 'Groceries'
 - Choose emojis that clearly represent the task
 - Amount is only for tasks that need to be done multiple times in one period
+- The input will be a transcript of a voice message, some words may be misheard or misinterpreted, make sure to correct them, based on whats realistically said.
 `;
 
 export async function POST(req: Request) {
