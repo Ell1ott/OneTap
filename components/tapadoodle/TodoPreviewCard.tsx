@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import AppText from 'components/base/AppText';
 import { Calendar, Clock, Repeat, AlertCircle } from 'lucide-react-native';
+import * as chrono from 'chrono-node';
 
 interface Todo {
   title: string;
@@ -28,7 +29,20 @@ export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {
   const formatDate = (dateString: string | null) => {
     if (!dateString) return null;
     try {
-      const date = new Date(dateString.replace('Date(', '').replace(')', ''));
+      // Remove 'Date(' and ')' wrapper if present
+      const cleanDateString = dateString.replace(/^Date\(/, '').replace(/\)$/, '');
+
+      // Try to parse with Chrono first for natural language dates
+      const chronoParsed = chrono.parseDate(cleanDateString);
+
+      let date: Date;
+      if (chronoParsed) {
+        date = chronoParsed;
+      } else {
+        // Fallback to regular Date constructor
+        date = new Date(cleanDateString);
+      }
+
       return date.toLocaleDateString('en-US', {
         weekday: 'short',
         month: 'short',
@@ -49,12 +63,12 @@ export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {
     return null;
   };
 
-  const typeColor =
-    type === 'event' ? 'bg-blue-500/20 border-blue-500/30' : 'bg-accent/20 border-accent/30';
+  // const typeColor =
+  //   type === 'event' ? 'bg-blue-500/20 border-blue-500/30' : 'bg-accent/20 border-accent/30';
   const typeIcon = type === 'event' ? 'bg-blue-500/30' : 'bg-accent/30';
 
   return (
-    <View className={`mt-3 rounded-lg border p-3 ${typeColor}`}>
+    <View className={`mt-3 rounded-lg bg-background/70 p-3`}>
       {/* Header */}
       <View className="mb-2 flex-row items-center justify-between">
         <View className="flex-row items-center gap-2">

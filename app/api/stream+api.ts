@@ -173,7 +173,7 @@ REMEMBER to only use exact days and numbers. NOTHING vague
   "note": "",
   "start": "Date(today)",
   "end": null,
-  "due": null,
+  "due": "Date(today)",
   "softDue": null,
   "remindAt": null,
   "repeat": { "days": 2 },
