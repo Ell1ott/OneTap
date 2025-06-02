@@ -53,24 +53,25 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
 
   return (
-    <View className="flex-row gap-6">
-      <Animated.View style={animatedStyles} className="my-1.5 justify-center self-start">
-        <TapadoodleSvg width={35} height={33} />
-      </Animated.View>
-
-      <View className="min-h-10 flex-1 justify-center">
-        <DeepgramTranscriber
-          textClassName="text-xl leading-6 overflow-visible"
-          audioData={transcriptionData}
-          isRecording={isRecording}
-          finishCallback={(transcript) => {
-            console.log('finished transcribing', transcript);
-            stopRecording();
-            setTranscript(transcript);
-          }}
-        />
-        {transcript && <Response transcript={transcript} />}
+    <>
+      <View className="flex-row gap-4">
+        <Animated.View style={animatedStyles} className="my-2 justify-center self-start">
+          <TapadoodleSvg width={35} height={33} />
+        </Animated.View>
+        <View className="min-h-10 flex-1 justify-center">
+          <DeepgramTranscriber
+            textClassName="text-xl leading-6 overflow-visible"
+            audioData={transcriptionData}
+            isRecording={isRecording}
+            finishCallback={(transcript) => {
+              console.log('finished transcribing', transcript);
+              stopRecording();
+              setTranscript(transcript);
+            }}
+          />
+        </View>
       </View>
-    </View>
+      {transcript && <Response transcript={transcript} />}
+    </>
   );
 };

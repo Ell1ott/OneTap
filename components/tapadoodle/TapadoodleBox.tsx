@@ -73,13 +73,13 @@ export const TapadoodleBox = () => {
   });
 
   function AnimateSprings(isOpen: boolean) {
-    height.value = withSpring(isOpen ? 45 + 17 * 2 : 52, SPRING_CONFIG);
+    height.value = withSpring(isOpen ? 45 + 20 * 2 : 52, SPRING_CONFIG);
 
     borderRadius.value = withSpring(isOpen ? 20 : 56 / 2, SPRING_CONFIG);
     y.value = withSpring(isOpen ? expandedPadding : 8, SPRING_CONFIG);
     backgroundOpacity.value = withSpring(isOpen ? 1 : 0, SPRING_CONFIG);
-    paddingX.value = withSpring(isOpen ? 17 : 10, SPRING_CONFIG);
-    paddingY.value = withSpring(isOpen ? 17 : 5, SPRING_CONFIG);
+    paddingX.value = withSpring(isOpen ? 20 : 10, SPRING_CONFIG);
+    paddingY.value = withSpring(isOpen ? 20 : 5, SPRING_CONFIG);
   }
   function Open() {
     setIsOpen(true);
@@ -146,7 +146,7 @@ export const TapadoodleBox = () => {
             onPress={Open}
             onPressIn={handlePressIn}>
             <View className="h-[20rem] w-full" style={{ width: openWidth - 17 * 2 }}>
-              <View ref={childrenRef} onLayout={handleLayout}>
+              <View ref={childrenRef} className="gap-2" onLayout={handleLayout}>
                 <Tapadoodle isOpen={isOpen} />
               </View>
             </View>
