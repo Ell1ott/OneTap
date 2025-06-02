@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import TapadoodleSvg from '../assets/tapadoodle.svg';
+import TapadoodleSvg from '../../assets/tapadoodle.svg';
 import { DeepgramTranscriber } from '../AudioRecorder/DeepgramTranscriber';
 import { useEffect, useRef, useState } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
@@ -10,7 +10,7 @@ import { Response } from './response';
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const [active, setActive] = useState<boolean>(false);
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
-  const [transcript, setTranscript] = useState<string>('');
+  const [transcript, setTranscript] = useState<string | null>(null);
 
   const { transcriptionData, isRecording, requestPermissions, beginRecording, endRecording } =
     useAudioRecording();

@@ -16,13 +16,10 @@ export const Response = ({ transcript }: { transcript: string }) => {
     schema: z.unknown(),
   });
   const object = _object as any;
-  useEffect(() => {
-    console.log(transcript);
 
-    useEffect(() => {
-      submit(transcript);
-    }, []);
-  }, [transcript]);
+  useEffect(() => {
+    submit(transcript);
+  }, []);
 
   useEffect(() => {
     console.log(object);
