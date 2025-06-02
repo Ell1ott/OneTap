@@ -58,7 +58,11 @@ export class Event extends Task {
       );
     }
 
-    if (-this.start.timeTo(new Date()).toDays() < 7) {
+    const daysToNow = -this.start.timeTo(new Date()).toDays();
+
+    console.log('daysToNow', daysToNow);
+
+    if (daysToNow < 7) {
       return (
         <AppText>
           {this.start.date.toLocaleDateString('en-US', { weekday: 'long' })}
@@ -67,6 +71,15 @@ export class Event extends Task {
       );
     }
 
-    return <AppText>{this.start.date.toLocaleDateString('en-US', { weekday: 'long' })}</AppText>;
+    const weeksToNow = Math.floor(daysToNow / 7);
+    const days = Math.floor(daysToNow) % 7;
+
+    return (
+      <AppText>
+        {this.start.toLocaleString()}
+        {' - '}
+        in {weeksToNow} weeks{days > 0 && ` and ${days} days`}
+      </AppText>
+    );
   };
 }
