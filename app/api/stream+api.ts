@@ -229,17 +229,26 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 - For grocery items, default category to 'Groceries'
 - Choose emojis that clearly represent the task
 - Amount is only for tasks that need to be done multiple times in one period
-
-Now please parse the following input: "I got volleyball practice next tuesday at 16.30"
 `;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const input = await req.json();
+
+  console.log(input);
 
   const ObjectStream = streamObject({
     model: openai('gpt-4.1-mini'),
     output: 'no-schema',
-    prompt: AIPrompt,
+    messages: [
+      {
+        role: 'system',
+        content: AIPrompt,
+      },
+      {
+        role: 'user',
+        content: input,
+      },
+    ],
     onError: (e) => console.log(e),
   });
 
