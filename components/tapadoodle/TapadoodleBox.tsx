@@ -82,6 +82,7 @@ export const TapadoodleBox = () => {
     paddingY.value = withSpring(isOpen ? 20 : 5, SPRING_CONFIG);
   }
   function Open() {
+    if (isOpen) return;
     setIsOpen(true);
     AnimateSprings(true);
     width.value = withSpring(openWidth, SPRING_CONFIG);
