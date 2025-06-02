@@ -1,3 +1,5 @@
+import * as chrono from 'chrono-node';
+
 /**
  * Checks if a given date is today
  * @param date - The date to check
@@ -71,4 +73,25 @@ export const isSameDay = (date1: Date, date2: Date): boolean => {
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
   );
+};
+
+export const parseDate = (dateString: string | null) => {
+  if (!dateString) return null;
+  try {
+    // Remove 'Date(' and ')' wrapper if present
+    const cleanDateString = dateString.replace(/^Date\(/, '').replace(/\)$/, '');
+
+    // Try to parse with Chrono first for natural language dates
+    const chronoParsed = chrono.parseDate(cleanDateString);
+
+    let date: Date;
+    if (chronoParsed) {
+      date = chronoParsed;
+    } else {
+      // Fallback to regular Date constructor
+      date = new Date(cleanDateString);
+    }
+  } catch {
+    return null;
+  }
 };

@@ -1,9 +1,10 @@
 import { View } from 'react-native';
 import AppText from 'components/base/AppText';
 import { Calendar, Clock, Repeat, AlertCircle } from 'lucide-react-native';
-import * as chrono from 'chrono-node';
+import { Todo } from 'components/Todos/classes';
+import { PartialDate, Time } from 'components/Todos/types';
 
-interface Todo {
+export interface TodoAIData {
   title: string;
   type: 'todo' | 'event';
   emoji?: string;
@@ -14,46 +15,30 @@ interface Todo {
   softDue?: string | null;
   remindAt?: string | null;
   repeat?: { days?: number; weeks?: number; months?: number } | null;
+  repeatSoftly?: boolean | null;
   amount?: number | null;
   category?: string | null;
 }
 
 interface TodoPreviewCardProps {
-  todo: Todo;
+  todo: TodoAIData;
 }
+
+const formatDate = (dateString: string | null) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
 
 export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {
   const { title, type, emoji, note, start, end, due, softDue, remindAt, repeat, amount, category } =
     todo;
-
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return null;
-    try {
-      // Remove 'Date(' and ')' wrapper if present
-      const cleanDateString = dateString.replace(/^Date\(/, '').replace(/\)$/, '');
-
-      // Try to parse with Chrono first for natural language dates
-      const chronoParsed = chrono.parseDate(cleanDateString);
-
-      let date: Date;
-      if (chronoParsed) {
-        date = chronoParsed;
-      } else {
-        // Fallback to regular Date constructor
-        date = new Date(cleanDateString);
-      }
-
-      return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } catch {
-      return dateString;
-    }
-  };
 
   const getRepeatText = () => {
     if (!repeat) return null;
