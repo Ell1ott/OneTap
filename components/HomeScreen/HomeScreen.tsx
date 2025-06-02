@@ -4,7 +4,7 @@ import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/HomeScreen/TodoSection';
 import { Greeting } from 'components/HomeScreen/Greeting';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
-import { PartialDate, Time } from 'components/Todos/types';
+import { Time } from 'components/Todos/types';
 import { useEffect, useState, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';

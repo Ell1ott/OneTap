@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import AppText from '../base/AppText';
 import { TodoList } from '../Todos/components/TodoList';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
-import { PartialDate } from 'components/Todos/types';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';
@@ -26,7 +25,6 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, onCatego
       title: '',
       completed: [false],
       note: '',
-      end: new PartialDate(new Date()),
     });
     addTask(newTodo);
     setLastAddedTodoId(newId);

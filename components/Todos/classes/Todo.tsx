@@ -3,15 +3,16 @@ import { PartialDate } from '../types/PartialDate';
 import { Time } from '../types/Time';
 import { View } from 'react-native';
 import CheckBox from 'components/base/CheckBox';
+import { HumanDate } from '../types/HumanDate';
 
 export class Todo extends Task {
-  start?: PartialDate;
-  end?: PartialDate; // Due date if it is todo, and end of event if it's a event
-  remindAt?: PartialDate;
-  lastDone?: PartialDate;
-  doneTimes?: PartialDate[];
+  start?: HumanDate;
+  end?: HumanDate; // Due date if it is todo, and end of event if it's a event
+  remindAt?: HumanDate;
+  lastDone?: HumanDate;
+  doneTimes?: HumanDate[];
   softRepeat?: Time | true; // First repeats when finished
-  softDue?: PartialDate
+  softDue?: HumanDate;
   completed?: boolean[];
   amount?: number;
   category?: string;
@@ -36,7 +37,7 @@ export class Todo extends Task {
     );
 
   get daysSinceLastDone() {
-    return this.lastDone?.timeTo(new PartialDate(new Date())).toDays() ?? 0;
+    return this.lastDone?.timeTo(new Date()).toDays() ?? 0;
   }
 
   // Tailwind classes used dynamically: bg-red-500
@@ -60,7 +61,7 @@ export class Todo extends Task {
 
   onToggle = (newCompleted: boolean[]) => {
     if (newCompleted.every(Boolean)) {
-      this.doneTimes = [...(this.doneTimes || []), new PartialDate(new Date())];
+      this.doneTimes = [...(this.doneTimes || []), new HumanDate(new Date())];
       console.log(this.doneTimes);
     } else {
       this.doneTimes = this.doneTimes?.filter((doneTime) => !doneTime.isToday());
@@ -75,8 +76,9 @@ export class Todo extends Task {
         <CheckBox
           key={index}
           checked={completed}
-          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
-            }`}
+          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${
+            index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
+          }`}
           onToggle={() => {
             const newCompleted = [...(this.completed || [])];
             newCompleted[index] = !newCompleted[index];

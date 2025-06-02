@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
-import { PartialDate, Time } from 'components/Todos/types';
+import { HumanDate, PartialDate, Time } from 'components/Todos/types';
 
 interface TasksStore {
   tasks: Task[];
@@ -21,21 +21,17 @@ const createInitialTasks = (): Task[] => [
       days: 1,
     }),
     amount: 2,
-    end: new PartialDate({
-      year: new Date().getFullYear(),
-      month: new Date().getMonth(),
-      day: new Date().getDate(),
-    }),
+    end: new HumanDate(),
   }),
   new Event({
     id: '2',
     title: 'Volleyball practice',
-    start: new Date(new Date().setHours(17, 0, 0, 0)),
+    start: new HumanDate(new Date(new Date().setHours(17, 0, 0, 0)), true),
   }),
   new Todo({
     id: '4',
     title: 'Clean Room',
-    doneTimes: [new PartialDate(new Date(new Date().setDate(23)))],
+    doneTimes: [new HumanDate(new Date(new Date().setDate(23)), true)],
     // note: 'Done 4 days ago',
     softRepeat: true,
     completed: [false],
@@ -50,7 +46,7 @@ const createInitialTasks = (): Task[] => [
     softRepeat: new Time({
       weeks: 2,
     }),
-    lastDone: new PartialDate(new Date(new Date().setDate(3))),
+    lastDone: new HumanDate(new Date(new Date().setDate(3))),
     emoji: '👋',
   }),
   new TaskCategory({

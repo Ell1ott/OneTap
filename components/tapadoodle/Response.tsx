@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { TodoAIData, TodoPreviewCard } from './TodoPreviewCard';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
 import { Event, Todo } from 'components/Todos/classes';
-import { PartialDate, Time } from 'components/Todos/types';
+import { HumanDate, Time } from 'components/Todos/types';
 import { parseNaturalDate } from 'utils/dateUtils';
 import { useTasksStore } from 'stores/tasksStore';
 export const Response = ({ transcript }: { transcript: string }) => {
@@ -43,14 +43,10 @@ export const Response = ({ transcript }: { transcript: string }) => {
       title: todo.title,
       emoji: todo.emoji,
       note: todo.note,
-      start: todo.start ? new PartialDate(parseNaturalDate(todo.start) || undefined) : undefined,
-      end: todo.end ? new PartialDate(parseNaturalDate(todo.end) || undefined) : undefined,
-      softDue: todo.softDue
-        ? new PartialDate(parseNaturalDate(todo.softDue) || undefined)
-        : undefined,
-      remindAt: todo.remindAt
-        ? new PartialDate(parseNaturalDate(todo.remindAt) || undefined)
-        : undefined,
+      start: todo.start ? HumanDate.fromNaturalString(todo.start) : undefined,
+      end: todo.end ? HumanDate.fromNaturalString(todo.end) : undefined,
+      softDue: todo.softDue ? HumanDate.fromNaturalString(todo.softDue) : undefined,
+      remindAt: todo.remindAt ? HumanDate.fromNaturalString(todo.remindAt) : undefined,
       repeat: todo.repeat && !todo.repeatSoftly ? new Time(todo.repeat) : undefined,
       softRepeat: todo.repeatSoftly && todo.repeat ? new Time(todo.repeat) : undefined,
       amount: todo.amount || undefined,
@@ -60,7 +56,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
 
   const toEventClass = (event: TodoAIData) => {
     if (!event.start) return null;
-    const start = parseNaturalDate(event.start);
+    const start = HumanDate.fromNaturalString(event.start);
     if (!start) return null;
     return new Event({
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
@@ -68,7 +64,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
       emoji: event.emoji,
       note: event.note,
       start: start,
-      end: event.end ? parseNaturalDate(event.end) || undefined : undefined,
+      end: event.end ? HumanDate.fromNaturalString(event.end) : undefined,
     });
   };
   const object = _object as any;

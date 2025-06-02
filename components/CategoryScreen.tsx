@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
-import { PartialDate, Time } from 'components/Todos/types';
+import { HumanDate, Time } from 'components/Todos/types';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
@@ -74,11 +74,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
         new Todo({
           id: 'h1',
           title: 'Math Assignment Chapter 5',
-          end: new PartialDate({
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            day: new Date().getDate(),
-          }),
+          end: new HumanDate(new Date(new Date()), true),
           completed: [false],
           category: 'homework',
         }),
@@ -86,11 +82,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
           id: 'h2',
           title: 'History Essay',
           note: 'World War II causes and effects',
-          end: new PartialDate({
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            day: new Date().getDate() + 2,
-          }),
+          end: new HumanDate(new Date(new Date()), true),
           completed: [false],
           category: 'homework',
         }),
@@ -103,7 +95,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
         new Event({
           id: 'h4',
           title: 'Group Study Session',
-          start: new Date(new Date().setHours(19, 0, 0, 0)),
+          start: new HumanDate(new Date(new Date().setHours(19, 0, 0, 0)), true),
         }),
         new TaskCategory({
           id: 'hc1',
@@ -117,11 +109,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
         new Todo({
           id: 'w1',
           title: 'Finish quarterly report',
-          end: new PartialDate({
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            day: new Date().getDate() + 1,
-          }),
+          end: HumanDate.fromNaturalString('tomorrow'),
           completed: [false],
           category: 'work',
         }),
@@ -134,7 +122,7 @@ const getMockDataForCategory = (categoryName: string): Task[] => {
         new Event({
           id: 'w3',
           title: 'Team Meeting',
-          start: new Date(new Date().setHours(14, 0, 0, 0)),
+          start: HumanDate.fromNaturalString('tomorrow 2pm')!,
         }),
         new Todo({
           id: 'w4',
@@ -330,12 +318,7 @@ export default function CategoryScreen({
 
             {/* Tasks List */}
             {tasks.length > 0 && (
-              <TodoList
-                tasks={tasks}
-                updateTasks={setTasks}
-                lastAddedTodoId={lastAddedTodoId}
-                onCategoryPress={onClose}
-              />
+              <TodoList tasks={tasks} lastAddedTodoId={lastAddedTodoId} onCategoryPress={onClose} />
             )}
             {/* Add Task Button */}
             <Pressable
