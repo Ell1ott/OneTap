@@ -6,9 +6,10 @@ import { HapticTab } from 'components/HapticTab';
 import TabBarBackground from 'components/ui/TabBarBackground';
 import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
-import { useChat } from '@ai-sdk/react';
+import { experimental_useObject, useChat } from '@ai-sdk/react';
 import { fetch as expoFetch } from 'expo/fetch';
 import { TapadoodleBox } from 'components/TapadoodleBox';
+import { z } from 'zod';
 export default function TabLayout() {
   // Get the foregroundMuted color from the theme
   // const { messages, error, handleInputChange, input, handleSubmit, append } = useChat({
@@ -29,6 +30,18 @@ export default function TabLayout() {
   // useEffect(() => {
   //   console.log(messages);
   // }, [messages]);
+  const { object, submit, isLoading } = experimental_useObject({
+    api: '/api/stream',
+    schema: z.unknown(),
+  });
+
+  useEffect(() => {
+    console.log(object);
+  }, [object]);
+
+  useEffect(() => {
+    submit('hi');
+  }, []);
 
   return (
     <>
