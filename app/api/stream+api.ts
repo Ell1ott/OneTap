@@ -81,7 +81,7 @@ REMEMBER to only use exact days and numbers. NOTHING vague
 - Single tasks → amount: null
 
 ### Event vs Todo Logic
-- **Events**: Have specific times, durations, or are appointments
+- **Events**: Anything that happens in the future, appointments, meetings, etc.
 - **Todos**: Tasks to complete, may have deadlines but not fixed time slots
 
 ## EXAMPLES
