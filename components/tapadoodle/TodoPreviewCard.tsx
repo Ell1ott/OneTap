@@ -65,59 +65,56 @@ export const TodoPreviewCard = ({ todo }: TodoPreviewCardProps) => {
         </View>
       </View>
 
-      {/* Note */}
-      {note && <AppText className="mb-2 text-sm italic text-foregroundMuted">{note}</AppText>}
-
-      {/* Category */}
-      {category && (
-        <View className="self-start rounded-md bg-accent/20 px-2 py-1">
-          <AppText className="text-xs font-medium capitalize text-accent">{category}</AppText>
+      <View className="gap-2">
+        {/* Note */}
+        {note && <AppText className="mb-2 text-sm italic text-foregroundMuted">{note}</AppText>}
+        {/* Category */}
+        {category && (
+          <View className="self-start rounded-md bg-accent/20 px-2 py-1">
+            <AppText className="text-xs font-medium capitalize text-accent">{category}</AppText>
+          </View>
+        )}
+        {/* Details */}
+        <View className="gap-1">
+          {start && (
+            <View className="flex-row items-center gap-2">
+              <Clock size={14} color="#666" />
+              <AppText className="text-sm text-foregroundMuted">
+                Starts: {formatDate(start)}
+              </AppText>
+            </View>
+          )}
+          {end && (
+            <View className="flex-row items-center gap-2">
+              <Calendar size={14} color="#666" />
+              <AppText className="text-sm text-foregroundMuted">Ends: {formatDate(end)}</AppText>
+            </View>
+          )}
+          {due && (
+            <View className="flex-row items-center gap-2">
+              <AlertCircle size={14} color="#ef4444" />
+              <AppText className="text-sm text-red-500">Due: {formatDate(due)}</AppText>
+            </View>
+          )}
+          {softDue && (
+            <View className="flex-row items-center gap-2">
+              <AlertCircle size={14} color="#f59e0b" />
+              <AppText className="text-sm text-amber-500">Target: {formatDate(softDue)}</AppText>
+            </View>
+          )}
+          {remindAt && (
+            <View className="flex-row items-center gap-2">
+              <Clock size={14} color="#8b5cf6" />
+              <AppText className="text-sm text-purple-500">Remind: {formatDate(remindAt)}</AppText>
+            </View>
+          )}
+          {repeat && (
+            <View className="flex-row items-center gap-2">
+              <Repeat size={14} color="#06b6d4" />
+              <AppText className="text-sm text-cyan-500">{getRepeatText()}</AppText>
+            </View>
+          )}
         </View>
-      )}
-
-      {/* Details */}
-      <View className="gap-1">
-        {start && (
-          <View className="flex-row items-center gap-2">
-            <Clock size={14} color="#666" />
-            <AppText className="text-sm text-foregroundMuted">Starts: {formatDate(start)}</AppText>
-          </View>
-        )}
-
-        {end && (
-          <View className="flex-row items-center gap-2">
-            <Calendar size={14} color="#666" />
-            <AppText className="text-sm text-foregroundMuted">Ends: {formatDate(end)}</AppText>
-          </View>
-        )}
-
-        {due && (
-          <View className="flex-row items-center gap-2">
-            <AlertCircle size={14} color="#ef4444" />
-            <AppText className="text-sm text-red-500">Due: {formatDate(due)}</AppText>
-          </View>
-        )}
-
-        {softDue && (
-          <View className="flex-row items-center gap-2">
-            <AlertCircle size={14} color="#f59e0b" />
-            <AppText className="text-sm text-amber-500">Target: {formatDate(softDue)}</AppText>
-          </View>
-        )}
-
-        {remindAt && (
-          <View className="flex-row items-center gap-2">
-            <Clock size={14} color="#8b5cf6" />
-            <AppText className="text-sm text-purple-500">Remind: {formatDate(remindAt)}</AppText>
-          </View>
-        )}
-
-        {repeat && (
-          <View className="flex-row items-center gap-2">
-            <Repeat size={14} color="#06b6d4" />
-            <AppText className="text-sm text-cyan-500">{getRepeatText()}</AppText>
-          </View>
-        )}
       </View>
     </View>
   );
