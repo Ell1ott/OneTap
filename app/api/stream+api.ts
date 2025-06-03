@@ -232,7 +232,10 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
 export async function POST(req: Request) {
   console.log('getting input');
   console.log(req);
+
   setTimeout(() => null, 0);
+  const text = await req.text();
+  console.log(text);
   const input = await req.json();
 
   console.log(input);
