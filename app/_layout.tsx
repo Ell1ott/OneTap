@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import 'react-native-gesture-handler';
 import '../global.css';
+import '../utils/polyfills';
 
 export default function RootLayout() {
   return (
