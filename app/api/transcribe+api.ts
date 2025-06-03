@@ -25,7 +25,7 @@ const getTempApiKey = async (projectId: string) => {
   const { result, error } = await client.manage.createProjectKey(projectId, {
     comment: 'short lived',
     scopes: ['usage:write'],
-    time_to_live_in_seconds: 20,
+    time_to_live_in_seconds: 5 * 60,
   });
 
   if (error) {

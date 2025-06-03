@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
 import AppText from 'components/base/AppText';
 import FadeInText from 'components/base/FadeInText';
+import { useApiKey } from '../../hooks/useApiKey';
+import { useApiKeyStore } from 'stores/apiKeyStore';
 
 interface DeepgramTranscriberProps {
   isRecording: boolean;
@@ -17,7 +19,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   textClassName,
   finishCallback,
 }) => {
-  const [apiKey, setApiKey] = useState<string | null>(null);
+  const { apiKey, isLoading, error, clearError } = useApiKeyStore();
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
   const [socket, setSocket] = useState<any>(null);
@@ -26,17 +28,9 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchApiKey = async () => {
-      const response = await fetch('/api/transcribe');
-      const data = await response.json();
-      setApiKey(data.key);
-    };
-    fetchApiKey();
-  }, []);
-
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
+    console.log('apiKey', apiKey);
     if (!apiKey) return;
 
     // Only open connection when recording starts
