@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import AppText from '../base/AppText';
-import { Response } from './response';
+import { Response } from './Response';
 
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const [active, setActive] = useState<boolean>(false);
