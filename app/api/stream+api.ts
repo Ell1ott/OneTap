@@ -231,13 +231,66 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
 
 export async function POST(req: Request) {
   console.log('getting input');
-  console.log(req);
-  console.log(req.body);
-  const text = await req.text();
-  console.log(text);
-  const input = await req.json();
+  console.log('Request method:', req.method);
+  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
+  console.log('Request URL:', req.url);
 
-  console.log(input);
+  let input;
+  try {
+    // Check if the request has a body
+    const contentLength = req.headers.get('content-length');
+    const contentType = req.headers.get('content-type');
+
+    console.log('Content-Length:', contentLength);
+    console.log('Content-Type:', contentType);
+
+    if (!contentLength || contentLength === '0') {
+      console.error('No content in request body');
+      return new Response(JSON.stringify({ error: 'No content in request body' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error('Invalid content type:', contentType);
+      return new Response(JSON.stringify({ error: 'Content-Type must be application/json' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Add timeout to prevent hanging
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Request timeout')), 10000); // 10 second timeout
+    });
+
+    const jsonPromise = req.json();
+    input = await Promise.race([jsonPromise, timeoutPromise]);
+
+    console.log('Successfully parsed input:', input);
+
+    // Validate input
+    if (!input || typeof input !== 'string') {
+      console.error('Invalid input format:', typeof input, input);
+      return new Response(JSON.stringify({ error: 'Input must be a non-empty string' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  } catch (error) {
+    console.error('Error parsing request:', error);
+    return new Response(
+      JSON.stringify({
+        error: 'Failed to parse request body',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      }),
+      {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
 
   const ObjectStream = streamObject({
     model: openai('gpt-4.1-mini'),
