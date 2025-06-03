@@ -10,6 +10,7 @@ import { Event, Todo } from 'components/Todos/classes';
 import { HumanDate, Time } from 'components/Todos/types';
 import { parseNaturalDate } from 'utils/dateUtils';
 import { useTasksStore } from 'stores/tasksStore';
+import { fetch as expoFetch } from 'expo/fetch';
 export const Response = ({ transcript }: { transcript: string }) => {
   const { addTask } = useTasksStore();
   const [responseMessage, setResponseMessage] = useState<string>('');
@@ -18,6 +19,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
     submit,
     isLoading,
   } = experimental_useObject({
+    fetch: expoFetch as unknown as typeof globalThis.fetch,
     // api: 'api/stream',
     api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
     headers: {
@@ -39,6 +41,9 @@ export const Response = ({ transcript }: { transcript: string }) => {
           console.log('Error: Event is null');
         }
       }
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
