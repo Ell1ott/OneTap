@@ -45,7 +45,9 @@ export function HomeScreen() {
           />
           <TodoSection
             title="Other"
-            tasks={tasks.filter((t) => !t.isToday() && !t.isPriority())}
+            tasks={tasks.filter(
+              (t) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.category)
+            )}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>
