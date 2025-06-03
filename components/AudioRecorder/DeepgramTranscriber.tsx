@@ -11,14 +11,13 @@ interface DeepgramTranscriberProps {
   finishCallback?: (transcript: string) => void;
 }
 
-const apiKey = process.env.EXPO_PUBLIC_DEEPGRAM_API_KEY;
-
 export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   isRecording,
   audioData,
   textClassName,
   finishCallback,
 }) => {
+  const [apiKey, setApiKey] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
   const [socket, setSocket] = useState<any>(null);
@@ -26,6 +25,15 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
 
   const [isFinished, setIsFinished] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchApiKey = async () => {
+      const response = await fetch('/api/transcribe');
+      const data = await response.json();
+      setApiKey(data.key);
+    };
+    fetchApiKey();
+  }, []);
 
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {

@@ -9,7 +9,7 @@ export async function GET(req: Request) {
   const projectId = await getProjectId();
   const key = await getTempApiKey(projectId);
 
-  return Response.json({ key: key });
+  return Response.json(key);
 }
 
 const getProjectId = async () => {
