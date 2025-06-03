@@ -18,7 +18,8 @@ export const Response = ({ transcript }: { transcript: string }) => {
     submit,
     isLoading,
   } = experimental_useObject({
-    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
+    api: 'api/stream',
+    // api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
     headers: {
       'Content-Type': 'application/json',
       Authorization:

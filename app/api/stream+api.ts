@@ -236,12 +236,12 @@ const openai = createOpenAI({
 export async function POST(req: Request) {
   console.log('getting input');
   console.log(req);
-  const input = await req.json();
+  const { input } = await req.json();
 
   console.log(input);
 
   const ObjectStream = streamObject({
-    model: openai('gpt-4.1-mini'),
+    model: openai('o4-mini'),
     temperature: 1.5,
 
     output: 'no-schema',
