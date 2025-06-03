@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 
 import { streamObject } from 'ai';
@@ -228,6 +228,10 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
 - Amount is only for tasks that need to be done multiple times in one period
 - The input will be a transcript of a voice message, some words may be misheard or misinterpreted, make sure to correct them, based on whats realistically said.
 `;
+
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(req: Request) {
   console.log('getting input');

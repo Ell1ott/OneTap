@@ -18,7 +18,12 @@ export const Response = ({ transcript }: { transcript: string }) => {
     submit,
     isLoading,
   } = experimental_useObject({
-    api: generateAPIUrl('/api/stream'),
+    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvYmZ6bXRra2F5YnVubGhobW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5NjYyOTEsImV4cCI6MjA2NDU0MjI5MX0.ZZZW31l9BI7TAHIx07JVJyxg81_AYpUQ2JZj_G0wdzk',
+    },
     schema: z.unknown(),
     onFinish: ({ object }) => {
       console.log(object);
@@ -88,7 +93,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
   const object = _object as any;
 
   useEffect(() => {
-    submit(transcript);
+    submit({ input: transcript });
   }, []);
 
   useEffect(() => {
