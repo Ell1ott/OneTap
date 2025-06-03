@@ -230,6 +230,7 @@ REMEMBER to only use exact days and numbers. ONLY use "next" if specified by the
 `;
 
 export async function POST(req: Request) {
+  console.log('getting input');
   const input = await req.json();
 
   console.log(input);
@@ -251,6 +252,8 @@ export async function POST(req: Request) {
     ],
     onError: (e) => console.log(e),
   });
+  console.log('object stream created');
+  console.log('returning object stream');
 
   return ObjectStream.toTextStreamResponse({
     headers: {
