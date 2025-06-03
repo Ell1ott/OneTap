@@ -5,7 +5,7 @@ import { streamText } from 'ai';
 import { streamObject } from 'ai';
 const client = createClient(process.env.DEEPGRAM_API_KEY);
 export async function GET(req: Request) {
-  console.log('hello');
+  console.log('getting deepgram api key');
   const projectId = await getProjectId();
   const key = await getTempApiKey(projectId);
 
