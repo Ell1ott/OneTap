@@ -1,8 +1,5 @@
-import { openai } from '@ai-sdk/openai';
 import { createClient } from '@deepgram/sdk';
-import { streamText } from 'ai';
 
-import { streamObject } from 'ai';
 const client = createClient(process.env.DEEPGRAM_API_KEY);
 export async function GET(req: Request) {
   console.log('getting deepgram api key');
