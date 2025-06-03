@@ -1,5 +1,4 @@
 import { createOpenAI } from '@ai-sdk/openai';
-import { streamText } from 'ai';
 
 import { streamObject } from 'ai';
 
@@ -241,7 +240,7 @@ export async function POST(req: Request) {
   console.log(input);
 
   const ObjectStream = streamObject({
-    model: openai('o4-mini'),
+    model: openai('gpt-4.1-mini'),
     temperature: 1.5,
 
     output: 'no-schema',

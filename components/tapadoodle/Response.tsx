@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { experimental_useObject } from '@ai-sdk/react';
 import FadeInText from 'components/base/FadeInText';
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { z } from 'zod';
 import { TodoAIData, TodoPreviewCard } from './TodoPreviewCard';
 import { generateAPIUrl } from 'utils/apiUrlHandler';
@@ -20,10 +20,10 @@ export const Response = ({ transcript }: { transcript: string }) => {
     isLoading,
   } = experimental_useObject({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
-    // api: 'api/stream',
+    // api: Platform.OS === 'web' ? 'api/stream' : 'http://192.168.50.30:8081/api/stream',
     api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
     headers: {
-      'Content-Type': 'application/json',
+      //   'Content-Type': 'appplication/json',
       Authorization:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvYmZ6bXRra2F5YnVubGhobW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5NjYyOTEsImV4cCI6MjA2NDU0MjI5MX0.ZZZW31l9BI7TAHIx07JVJyxg81_AYpUQ2JZj_G0wdzk',
     },
@@ -31,6 +31,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
     onFinish: ({ object }) => {
       console.log(object);
       console.log(toTodoClass(object as any as TodoAIData));
+      if (!(object as any).title) return;
       if ((object as any).type === 'todo') {
         addTask(toTodoClass(object as any as TodoAIData));
       } else if ((object as any).type === 'event') {
