@@ -27,7 +27,7 @@ export const TapadoodleBox = () => {
   // const [dynamicHeight, setDynamicHeight] = useState(false);
 
   const expandedPadding = 24;
-  const openWidth = screenWidth - expandedPadding * 2;
+  const openWidth = Math.min(screenWidth - expandedPadding * 2, 500);
 
   const backgroundOpacity = useSharedValue(0);
 
