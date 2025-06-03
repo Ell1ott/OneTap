@@ -23,10 +23,6 @@ export default function TabLayout() {
   const [aiResponse, setAIResponse] = useState<any | null>(null);
   const [partialJson, setPartialJson] = useState('');
 
-  useEffect(() => {
-    fetchAI();
-  }, []);
-
   async function fetchAI() {
     const response = await fetch(
       'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
