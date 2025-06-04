@@ -246,6 +246,7 @@ export async function OPTIONS(req: Request) {
 export async function POST(req: Request) {
   console.log('getting input');
   console.log(req);
+  console.log(req.json().then((res) => console.log(res)));
   const { input } = await req.json();
 
   console.log(input);
