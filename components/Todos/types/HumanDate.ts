@@ -13,7 +13,14 @@ export class HumanDate {
   static fromNaturalString = (date: string) => {
     const dateObj = parseNaturalDate(date);
     if (!dateObj) return undefined;
-    return new HumanDate(dateObj, date.includes(':') || date.includes('am') || date.includes('pm'));
+    return new HumanDate(
+      dateObj,
+      date.includes(':') ||
+        date.includes('am') ||
+        date.includes('pm') ||
+        date.includes('hour') ||
+        date.includes('minute')
+    );
   };
 
   timeTo(dateObj: HumanDate | Date): Time {
