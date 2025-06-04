@@ -100,26 +100,10 @@ export const useTasksStore = create<TasksStore>((set, get) => ({
         if (task.id === taskId && task instanceof Todo && task.completed) {
           const newCompleted = [...task.completed];
           newCompleted[index] = !newCompleted[index];
-          const updatedTodo = new Todo({
-            id: task.id,
-            title: task.title,
-            note: task.note,
-            emoji: task.emoji,
-            repeat: task.repeat,
-            tags: task.tags,
-            start: task.start,
-            end: task.end,
-            remindAt: task.remindAt,
-            lastDone: task.lastDone,
-            doneTimes: task.doneTimes,
-            softRepeat: task.softRepeat,
-            softDue: task.softDue,
-            completed: newCompleted,
-            amount: task.amount,
-            category: task.category,
-          });
-          updatedTodo.onToggle(newCompleted);
-          return updatedTodo;
+          task.completed = newCompleted;
+
+          task.onToggle(newCompleted);
+          return task;
         }
         return task;
       }),
