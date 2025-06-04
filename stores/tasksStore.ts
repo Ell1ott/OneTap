@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { HumanDate, PartialDate, Time } from 'components/Todos/types';
 
@@ -9,6 +10,7 @@ interface TasksStore {
   updateTask: (taskId: string, updater: (task: Task) => Task) => void;
   removeTask: (taskId: string) => void;
   toggleTaskCompleted: (taskId: string, index?: number) => void;
+  loadTasks: () => Promise<void>;
 }
 
 // Local storage helper functions
@@ -72,7 +74,7 @@ const deserializeWithTypes = (obj: any): any => {
   return obj;
 };
 
-const saveTasksToStorage = (tasks: Task[]) => {
+const saveTasksToStorage = async (tasks: Task[]) => {
   console.log('saving tasks');
   try {
     // Add type property to each task and serialize nested HumanDate instances
@@ -84,15 +86,15 @@ const saveTasksToStorage = (tasks: Task[]) => {
       console.log(serializedTask);
       return serializedTask;
     });
-    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasksWithType));
+    await AsyncStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasksWithType));
   } catch (error) {
-    console.error('Failed to save tasks to localStorage:', error);
+    console.error('Failed to save tasks to AsyncStorage:', error);
   }
 };
 
-const loadTasksFromStorage = (): Task[] | null => {
+const loadTasksFromStorage = async (): Promise<Task[] | null> => {
   try {
-    const stored = localStorage.getItem(TASKS_STORAGE_KEY);
+    const stored = await AsyncStorage.getItem(TASKS_STORAGE_KEY);
     if (!stored) return null;
 
     const parsed = JSON.parse(stored);
@@ -114,7 +116,7 @@ const loadTasksFromStorage = (): Task[] | null => {
       }
     });
   } catch (error) {
-    console.error('Failed to load tasks from localStorage:', error);
+    console.error('Failed to load tasks from AsyncStorage:', error);
     return null;
   }
 };
@@ -185,10 +187,9 @@ const createInitialTasks = (): Task[] => [
   }),
 ];
 
-// Get initial tasks from localStorage or fallback to default
+// Get initial tasks from AsyncStorage or fallback to default
 const getInitialTasks = (): Task[] => {
-  const storedTasks = loadTasksFromStorage();
-  return storedTasks || createInitialTasks();
+  return createInitialTasks();
 };
 
 export const useTasksStore = create<TasksStore>((set, get) => ({
@@ -222,9 +223,16 @@ export const useTasksStore = create<TasksStore>((set, get) => ({
         return task;
       }),
     })),
+
+  loadTasks: async () => {
+    const storedTasks = await loadTasksFromStorage();
+    if (storedTasks) {
+      set({ tasks: storedTasks });
+    }
+  },
 }));
 
-// Subscribe to store changes and automatically save to localStorage
+// Subscribe to store changes and automatically save to AsyncStorage
 useTasksStore.subscribe((state) => {
   saveTasksToStorage(state.tasks);
 });

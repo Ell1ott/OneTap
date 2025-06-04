@@ -4,8 +4,15 @@ import 'react-native-reanimated';
 import 'react-native-gesture-handler';
 import '../global.css';
 import '../utils/polyfills';
+import { useEffect } from 'react';
+import { useTasksStore } from 'stores/tasksStore';
 
 export default function RootLayout() {
+  const { loadTasks } = useTasksStore();
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
   return (
     <>
       <Stack>

@@ -42,6 +42,8 @@ export default function CategoryScreen({
     return false;
   });
 
+  console.log(categoryTasks);
+
   const categoryName = category?.charAt(0).toUpperCase() + category?.slice(1) || 'Category';
 
   useEffect(() => {
