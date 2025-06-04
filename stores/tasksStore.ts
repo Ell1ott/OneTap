@@ -73,6 +73,7 @@ const deserializeWithTypes = (obj: any): any => {
 };
 
 const saveTasksToStorage = (tasks: Task[]) => {
+  console.log('saving tasks');
   try {
     // Add type property to each task and serialize nested HumanDate instances
     const tasksWithType = tasks.map((task) => {
@@ -80,6 +81,7 @@ const saveTasksToStorage = (tasks: Task[]) => {
         ...task,
         type: task.constructor.name,
       });
+      console.log(serializedTask);
       return serializedTask;
     });
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasksWithType));
