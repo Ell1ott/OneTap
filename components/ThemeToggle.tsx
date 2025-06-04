@@ -28,7 +28,7 @@ export function ThemeToggle({ size = 20 }: ThemeToggleProps) {
   };
   // this is just a fun comment, to remind me not to take life too ser
   return (
-    <TouchableOpacity onPress={nextTheme}>
+    <TouchableOpacity onPress={nextTheme} className="mt-5">
       <IconComponent size={size} color={iconColor} />
     </TouchableOpacity>
   );

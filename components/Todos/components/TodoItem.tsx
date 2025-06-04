@@ -133,7 +133,9 @@ export const TodoItem = ({
             <View className="relative flex-row items-baseline justify-start gap-1.5">
               {isEditable ? (
                 <>
-                  <AppText className="text-xl font-medium leading-7">{item.emoji}</AppText>
+                  {item.emoji && (
+                    <AppText className="text-xl font-medium leading-7">{item.emoji}</AppText>
+                  )}
                   <Animated.View style={animatedTextStyle}>
                     <Pressable onPress={() => {}}>
                       <TextInput
@@ -156,7 +158,9 @@ export const TodoItem = ({
                   <AppText
                     ref={textRef}
                     className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
-                    {item.emoji} {item.title}
+                    {item.emoji}
+                    {item.emoji && ' '}
+                    {item.title}
                   </AppText>
                 </Animated.View>
               )}

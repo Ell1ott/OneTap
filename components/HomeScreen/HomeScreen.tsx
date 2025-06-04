@@ -17,14 +17,14 @@ export function HomeScreen() {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   return (
-    <GestureHandlerRootView className="flex-1">
+    <GestureHandlerRootView className="">
       {openCategory && (
         <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
 
       <ScrollView
         className="flex-1 bg-background"
-        contentContainerClassName="px-6 pt-16 pb-6 flex-1"
+        contentContainerClassName="px-6 pt-16 pb-6"
         keyboardDismissMode="on-drag">
         <View className="mb-10">
           <Greeting />
