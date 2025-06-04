@@ -119,60 +119,56 @@ export const TodoItem = ({
   }, [isSwipeableOpen]);
 
   return (
-    <GestureHandlerRootView>
-      <Swipeable
-        renderRightActions={() => <TodoActions />}
-        onSwipeableClose={() => setIsSwipeableOpen(false)}
-        onSwipeableOpenStartDrag={() => setIsSwipeableOpen(true)}>
-        <Pressable
-          onPress={handlePress}
-          disabled={isSwipeableOpen}
-          className="overflow-hidden rounded-t-lg px-4"
-          android_ripple={
-            item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined
-          }>
-          <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
-            <View className="flex-1">
-              <View className="relative flex-row items-baseline justify-start gap-1.5">
-                {isEditable ? (
-                  <>
-                    <AppText className="text-xl font-medium leading-7">{item.emoji}</AppText>
-                    <Animated.View style={animatedTextStyle}>
-                      <Pressable onPress={() => {}}>
-                        <TextInput
-                          ref={inputRef}
-                          className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
-                          onChangeText={onTextChange}
-                          value={item.title}
-                          placeholder="New task..."
-                          style={fontStyle}
-                          multiline={false}
-                        />
-                      </Pressable>
-                    </Animated.View>
-                  </>
-                ) : (
-                  <Animated.View
-                    style={animatedTextStyle}
-                    collapsable={false}
-                    className="flex-row gap-1">
-                    <AppText
-                      ref={textRef}
-                      className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
-                      {item.emoji} {item.title}
-                    </AppText>
+    <Swipeable
+      renderRightActions={() => <TodoActions />}
+      onSwipeableClose={() => setIsSwipeableOpen(false)}
+      onSwipeableOpenStartDrag={() => setIsSwipeableOpen(true)}>
+      <Pressable
+        onPress={handlePress}
+        disabled={isSwipeableOpen}
+        className="overflow-hidden rounded-t-lg px-4"
+        android_ripple={item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
+        <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
+          <View className="flex-1">
+            <View className="relative flex-row items-baseline justify-start gap-1.5">
+              {isEditable ? (
+                <>
+                  <AppText className="text-xl font-medium leading-7">{item.emoji}</AppText>
+                  <Animated.View style={animatedTextStyle}>
+                    <Pressable onPress={() => {}}>
+                      <TextInput
+                        ref={inputRef}
+                        className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
+                        onChangeText={onTextChange}
+                        value={item.title}
+                        placeholder="New task..."
+                        style={fontStyle}
+                        multiline={false}
+                      />
+                    </Pressable>
                   </Animated.View>
-                )}
-                {item instanceof Todo && (
-                  <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
-                )}
-              </View>
-              {item.renderSubtext()}
+                </>
+              ) : (
+                <Animated.View
+                  style={animatedTextStyle}
+                  collapsable={false}
+                  className="flex-row gap-1">
+                  <AppText
+                    ref={textRef}
+                    className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
+                    {item.emoji} {item.title}
+                  </AppText>
+                </Animated.View>
+              )}
+              {item instanceof Todo && (
+                <Animated.View style={strikethroughStyle} className="bg-foregroundMuted" />
+              )}
             </View>
-            {item.renderEndContent(updateTodo)}
+            {item.renderSubtext()}
           </View>
-        </Pressable>
-      </Swipeable>
-    </GestureHandlerRootView>
+          {item.renderEndContent(updateTodo)}
+        </View>
+      </Pressable>
+    </Swipeable>
   );
 };

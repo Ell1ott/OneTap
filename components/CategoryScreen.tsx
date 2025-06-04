@@ -139,7 +139,7 @@ export default function CategoryScreen({
   const pendingCount = totalTodos - completedCount;
 
   return (
-    <GestureHandlerRootView
+    <View
       pointerEvents="box-none"
       removeClippedSubviews={true}
       style={{
@@ -219,6 +219,6 @@ export default function CategoryScreen({
           </ScrollView>
         </Animated.View>
       </GestureDetector>
-    </GestureHandlerRootView>
+    </View>
   );
 }

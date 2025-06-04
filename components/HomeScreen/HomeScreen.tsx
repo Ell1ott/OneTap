@@ -10,13 +10,13 @@ import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
 import CategoryScreen from 'components/CategoryScreen';
 import { useTasksStore } from 'stores/tasksStore';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   return (
-    <>
+    <GestureHandlerRootView>
       {openCategory && (
         <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
@@ -52,6 +52,6 @@ export function HomeScreen() {
           />
         </View>
       </ScrollView>
-    </>
+    </GestureHandlerRootView>
   );
 }
