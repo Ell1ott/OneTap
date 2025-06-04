@@ -1,17 +1,11 @@
 import { Tabs } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Platform, Pressable, StyleSheet, useColorScheme, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { HapticTab } from 'components/HapticTab';
 import TabBarBackground from 'components/ui/TabBarBackground';
-import { AirVent, Calendar, Feather, Plane } from 'lucide-react-native';
-import { generateAPIUrl } from 'utils/apiUrlHandler';
-import { experimental_useObject, useChat } from '@ai-sdk/react';
-import { fetch } from 'expo/fetch';
+import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { TapadoodleBox } from 'components/tapadoodle/TapadoodleBox';
-import { z } from 'zod';
 
-import { fetch as expoFetch } from 'expo/fetch';
 export default function TabLayout() {
   return (
     <>

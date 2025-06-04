@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { experimental_useObject } from '@ai-sdk/react';
 import FadeInText from 'components/base/FadeInText';
 import { useEffect } from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { z } from 'zod';
 import { TodoAIData, TodoPreviewCard } from './TodoPreviewCard';
-import { generateAPIUrl } from 'utils/apiUrlHandler';
 import { Event, Todo } from 'components/Todos/classes';
 import { HumanDate, Time } from 'components/Todos/types';
-import { parseNaturalDate } from 'utils/dateUtils';
 import { useTasksStore } from 'stores/tasksStore';
 import { fetch as expoFetch } from 'expo/fetch';
 export const Response = ({ transcript }: { transcript: string }) => {
@@ -20,10 +18,8 @@ export const Response = ({ transcript }: { transcript: string }) => {
     isLoading,
   } = experimental_useObject({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
-    // api: Platform.OS === 'web' ? 'api/stream' : 'http://192.168.50.30:8081/api/stream',
-    // api: 'https://onetap.elliottf.dk/api/stream',
-    api: 'https://onetap.expo.app/api/stream',
-    // api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
+    // api: 'https://onetap.expo.app/api/stream',
+    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
     headers: {
       //   'Content-Type': 'appplication/json',
       Authorization:
