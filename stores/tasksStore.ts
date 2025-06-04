@@ -11,6 +11,48 @@ interface TasksStore {
   toggleTaskCompleted: (taskId: string, index?: number) => void;
 }
 
+// Local storage helper functions
+const TASKS_STORAGE_KEY = 'tasks-store';
+
+const saveTasksToStorage = (tasks: Task[]) => {
+  try {
+    // Add type property to each task for proper reconstruction
+    const tasksWithType = tasks.map((task) => ({
+      ...task,
+      type: task.constructor.name,
+    }));
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasksWithType));
+  } catch (error) {
+    console.error('Failed to save tasks to localStorage:', error);
+  }
+};
+
+const loadTasksFromStorage = (): Task[] | null => {
+  try {
+    const stored = localStorage.getItem(TASKS_STORAGE_KEY);
+    if (!stored) return null;
+
+    const parsed = JSON.parse(stored);
+    // Convert plain objects back to class instances using the type property
+    return parsed.map((taskData: any) => {
+      switch (taskData.type) {
+        case 'Todo':
+          return new Todo(taskData);
+        case 'Event':
+          return new Event(taskData);
+        case 'TaskCategory':
+          return new TaskCategory(taskData);
+        default:
+          console.warn(`Unknown task type: ${taskData.type}`, taskData);
+          return taskData;
+      }
+    });
+  } catch (error) {
+    console.error('Failed to load tasks from localStorage:', error);
+    return null;
+  }
+};
+
 const createInitialTasks = (): Task[] => [
   // new Todo({
   //   id: '1',
@@ -77,8 +119,14 @@ const createInitialTasks = (): Task[] => [
   }),
 ];
 
+// Get initial tasks from localStorage or fallback to default
+const getInitialTasks = (): Task[] => {
+  const storedTasks = loadTasksFromStorage();
+  return storedTasks || createInitialTasks();
+};
+
 export const useTasksStore = create<TasksStore>((set, get) => ({
-  tasks: createInitialTasks(),
+  tasks: getInitialTasks(),
 
   setTasks: (tasks) => set({ tasks }),
 
@@ -109,3 +157,8 @@ export const useTasksStore = create<TasksStore>((set, get) => ({
       }),
     })),
 }));
+
+// Subscribe to store changes and automatically save to localStorage
+useTasksStore.subscribe((state) => {
+  saveTasksToStorage(state.tasks);
+});
