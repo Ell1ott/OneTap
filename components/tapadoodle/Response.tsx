@@ -21,7 +21,8 @@ export const Response = ({ transcript }: { transcript: string }) => {
   } = experimental_useObject({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
     // api: Platform.OS === 'web' ? 'api/stream' : 'http://192.168.50.30:8081/api/stream',
-    api: 'https://onetap.elliottf.dk/api/stream',
+    // api: 'https://onetap.elliottf.dk/api/stream',
+    api: 'https://onetap.expo.app/api/stream',
     // api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
     headers: {
       //   'Content-Type': 'appplication/json',

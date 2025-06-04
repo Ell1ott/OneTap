@@ -11,6 +11,7 @@ import { fetch } from 'expo/fetch';
 import { TapadoodleBox } from 'components/tapadoodle/TapadoodleBox';
 import { z } from 'zod';
 
+import { fetch as expoFetch } from 'expo/fetch';
 export default function TabLayout() {
   // Get the foregroundMuted color from the theme
   // const { messages, error, handleInputChange, input, handleSubmit, append } = useChat({
@@ -19,6 +20,37 @@ export default function TabLayout() {
   //   onError: (error) => console.error(error, 'ERROR'),
   //   onFinish: (message) => console.log(message, 'MESSAGE'),
   // });
+
+  const {
+    object: _object,
+    submit,
+    isLoading,
+  } = experimental_useObject({
+    fetch: expoFetch as unknown as typeof globalThis.fetch,
+    // api: Platform.OS === 'web' ? 'api/stream' : 'http://192.168.50.30:8081/api/stream',
+    // api: 'https://onetap.elliottf.dk/api/stream',
+    // api: 'https://onetap.expo.app/api/stream',
+    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
+    headers: {
+      //   'Content-Type': 'appplication/json',
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvYmZ6bXRra2F5YnVubGhobW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5NjYyOTEsImV4cCI6MjA2NDU0MjI5MX0.ZZZW31l9BI7TAHIx07JVJyxg81_AYpUQ2JZj_G0wdzk',
+    },
+    schema: z.unknown(),
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  useEffect(() => {
+    console.log('object', _object);
+  }, [_object]);
+
+  useEffect(() => {
+    submit({
+      input: 'Hello',
+    });
+  }, []);
 
   const [aiResponse, setAIResponse] = useState<any | null>(null);
   const [partialJson, setPartialJson] = useState('');
