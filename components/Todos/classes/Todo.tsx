@@ -20,6 +20,7 @@ export class Todo extends Task {
   constructor(data: Partial<Todo> & { id: string; title: string }) {
     super(data);
     Object.assign(this, data);
+
     if (this.doneTimes) {
       this.lastDone = this.doneTimes?.[this.doneTimes.length - 1];
     } else if (this.lastDone) {
