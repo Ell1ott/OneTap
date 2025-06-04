@@ -14,13 +14,74 @@ interface TasksStore {
 // Local storage helper functions
 const TASKS_STORAGE_KEY = 'tasks-store';
 
+// Helper function to recursively add type information to HumanDate instances
+const serializeWithTypes = (obj: any): any => {
+  if (obj instanceof HumanDate) {
+    return {
+      ...obj,
+      type: 'HumanDate',
+    };
+  }
+
+  if (obj instanceof Time) {
+    return {
+      ...obj,
+      type: 'Time',
+    };
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(serializeWithTypes);
+  }
+
+  if (obj && typeof obj === 'object' && obj.constructor === Object) {
+    const serialized: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      serialized[key] = serializeWithTypes(value);
+    }
+    return serialized;
+  }
+
+  return obj;
+};
+
+// Helper function to recursively reconstruct typed objects
+const deserializeWithTypes = (obj: any): any => {
+  if (obj && typeof obj === 'object' && obj.type === 'HumanDate') {
+    const { type, ...data } = obj;
+    return new HumanDate(new Date(data.date), data.isTimeKnown);
+  }
+
+  if (obj && typeof obj === 'object' && obj.type === 'Time') {
+    const { type, ...data } = obj;
+    return new Time(data);
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(deserializeWithTypes);
+  }
+
+  if (obj && typeof obj === 'object' && obj.constructor === Object) {
+    const deserialized: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      deserialized[key] = deserializeWithTypes(value);
+    }
+    return deserialized;
+  }
+
+  return obj;
+};
+
 const saveTasksToStorage = (tasks: Task[]) => {
   try {
-    // Add type property to each task for proper reconstruction
-    const tasksWithType = tasks.map((task) => ({
-      ...task,
-      type: task.constructor.name,
-    }));
+    // Add type property to each task and serialize nested HumanDate instances
+    const tasksWithType = tasks.map((task) => {
+      const serializedTask = serializeWithTypes({
+        ...task,
+        type: task.constructor.name,
+      });
+      return serializedTask;
+    });
     localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasksWithType));
   } catch (error) {
     console.error('Failed to save tasks to localStorage:', error);
@@ -35,16 +96,19 @@ const loadTasksFromStorage = (): Task[] | null => {
     const parsed = JSON.parse(stored);
     // Convert plain objects back to class instances using the type property
     return parsed.map((taskData: any) => {
+      // First deserialize nested HumanDate instances
+      const deserializedData = deserializeWithTypes(taskData);
+
       switch (taskData.type) {
         case 'Todo':
-          return new Todo(taskData);
+          return new Todo(deserializedData);
         case 'Event':
-          return new Event(taskData);
+          return new Event(deserializedData);
         case 'TaskCategory':
-          return new TaskCategory(taskData);
+          return new TaskCategory(deserializedData);
         default:
           console.warn(`Unknown task type: ${taskData.type}`, taskData);
-          return taskData;
+          return deserializedData;
       }
     });
   } catch (error) {
