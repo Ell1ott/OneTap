@@ -9,7 +9,6 @@ import { useTheme } from '../../components/ThemeProvider';
 
 export default function TabLayout() {
   const { theme } = useTheme();
-
   // Define theme-aware colors
   const getThemeColors = () => {
     if (theme === 'dark') {

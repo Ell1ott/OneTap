@@ -45,6 +45,10 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
         stopRecording();
       }
     }
+    return () => {
+      stopRecording();
+      console.log('unmounting tapadoodle, so stopping recording');
+    };
   }, [isOpen]);
 
   function stopRecording() {

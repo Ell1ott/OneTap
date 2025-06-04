@@ -9,7 +9,7 @@ import { useTasksStore } from 'stores/tasksStore';
 import { ThemeProvider } from '../components/ThemeProvider';
 
 export default function RootLayout() {
-  const { loadTasks } = useTasksStore();
+  const loadTasks = useTasksStore((state) => state.loadTasks);
   useEffect(() => {
     loadTasks();
   }, []);
