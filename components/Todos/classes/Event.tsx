@@ -56,8 +56,8 @@ export class Event extends Task {
     if (this.getNextStart().isToday()) {
       return (
         <>
-          <AppText>At</AppText>
-          <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foreground">
+          <AppText className="text-foregroundMuted">At</AppText>
+          <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foregroundMuted">
             <AppText>
               {this.getNextStart().date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
@@ -81,7 +81,7 @@ export class Event extends Task {
     if (this.getNextStart().isTomorrow()) {
       return (
         <>
-          <AppText>Tomorrow{atString}</AppText>
+          <AppText className="text-foregroundMuted">Tomorrow{atString}</AppText>
         </>
       );
     }
@@ -92,7 +92,7 @@ export class Event extends Task {
 
     if (daysToNow < 7) {
       return (
-        <AppText>
+        <AppText className="text-foregroundMuted">
           {this.getNextStart().date.toLocaleDateString('en-US', { weekday: 'long' })}
           {atString}
         </AppText>

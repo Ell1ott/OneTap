@@ -6,6 +6,7 @@ import '../global.css';
 import '../utils/polyfills';
 import { useEffect } from 'react';
 import { useTasksStore } from 'stores/tasksStore';
+import { ThemeProvider } from '../components/ThemeProvider';
 
 export default function RootLayout() {
   const { loadTasks } = useTasksStore();
@@ -14,7 +15,7 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <>
+    <ThemeProvider defaultTheme="system">
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
@@ -28,6 +29,6 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
-    </>
+    </ThemeProvider>
   );
 }

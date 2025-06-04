@@ -11,18 +11,20 @@ import { isToday } from 'utils/dateUtils';
 import CategoryScreen from 'components/CategoryScreen';
 import { useTasksStore } from 'stores/tasksStore';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ThemeToggle } from 'components/ThemeToggle';
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView className="flex-1">
       {openCategory && (
         <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
+
       <ScrollView
         className="flex-1 bg-background"
-        contentContainerClassName="px-6 pt-16 pb-6"
+        contentContainerClassName="px-6 pt-16 pb-6 flex-1"
         keyboardDismissMode="on-drag">
         <View className="mb-10">
           <Greeting />
@@ -51,6 +53,7 @@ export function HomeScreen() {
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>
+        <ThemeToggle />
       </ScrollView>
     </GestureHandlerRootView>
   );

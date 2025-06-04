@@ -138,7 +138,7 @@ export const TodoItem = ({
                     <Pressable onPress={() => {}}>
                       <TextInput
                         ref={inputRef}
-                        className="m-0 mx-0 p-0 text-xl font-medium leading-7 outline-none"
+                        className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                         onChangeText={onTextChange}
                         value={item.title}
                         placeholder="New task..."

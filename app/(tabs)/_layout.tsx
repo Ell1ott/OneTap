@@ -5,17 +5,42 @@ import { HapticTab } from 'components/HapticTab';
 import TabBarBackground from 'components/ui/TabBarBackground';
 import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { TapadoodleBox } from 'components/tapadoodle/TapadoodleBox';
+import { useTheme } from '../../components/ThemeProvider';
 
 export default function TabLayout() {
+  const { theme } = useTheme();
+
+  // Define theme-aware colors
+  const getThemeColors = () => {
+    if (theme === 'dark') {
+      return {
+        activeTintColor: 'hsl(210, 40%, 98%)', // foreground
+        inactiveTintColor: 'hsl(215, 20%, 65%)', // foregroundMuted
+        backgroundColor: 'hsl(220 11% 12%)', // middleground
+        borderColor: 'hsl(215, 27%, 17%)', // border
+      };
+    } else {
+      return {
+        activeTintColor: 'hsl(221, 39%, 11%)', // foreground
+        inactiveTintColor: 'hsl(215, 14%, 34%)', // foregroundMuted
+        backgroundColor: 'hsl(0, 0%, 100%)', // middleground (white)
+        borderColor: 'hsl(214, 32%, 91%)', // border
+      };
+    }
+  };
+
+  const colors = getThemeColors();
+
   return (
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: '#8C8C8C',
+          tabBarActiveTintColor: colors.activeTintColor,
+          tabBarInactiveTintColor: colors.inactiveTintColor,
           headerShown: false,
           tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
+
           tabBarShowLabel: false,
           tabBarHideOnKeyboard: true,
           tabBarStyle: Platform.select({
@@ -25,9 +50,9 @@ export default function TabLayout() {
             },
             default: {
               height: 70,
-              border: 'none',
-              // paddingLeft: 10,
-              // paddingRight: 10,
+              backgroundColor: colors.backgroundColor,
+              // borderTopColor: colors.borderColor,
+              borderTopWidth: 0,
               paddingHorizontal: 30,
             },
           }),
