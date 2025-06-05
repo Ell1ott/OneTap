@@ -39,7 +39,7 @@ bun run web
 ## Todo
 
 - [x] Vibration when transcription is active
-- [] Make transcription more stable
+- [x] Make transcription more stable
 - [] Quickly edit AI created Tasks
 - [x] Make tasks deletable
 - [] Make tasks editable
