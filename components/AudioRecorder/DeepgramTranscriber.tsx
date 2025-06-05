@@ -47,7 +47,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
         encoding: 'linear16', // For PCM 16-bit audio
         sample_rate: 16000, // Match the recorder's sample rate
         channels: 1, // Mono audio
-        endpointing: 500,
+        endpointing: 800,
         utterance_end_ms: 1000,
       });
 
