@@ -116,7 +116,6 @@ export const TapadoodleBox = () => {
   }
 
   const handleLayout = (event: LayoutChangeEvent) => {
-    console.log('Heigh of children: ', event.nativeEvent.layout.height);
     if (width.value === openWidth) {
       height.value = withSpring(
         event.nativeEvent.layout.height + paddingY.value * 2,

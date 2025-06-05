@@ -47,7 +47,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
         encoding: 'linear16', // For PCM 16-bit audio
         sample_rate: 16000, // Match the recorder's sample rate
         channels: 1, // Mono audio
-        endpointing: 1000,
+        endpointing: 500,
         utterance_end_ms: 1000,
       });
 
@@ -73,6 +73,10 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
             newTranscripts[newTranscripts.length - 1] = transcriptText;
             if (data.is_final) {
               newTranscripts.push('');
+            }
+            if (data.speech_final) {
+              console.log('speech_final', data);
+              setIsFinished(true);
             }
             return newTranscripts;
           });
