@@ -78,8 +78,8 @@ export const TapadoodleBox = () => {
     borderRadius.value = withSpring(isOpen ? 20 : 56 / 2, SPRING_CONFIG);
     y.value = withSpring(isOpen ? expandedPadding : 8, SPRING_CONFIG);
     backgroundOpacity.value = withSpring(isOpen ? 1 : 0, SPRING_CONFIG);
-    paddingX.value = withSpring(isOpen ? 20 : 10, SPRING_CONFIG);
-    paddingY.value = withSpring(isOpen ? 20 : 5, SPRING_CONFIG);
+    paddingX.value = withSpring(isOpen ? 20 : 9, SPRING_CONFIG);
+    paddingY.value = withSpring(isOpen ? 20 : 0, SPRING_CONFIG);
   }
   function Open() {
     if (isOpen) return;
@@ -132,7 +132,7 @@ export const TapadoodleBox = () => {
         className="absolute top-10 h-10 w-10 items-center self-center"
         style={testAnimatedStyle}></Animated.View>
       <Animated.View
-        className="absolute bottom-0 z-10 items-center self-center"
+        className="absolute bottom-0 z-10 items-center self-center "
         style={[
           animatedBackgroundStyle,
           { height: isOpen ? '100%' : 70, width: isOpen ? '100%' : 128 },
@@ -142,7 +142,7 @@ export const TapadoodleBox = () => {
           onPressIn={handlePressIn}
           onPress={() => (isOpen ? Close() : Open())}>
           <AnimatedPressable
-            className="absolute h-full overflow-hidden rounded-full bg-middleground shadow-2xl"
+            className="absolute h-full overflow-hidden rounded-full bg-white shadow-2xl"
             style={[animatedStyle]}
             onPress={Open}
             onPressIn={handlePressIn}>
