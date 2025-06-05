@@ -111,11 +111,15 @@ export const TodoItem = ({
 
   function handleDelete() {
     removeTask(item.id);
-    toast('Task deleted', {
+    toast('Deleted: ' + item.title, {
+      closeButton: true,
+      dismissible: true,
+      id: item.id,
       action: {
         label: 'Undo',
         onClick: () => {
           addTask(item);
+          toast.dismiss(item.id);
         },
       },
     });
