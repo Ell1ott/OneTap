@@ -15,14 +15,14 @@ export default function TabLayout() {
       return {
         activeTintColor: 'hsl(210, 40%, 98%)', // foreground
         inactiveTintColor: 'hsl(215, 20%, 65%)', // foregroundMuted
-        backgroundColor: 'hsl(220 11% 12%)', // middleground
+        backgroundColor: 'hsl(220 11% 12%)', // card
         borderColor: 'hsl(215, 27%, 17%)', // border
       };
     } else {
       return {
         activeTintColor: 'hsl(221, 39%, 11%)', // foreground
         inactiveTintColor: 'hsl(215, 14%, 34%)', // foregroundMuted
-        backgroundColor: 'hsl(0, 0%, 100%)', // middleground (white)
+        backgroundColor: 'hsl(0, 0%, 100%)', // card (white)
         borderColor: 'hsl(214, 32%, 91%)', // border
       };
     }

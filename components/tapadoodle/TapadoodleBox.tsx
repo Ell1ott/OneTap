@@ -141,7 +141,7 @@ export const TapadoodleBox = () => {
           onPressIn={handlePressIn}
           onPress={() => (isOpen ? Close() : Open())}>
           <AnimatedPressable
-            className="absolute h-full overflow-hidden rounded-full bg-middleground shadow-2xl"
+            className="absolute h-full overflow-hidden rounded-full bg-card shadow-2xl"
             style={[animatedStyle]}
             onPress={Open}
             onPressIn={handlePressIn}>

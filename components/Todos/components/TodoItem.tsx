@@ -13,6 +13,7 @@ import { useTasksStore } from 'stores/tasksStore';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
 import { toast } from 'sonner-native';
+import { useTheme } from 'components/ThemeProvider';
 export const TodoItem = ({
   item,
   editing = false,
@@ -28,6 +29,7 @@ export const TodoItem = ({
   classname?: string;
   onCategoryPress: (category: string) => void;
 }) => {
+  const { theme } = useTheme();
   const updateTask = useTasksStore((state) => state.updateTask);
   const removeTask = useTasksStore((state) => state.removeTask);
   const addTask = useTasksStore((state) => state.addTask);
@@ -135,7 +137,7 @@ export const TodoItem = ({
       <Pressable
         onPress={handlePress}
         disabled={isSwipeableOpen}
-        className="overflow-hidden rounded-t-lg bg-middleground px-4"
+        className="overflow-hidden rounded-t-lg bg-card px-4"
         android_ripple={item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
         <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
           <View className="flex-1">
@@ -152,6 +154,9 @@ export const TodoItem = ({
                         className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                         placeholder="New task..."
                         style={fontStyle}
+                        placeholderTextColor={
+                          theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
+                        }
                         multiline={false}
                       />
                     </Pressable>

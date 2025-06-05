@@ -24,7 +24,7 @@ export const TodoList = ({
   }, [lastAddedTodoId]);
 
   return (
-    <View className="overflow-hidden rounded-xl bg-middleground">
+    <View className="overflow-hidden rounded-xl bg-card">
       {tasks
         .sort((a, b) => {
           const av = a instanceof Event ? a.getNextStart().date.getTime() : Number.MAX_SAFE_INTEGER;
