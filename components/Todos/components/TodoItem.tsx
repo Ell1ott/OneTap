@@ -13,6 +13,7 @@ import { useTasksStore } from 'stores/tasksStore';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
 import { toast } from 'sonner-native';
+import { useNotifications } from 'react-native-notificated';
 export const TodoItem = ({
   item,
   editing = false,
@@ -29,6 +30,7 @@ export const TodoItem = ({
   onCategoryPress: (category: string) => void;
 }) => {
   const { updateTask, removeTask, addTask } = useTasksStore();
+
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
@@ -111,14 +113,6 @@ export const TodoItem = ({
 
   function handleDelete() {
     removeTask(item.id);
-    toast('Task deleted', {
-      action: {
-        label: 'Undo',
-        onClick: () => {
-          addTask(item);
-        },
-      },
-    });
   }
 
   return (
