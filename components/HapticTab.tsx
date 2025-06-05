@@ -1,8 +1,6 @@
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { PlatformPressable } from '@react-navigation/elements';
 import * as Haptics from 'expo-haptics';
-import { Vibration } from 'react-native';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 export function HapticTab(props: BottomTabBarButtonProps) {
   return (

@@ -1,25 +1,16 @@
-import { Text, View, TextInput, Pressable, Platform } from 'react-native';
+import { Text, View, TextInput, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
   interpolate,
-  FadeIn,
-  FadeOut,
 } from 'react-native-reanimated';
 import AppText, { fontStyle } from '../../base/AppText';
-import { getRelativeDateString } from '../../../utils/dateUtils';
-import { useRef, useEffect, useLayoutEffect, useState } from 'react';
-import { ChevronRight } from 'lucide-react-native';
-import { ChevronLeft } from 'lucide-react-native';
-import CheckBox from 'components/base/CheckBox';
+import { useRef, useEffect, useState } from 'react';
 import { Task, TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
-import { HapticTab } from 'components/HapticTab';
-import { PlatformPressable } from '@react-navigation/elements';
 import { useTasksStore } from 'stores/tasksStore';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { TodoActions } from './TodoActions';
 
 export const TodoItem = ({

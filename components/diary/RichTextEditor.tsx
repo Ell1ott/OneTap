@@ -1,7 +1,5 @@
 import {
   CodeBridge,
-  CoreBridge,
-  PlaceholderBridge,
   RichText,
   TenTapStartKit,
   Toolbar,
