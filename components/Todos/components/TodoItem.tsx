@@ -139,7 +139,7 @@ export const TodoItem = ({
         android_ripple={item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
         <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
           <View className="flex-1">
-            <View className="relative flex-row items-baseline justify-start gap-1.5">
+            <View className="relative flex-1 flex-row items-baseline justify-start gap-1.5">
               {isEditable ? (
                 <>
                   {item.emoji && (
