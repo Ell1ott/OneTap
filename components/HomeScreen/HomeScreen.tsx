@@ -17,7 +17,7 @@ export function HomeScreen() {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   return (
-    <GestureHandlerRootView className="">
+    <>
       {openCategory && (
         <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
@@ -55,6 +55,6 @@ export function HomeScreen() {
         </View>
         <ThemeToggle />
       </ScrollView>
-    </GestureHandlerRootView>
+    </>
   );
 }
