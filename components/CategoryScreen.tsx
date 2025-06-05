@@ -212,7 +212,7 @@ export default function CategoryScreen({
             {/* Add Task Button */}
             <Pressable
               onPress={handleAddTask}
-              className="mt-auto flex-row items-center justify-center rounded-xl bg-middleground p-4">
+              className="mt-auto flex-row items-center justify-center rounded-xl bg-card p-4">
               <Plus size={20} className="mr-2 text-foregroundMuted" />
               <AppText className="text-foregroundMuted">Add new task</AppText>
             </Pressable>

@@ -8,7 +8,6 @@ module.exports = {
       colors: {
         primary: 'hsl(var(--color-primary))',
         background: 'hsl(var(--color-background))',
-        middleground: 'hsl(var(--color-middleground))',
         foreground: 'hsl(var(--color-foreground))',
         foregroundMuted: 'hsl(var(--color-foreground-muted))',
         accent: 'hsl(var(--color-accent))',
