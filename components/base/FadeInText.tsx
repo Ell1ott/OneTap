@@ -1,3 +1,4 @@
+import { useTheme } from 'components/ThemeProvider';
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Text, Animated } from 'react-native';
@@ -49,6 +50,9 @@ export const FadeInText: React.FC<FadeInTextProps> = ({
   const textRef = useRef<Text>(null);
   const [currentText, setCurrentText] = useState<string>('');
 
+  const { theme } = useTheme();
+  const foreground = theme === 'light' ? '0,0,0' : '255,255,255';
+
   // Update current text when text prop changes
   useEffect(() => {
     setCurrentText(text);
@@ -99,7 +103,7 @@ export const FadeInText: React.FC<FadeInTextProps> = ({
             // Use color interpolation for fade-in effect
             const textColor = animValue.interpolate({
               inputRange: [0, 1],
-              outputRange: ['rgba(0,0,0,0)', `rgba(0,0,0,${endOpacity})`],
+              outputRange: [`rgba(${foreground},0)`, `rgba(${foreground},${endOpacity})`],
             });
 
             const separator = splitMode === 'characters' ? '' : ' ';
