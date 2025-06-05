@@ -38,11 +38,22 @@ bun run web
 
 ## Todo
 
+- [] Fix android text input wiggle bug
+
+- [] Make AI capable of adding...
+  - [] Categories
+  - [] Spots
+  - [] Diary entries
+  - [] Stats
 - [x] Vibration when transcription is active
 - [x] Make transcription more stable
 - [] Quickly edit AI created Tasks
 - [x] Make tasks deletable
 - [] Make tasks editable
+  - [x] Title
+  - [] Start, end
+  - [] Reminders
+- [] Make categories editable
 - [] Settings
   - [] Transcribtion langauge
   - [] Dark/light mode
