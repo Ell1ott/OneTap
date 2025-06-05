@@ -15,6 +15,10 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const { transcriptionData, isRecording, requestPermissions, beginRecording, endRecording } =
     useAudioRecording();
 
+  useEffect(() => {
+    console.log('isRecording', isRecording);
+  }, [isRecording]);
+
   // Request audio recording permissions
   useEffect(() => {
     requestPermissions();

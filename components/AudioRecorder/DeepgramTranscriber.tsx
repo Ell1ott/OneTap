@@ -5,7 +5,7 @@ import AppText from 'components/base/AppText';
 import FadeInText from 'components/base/FadeInText';
 import { useApiKey } from '../../hooks/useApiKey';
 import { useApiKeyStore } from 'stores/apiKeyStore';
-
+import * as Haptics from 'expo-haptics';
 interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
@@ -30,7 +30,6 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
-    console.log('apiKey', apiKey);
     if (!apiKey) return;
 
     // Only open connection when recording starts
@@ -57,7 +56,9 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       // https://youtu.be/t38gZi8WNKE
 
       connection.on('open', () => {
-        console.log('Deepgram connection established');
+        console.log('Deepgram connection established, vibrating');
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
         setIsConnected(true);
         setConnectionStatus('Connected to Deepgram');
       });
