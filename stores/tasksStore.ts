@@ -83,7 +83,6 @@ const saveTasksToStorage = async (tasks: Task[]) => {
         ...task,
         type: task.constructor.name,
       });
-      console.log(serializedTask);
       return serializedTask;
     });
     await AsyncStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasksWithType));

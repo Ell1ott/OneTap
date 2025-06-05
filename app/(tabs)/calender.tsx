@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, TextInput, View } from 'react-native';
 
 import AppText from 'components/base/AppText';
 
@@ -9,6 +9,7 @@ export default function TabTwoScreen() {
       <View style={styles.titleContainer}>
         <AppText>Explore</AppText>
       </View>
+      <TextInput className="rounded-md border-2 border-gray-300 p-2" />
     </View>
   );
 }

@@ -28,14 +28,16 @@ export const TodoItem = ({
   classname?: string;
   onCategoryPress: (category: string) => void;
 }) => {
-  const { updateTask, removeTask, addTask } = useTasksStore();
+  const updateTask = useTasksStore((state) => state.updateTask);
+  const removeTask = useTasksStore((state) => state.removeTask);
+  const addTask = useTasksStore((state) => state.addTask);
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
   const [textWidth, setTextWidth] = useState(0);
   // Animation for strikethrough effect
   const isCompleted = item instanceof Todo && item.completed?.every(Boolean);
-  const isEditable = item instanceof Todo && !isCompleted;
+  const isEditable = !(item instanceof TaskCategory) && !isCompleted;
   const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
   const scaleHeight = useSharedValue(0);
 
@@ -148,8 +150,6 @@ export const TodoItem = ({
                       <TextInput
                         ref={inputRef}
                         className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
-                        onChangeText={onTextChange}
-                        value={item.title}
                         placeholder="New task..."
                         style={fontStyle}
                         multiline={false}
