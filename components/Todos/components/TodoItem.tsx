@@ -154,6 +154,8 @@ export const TodoItem = ({
                         className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                         placeholder="New task..."
                         style={fontStyle}
+                        value={item.title}
+                        onChangeText={onTextChange}
                         placeholderTextColor={
                           theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
                         }
