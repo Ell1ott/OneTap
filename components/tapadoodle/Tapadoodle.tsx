@@ -45,18 +45,18 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
       });
     } else {
       setTranscript(null);
-      if (isRecording) {
-        stopRecording();
-      }
+      stopRecording();
     }
     return () => {
       stopRecording();
+
       console.log('unmounting tapadoodle, so stopping recording');
     };
   }, [isOpen]);
 
-  function stopRecording() {
+  async function stopRecording() {
     console.log('ending recording');
+
     endRecording();
     setVolumeScale(1);
   }

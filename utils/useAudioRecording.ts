@@ -29,6 +29,7 @@ export const useAudioRecording = () => {
   // Start recording and monitoring volume
   const beginRecording = async (onVolumeChange: (newScale: number) => void) => {
     try {
+      console.log('starting recording');
       // Configure recording options
       const config: RecordingConfig = {
         interval: interval,
@@ -62,7 +63,7 @@ export const useAudioRecording = () => {
 
       await startRecording(config);
     } catch (err) {
-      console.error('Failed to start recording', err);
+      console.log('Failed to start recording', err);
     }
   };
 
@@ -74,7 +75,7 @@ export const useAudioRecording = () => {
       setTranscriptionData(null);
       return result;
     } catch (err) {
-      console.error('Failed to stop recording', err);
+      console.log('Failed to stop recording', err);
       return null;
     }
   };
