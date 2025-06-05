@@ -36,6 +36,18 @@ bun i
 bun run web
 ```
 
+## Todo
+
+- [] Vibration when transcription is active
+- [] Make transcription more stable
+- [] Quickly edit AI created Tasks
+- [] Settings
+  - [] Transcribtion langauge
+  - [] Dark/light mode
+- [] Implement backend sync
+  - [] Setup supabase correcly
+  - [] Implement local first syncic
+
 ## 🛠️ Project Status
 
 **🚧 Early-stage development.**
