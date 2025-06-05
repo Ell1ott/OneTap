@@ -38,16 +38,17 @@ bun run web
 
 ## Todo
 
-- [] Vibration when transcription is active
+- [x] Vibration when transcription is active
 - [] Make transcription more stable
 - [] Quickly edit AI created Tasks
-- [] Make tasks deletable, and editable
+- [x] Make tasks deletable
+- [] Make tasks editable
 - [] Settings
   - [] Transcribtion langauge
   - [] Dark/light mode
 - [] Implement backend sync
   - [] Setup supabase correcly
-  - [] Implement local first syncic
+  - [] Implement local first syncing
 
 ## 🛠️ Project Status
 
