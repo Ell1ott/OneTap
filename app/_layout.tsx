@@ -7,6 +7,7 @@ import '../utils/polyfills';
 import { useEffect } from 'react';
 import { useTasksStore } from 'stores/tasksStore';
 import { ThemeProvider } from '../components/ThemeProvider';
+import { Toaster } from 'sonner-native';
 
 export default function RootLayout() {
   const loadTasks = useTasksStore((state) => state.loadTasks);
@@ -29,6 +30,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      <Toaster position="bottom-center" offset={80} />
     </ThemeProvider>
   );
 }

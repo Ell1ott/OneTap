@@ -1,10 +1,10 @@
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Trash } from 'lucide-react-native';
 
-export const TodoActions = () => {
+export const TodoActions = ({ onDelete }: { onDelete: () => void }) => {
   return (
-    <View className="h-full items-center justify-center px-4">
-      <Trash size={22} color="rgba(0, 0, 0, 0.5)" />
-    </View>
+    <TouchableOpacity className="h-full items-center justify-center px-4">
+      <Trash size={22} color="rgba(0, 0, 0, 0.5)" onPress={onDelete} />
+    </TouchableOpacity>
   );
 };

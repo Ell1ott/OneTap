@@ -41,6 +41,7 @@ bun run web
 - [] Vibration when transcription is active
 - [] Make transcription more stable
 - [] Quickly edit AI created Tasks
+- [] Make tasks deletable, and editable
 - [] Settings
   - [] Transcribtion langauge
   - [] Dark/light mode

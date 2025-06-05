@@ -12,7 +12,7 @@ import { useRouter } from 'expo-router';
 import { useTasksStore } from 'stores/tasksStore';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
-
+import { toast } from 'sonner-native';
 export const TodoItem = ({
   item,
   editing = false,
@@ -28,7 +28,7 @@ export const TodoItem = ({
   classname?: string;
   onCategoryPress: (category: string) => void;
 }) => {
-  const { updateTask } = useTasksStore();
+  const { updateTask, removeTask, addTask } = useTasksStore();
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
@@ -109,15 +109,27 @@ export const TodoItem = ({
     console.log(isSwipeableOpen);
   }, [isSwipeableOpen]);
 
+  function handleDelete() {
+    removeTask(item.id);
+    toast('Task deleted', {
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          addTask(item);
+        },
+      },
+    });
+  }
+
   return (
     <Swipeable
-      renderRightActions={() => <TodoActions />}
+      renderRightActions={() => <TodoActions onDelete={handleDelete} />}
       onSwipeableClose={() => setIsSwipeableOpen(false)}
       onSwipeableOpenStartDrag={() => setIsSwipeableOpen(true)}>
       <Pressable
         onPress={handlePress}
         disabled={isSwipeableOpen}
-        className="overflow-hidden rounded-t-lg px-4"
+        className="overflow-hidden rounded-t-lg bg-middleground px-4"
         android_ripple={item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
         <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
           <View className="flex-1">
