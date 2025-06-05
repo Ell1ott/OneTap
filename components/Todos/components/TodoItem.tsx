@@ -14,6 +14,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
 import { toast } from 'sonner-native';
 import { useNotifications } from 'react-native-notificated';
+import Toast from 'react-native-toast-message';
 export const TodoItem = ({
   item,
   editing = false,
@@ -113,6 +114,11 @@ export const TodoItem = ({
 
   function handleDelete() {
     removeTask(item.id);
+    Toast.show({
+      type: 'success',
+      text1: 'Task deleted',
+      text2: 'Task deleted',
+    });
   }
 
   return (
