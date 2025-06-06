@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { View, Pressable, Text, LayoutChangeEvent, findNodeHandle, UIManager } from 'react-native';
 import AppText from 'components/base/AppText';
-import { TodoSection } from 'components/HomeScreen/TodoSection';
-import { Greeting } from 'components/HomeScreen/Greeting';
+import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
+import { Greeting } from 'components/screens/HomeScreen/Greeting';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { Time } from 'components/Todos/types';
 import { useEffect, useState, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
-import CategoryDrawer from 'components/CategoryDrawer';
+import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { useTasksStore } from 'stores/tasksStore';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { router } from 'expo-router';
-import EventDrawer from 'components/EventDrawer';
+import EventDrawer from 'components/screens/EventDrawer';
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);

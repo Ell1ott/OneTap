@@ -1,4 +1,4 @@
-import { HomeScreen as HomeScreenComponent } from 'components/HomeScreen/HomeScreen';
+import { HomeScreen as HomeScreenComponent } from 'components/screens/HomeScreen/HomeScreen';
 
 export default function HomeScreen() {
   return <HomeScreenComponent />;

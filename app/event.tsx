@@ -1,4 +1,4 @@
-import EventDrawer from 'components/EventDrawer';
+import EventDrawer from 'components/screens/EventDrawer';
 import { router } from 'expo-router';
 
 export default function Event() {
