@@ -7,7 +7,7 @@ import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
 
-export default function CategoryScreen({
+export default function CategoryDrawer({
   category,
   onClose,
 }: {

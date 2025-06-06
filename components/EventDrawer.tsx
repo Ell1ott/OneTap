@@ -7,7 +7,7 @@ import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
 
-export default function AddEventDrawer({ onClose }: { onClose: () => void }) {
+export default function EventDrawer({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
 
   return (

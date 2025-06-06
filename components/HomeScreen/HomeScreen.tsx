@@ -8,12 +8,12 @@ import { Time } from 'components/Todos/types';
 import { useEffect, useState, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { isToday } from 'utils/dateUtils';
-import CategoryScreen from 'components/CategoryScreen';
+import CategoryDrawer from 'components/CategoryDrawer';
 import { useTasksStore } from 'stores/tasksStore';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { router } from 'expo-router';
-import AddEventDrawer from 'components/AddEventDrawer';
+import EventDrawer from 'components/EventDrawer';
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -22,9 +22,9 @@ export function HomeScreen() {
   return (
     <>
       {openCategory && (
-        <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
+        <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
-      {openAddEvent && <AddEventDrawer onClose={() => setOpenAddEvent(false)} />}
+      {openAddEvent && <EventDrawer onClose={() => setOpenAddEvent(false)} />}
 
       <ScrollView
         className="flex-1 bg-background"
