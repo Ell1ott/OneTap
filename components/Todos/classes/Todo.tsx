@@ -116,7 +116,7 @@ export class Todo extends Task {
   };
 
   renderEndContent = (updateTodo: (updates: Partial<Todo>) => void) => (
-    <View className="flex-row items-center">
+    <View className="flex-row items-center bg-red-500">
       {this.completed?.map((completed, index) => (
         <CheckBox
           key={index}
