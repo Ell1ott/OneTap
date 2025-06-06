@@ -49,7 +49,7 @@ export const isTomorrow = (date: Date): boolean => {
  * @param date - The date to format
  * @returns A string like "today", "yesterday", "tomorrow", or the weekday name
  */
-export const getRelativeDateString = (date: Date): string => {
+export const getRelativeDateString = (date: Date, weekday: boolean = true): string => {
   if (isToday(date)) {
     return 'today';
   } else if (isYesterday(date)) {
@@ -57,7 +57,11 @@ export const getRelativeDateString = (date: Date): string => {
   } else if (isTomorrow(date)) {
     return 'tomorrow';
   } else {
-    return date.toLocaleDateString('en-US', { weekday: 'long' });
+    if (weekday) {
+      return date.toLocaleDateString('en-US', { weekday: 'long' });
+    } else {
+      return '';
+    }
   }
 };
 
