@@ -107,7 +107,9 @@ export const TodoItem = ({
       }
     } else if (item instanceof TaskCategory) {
       onCategoryPress(item.title);
-    }
+    } else if (item instanceof Event) {
+      
+    
   };
 
   const [isSwipeableOpen, setIsSwipeableOpen] = useState(false);
@@ -142,7 +144,7 @@ export const TodoItem = ({
         onPress={handlePress}
         disabled={isSwipeableOpen}
         className="overflow-hidden rounded-t-lg bg-card px-4"
-        android_ripple={item instanceof TaskCategory ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
+        android_ripple={!(item instanceof Todo) ? { color: 'rgba(0, 0, 0, 0.1)' } : undefined}>
         <View className={`flex-row justify-between py-2.5 pr-2 ${classname}`}>
           <View className="flex-1">
             <View className="relative flex-1 flex-row items-baseline justify-start gap-1.5">

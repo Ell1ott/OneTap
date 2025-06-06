@@ -13,15 +13,18 @@ import { useTasksStore } from 'stores/tasksStore';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { router } from 'expo-router';
+import AddEventDrawer from 'components/AddEventDrawer';
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [openAddEvent, setOpenAddEvent] = useState(false);
 
   return (
     <>
       {openCategory && (
         <CategoryScreen category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
+      {openAddEvent && <AddEventDrawer onClose={() => setOpenAddEvent(false)} />}
 
       <ScrollView
         className="flex-1 bg-background"
