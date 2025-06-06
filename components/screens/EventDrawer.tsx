@@ -6,13 +6,7 @@ import { Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
-import DatePicker from 'react-native-date-picker';
-import {
-  Calendar,
-  toDateId,
-  useCalendar,
-  UseCalendarParams,
-} from '@marceloterreiro/flash-calendar';
+import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 export default function EventDrawer({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(new Date());
@@ -36,59 +30,39 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
               placeholder="Title"
             />
           </View>
-          <BasicCalendar params={{ calendarMonthId: today, calendarFirstDayOfWeek: 'monday' }} />
+          <Calendar />
         </View>
       </ScrollView>
     </Drawer>
   );
 }
 
-const today = toDateId(new Date());
+export function Calendar() {
+  const defaultClassNames = useDefaultClassNames();
+  const [selected, setSelected] = useState<DateType>();
 
-export function BasicCalendar({ params }: { params: UseCalendarParams }) {
-  const [selectedDate, setSelectedDate] = useState(today);
-  const { calendarRowMonth, weekDaysList, weeksList } = useCalendar(params);
   return (
-    <View>
-      <AppText>Selected date: {selectedDate}</AppText>
-      <View>
-        <Calendar.VStack spacing={4}>
-          {/* Replaces `Calendar.Row.Month` with a custom implementation */}
-          <Calendar.HStack alignItems="center" justifyContent="space-around" width="100%">
-            <AppText className="text-2xl">{calendarRowMonth}</AppText>
-          </Calendar.HStack>
-
-          <Calendar.Row.Week spacing={4}>
-            {weekDaysList.map((day, i) => (
-              <Calendar.Item.WeekName height={32} key={i}>
-                {day}
-              </Calendar.Item.WeekName>
-            ))}
-            <View />
-          </Calendar.Row.Week>
-
-          {weeksList.map((week, i) => (
-            <Calendar.Row.Week key={i}>
-              {week.map((day) => (
-                <Calendar.Item.Day.Container
-                  dayHeight={32}
-                  daySpacing={4}
-                  isStartOfWeek={day.isStartOfWeek}
-                  key={day.id}>
-                  <Calendar.Item.Day height={32} metadata={day} onPress={setSelectedDate}>
-                    {day.displayLabel}
-                  </Calendar.Item.Day>
-                </Calendar.Item.Day.Container>
-              ))}
-            </Calendar.Row.Week>
-          ))}
-
-          <View>
-            <View />
-            <AppText>Today: {new Date().toLocaleDateString()}</AppText>
-          </View>
-        </Calendar.VStack>
-      </View>
-    </View>
+    <DateTimePicker
+      mode="single"
+      date={selected}
+      onChange={({ date }) => setSelected(date)}
+      classNames={{
+        ...defaultClassNames,
+        today: 'border-blue-500',
+        selected: 'bg-blue-500 border-blue-500',
+        selected_label: 'text-white',
+        day: `${defaultClassNames.day} hover:bg-blue-100 p-0 m-0 flex-none`,
+        disabled: 'opacity-50', // Make disabled dates appear more faded
+        selected_month: 'bg-blue-500/50 rounded-full',
+        selected_year: 'bg-blue-500/50 rounded-full',
+        day_cell: 'm-0.5 aspect-square flex-none',
+        day_label: 'text-base',
+      }}
+      styles={{
+        day: {
+          height: 32,
+        },
+      }}
+    />
   );
 }
