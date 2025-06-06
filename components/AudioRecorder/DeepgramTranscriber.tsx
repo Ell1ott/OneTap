@@ -166,7 +166,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       text={getCompleteTranscript()}
       splitMode="words"
       className={`text-lg ${textClassName}`}
-      fallbackContent={<AppText className="text-foreground/40">Could you please...</AppText>}
+      fallbackContent={<AppText className="text-foreground/40">Go ahead, I'm listening...</AppText>}
     />
   );
 };
