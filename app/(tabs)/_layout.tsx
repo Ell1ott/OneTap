@@ -85,6 +85,7 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
+
       <TapadoodleBox />
     </>
   );

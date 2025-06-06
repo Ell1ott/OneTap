@@ -12,6 +12,7 @@ import CategoryScreen from 'components/CategoryScreen';
 import { useTasksStore } from 'stores/tasksStore';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
+import { router } from 'expo-router';
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -33,6 +34,9 @@ export function HomeScreen() {
             store, as you have 9 items on your shopping list.
           </AppText>
         </View>
+        <Pressable onPress={() => router.push('/modal')}>
+          <AppText>Open modal</AppText>
+        </Pressable>
 
         <View className="flex-1 gap-6">
           <TodoSection
