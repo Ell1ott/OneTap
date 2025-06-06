@@ -88,15 +88,15 @@ export default function CategoryScreen({
     addTask(newTask);
     setLastAddedTodoId(newId);
   };
-
+  let startY = 0;
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
       // Gesture started
+      startY = translateY.value;
     })
     .onUpdate((event) => {
       // Only allow right swipe (positive translation)
-
-      translateY.value = event.translationY + topMargin;
+      translateY.value = startY + event.translationY;
     })
     .onEnd((event) => {
       const shouldGoBack =
