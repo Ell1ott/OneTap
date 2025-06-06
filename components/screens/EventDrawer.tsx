@@ -92,7 +92,8 @@ export function Calendar({ date, setDate }: { date: DateType; setDate: (date: Da
         selected_month: 'bg-blue-500/50 rounded-full',
         selected_year: 'bg-blue-500/50 rounded-full',
         day_cell: 'm-0.5 aspect-square flex-none',
-        day_label: 'text-base font-medium',
+        day_label: 'text-base font-medium text-foreground/80',
+        weekday_label: ' text-foregroundMuted',
         today: 'text-blue-500 border-blue-500 border-[3px]',
         today_label: 'text-blue-500',
       }}
