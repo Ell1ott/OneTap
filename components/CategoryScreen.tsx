@@ -1,7 +1,7 @@
 import AppText from 'components/base/AppText';
 import { View, ScrollView, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { HumanDate, Time } from 'components/Todos/types';
@@ -21,7 +21,8 @@ import { useTasksStore } from 'stores/tasksStore';
 import { BackHandler } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
-
+const screenHeight = Dimensions.get('window').height;
+const topMargin = screenHeight * 0.1;
 export default function CategoryScreen({
   category,
   onClose,
@@ -31,6 +32,7 @@ export default function CategoryScreen({
 }) {
   const { tasks, addTask } = useTasksStore();
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
+  const shouldClose = useRef(false);
 
   // Filter tasks by category
   const categoryTasks = tasks.filter((task) => {
@@ -56,18 +58,21 @@ export default function CategoryScreen({
   }, []);
 
   // Gesture handler values
-  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(screenHeight);
 
   useEffect(() => {
-    translateX.value = 0;
+    console.log('opening');
+    translateY.value = withSpring(topMargin, { damping: 20, velocity: 0 });
   }, [category]);
 
   // Monitor translateX value and close when threshold is reached
   useAnimatedReaction(
-    () => translateX.value,
+    () => translateY.value,
     (value) => {
-      if (value > screenWidth - 30) {
+      if (!shouldClose.current) return;
+      if (value > screenHeight - 20) {
         runOnJS(onClose)();
+        shouldClose.current = false;
       }
     }
   );
@@ -90,20 +95,20 @@ export default function CategoryScreen({
     })
     .onUpdate((event) => {
       // Only allow right swipe (positive translation)
-      if (event.translationX > 0) {
-        translateX.value = event.translationX;
-      }
+
+      translateY.value = event.translationY + topMargin;
     })
     .onEnd((event) => {
       const shouldGoBack =
-        (event.translationX > 10 && event.velocityX > -100) || event.velocityX > 800;
+        (event.translationY > 10 && event.velocityY > -100) || event.velocityY > 800;
 
       if (shouldGoBack) {
         // Animate out and navigate back
-        translateX.value = withSpring(
-          400,
+        shouldClose.current = true;
+        translateY.value = withSpring(
+          screenHeight,
           {
-            stiffness: 300,
+            stiffness: 200,
             damping: 20,
             velocity: event.velocityX,
           },
@@ -113,19 +118,20 @@ export default function CategoryScreen({
         );
       } else {
         // Snap back to original position
-        translateX.value = withSpring(0, { damping: 20, velocity: event.velocityX });
+
+        translateY.value = withSpring(topMargin, { damping: 20, velocity: event.velocityX });
       }
     });
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.value }],
+      transform: [{ translateY: translateY.value }],
     };
   });
 
   // Background overlay style that becomes more transparent as we swipe
   const backgroundStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(translateX.value, [0, 200], [0.4, 0], 'clamp');
+    const opacity = interpolate(translateY.value, [topMargin, screenHeight], [0.7, 0], 'clamp');
     return {
       opacity: opacity,
     };
@@ -170,7 +176,7 @@ export default function CategoryScreen({
       <GestureDetector gesture={gestureHandler}>
         <Animated.View style={[{ flex: 1 }, animatedStyle]}>
           <ScrollView
-            className="flex-1 bg-background"
+            className="flex-1 rounded-t-3xl bg-background"
             contentContainerClassName="px-6 pt-16 pb-6 flex-1"
             keyboardDismissMode="on-drag">
             {/* Header */}
