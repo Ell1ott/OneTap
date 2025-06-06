@@ -9,7 +9,7 @@ export class TaskCategory extends Task {
 
   isPriority = () => true;
 
-  renderEndContent = () => (
+  EndContent = () => (
     <View className="items-center justify-center self-center">
       <ChevronRight size={25} className=" text-foregroundMuted" />
     </View>

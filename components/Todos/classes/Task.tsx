@@ -35,9 +35,11 @@ export class Task {
       </AppText>
     );
 
-  renderEndContent = (
-    updateTodo: (updates: Partial<Todo | Event | TaskCategory>) => void
-  ): JSX.Element | null => null;
+  EndContent = ({
+    updateTodo,
+  }: {
+    updateTodo: (updates: Partial<Todo | Event | TaskCategory>) => void;
+  }): JSX.Element | null => null;
 
   isToday = () => false;
   isPriority = () => false;

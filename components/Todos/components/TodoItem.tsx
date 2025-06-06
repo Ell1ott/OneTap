@@ -103,6 +103,7 @@ export const TodoItem = ({
       console.log(item.completed);
       if (item.completed?.length === 1) {
         updateTodo({ completed: [!item.completed[0]] });
+        item.onToggle(item.completed);
       }
     } else if (item instanceof TaskCategory) {
       onCategoryPress(item.title);
@@ -187,7 +188,7 @@ export const TodoItem = ({
             </View>
             {item.renderSubtext()}
           </View>
-          {item.renderEndContent(updateTodo)}
+          <item.EndContent updateTodo={updateTodo} />
         </View>
       </Pressable>
     </Swipeable>

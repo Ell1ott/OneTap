@@ -4,6 +4,7 @@ import { Time } from '../types/Time';
 import { View } from 'react-native';
 import CheckBox from 'components/base/CheckBox';
 import { HumanDate } from '../types/HumanDate';
+import { JSX } from 'react';
 
 export class Todo extends Task {
   start?: HumanDate;
@@ -115,7 +116,7 @@ export class Todo extends Task {
     console.log(this.lastDone);
   };
 
-  renderEndContent = (updateTodo: (updates: Partial<Todo>) => void) => (
+  EndContent = ({ updateTodo }: { updateTodo: (updates: Partial<Todo>) => void }): JSX.Element => (
     <View className="flex-row items-center">
       {this.completed?.map((completed, index) => (
         <CheckBox
