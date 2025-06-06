@@ -6,9 +6,10 @@ import { Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
-
+import DatePicker from 'react-native-date-picker';
 export default function EventDrawer({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
+  const [date, setDate] = useState(new Date());
 
   return (
     <Drawer isOpen={true} onClose={onClose}>
@@ -29,6 +30,7 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
               placeholder="Title"
             />
           </View>
+          <DatePicker date={date} onDateChange={setDate} />
         </View>
       </ScrollView>
     </Drawer>

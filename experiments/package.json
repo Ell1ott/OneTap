@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@google-cloud/speech": "^7.1.0",
-    "node-record-lpcm16": "^1.0.1"
+    "install": "^0.13.0",
+    "node-record-lpcm16": "^1.0.1",
+    "react-native-date-picker": "^5.0.13"
   }
 }
