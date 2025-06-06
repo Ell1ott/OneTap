@@ -24,7 +24,6 @@ export function HomeScreen() {
       {openCategory && (
         <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
-      {openAddEvent && <EventDrawer onClose={() => setOpenAddEvent(false)} />}
 
       <ScrollView
         className="flex-1 bg-background"
@@ -37,9 +36,6 @@ export function HomeScreen() {
             store, as you have 9 items on your shopping list.
           </AppText>
         </View>
-        <Pressable onPress={() => router.push('/modal')}>
-          <AppText>Open modal</AppText>
-        </Pressable>
 
         <View className="flex-1 gap-6">
           <TodoSection

@@ -29,7 +29,10 @@ export default function RootLayout() {
               animation: 'slide_from_right',
             }}
           />
-          <Stack.Screen name="modal" options={{ presentation: 'transparentModal' }} />
+          <Stack.Screen
+            name="event"
+            options={{ presentation: 'transparentModal', headerShown: false }}
+          />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

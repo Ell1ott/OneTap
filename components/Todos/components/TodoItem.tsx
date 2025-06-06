@@ -106,10 +106,15 @@ export const TodoItem = ({
         item.onToggle(item.completed);
       }
     } else if (item instanceof TaskCategory) {
-      onCategoryPress(item.title);
+      router.push({
+        pathname: '/category',
+        params: { category: item.title },
+      });
     } else if (item instanceof Event) {
-      
-    
+      router.push({
+        pathname: '/event',
+      });
+    }
   };
 
   const [isSwipeableOpen, setIsSwipeableOpen] = useState(false);
