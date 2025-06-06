@@ -113,6 +113,7 @@ export const TodoItem = ({
     } else if (item instanceof Event) {
       router.push({
         pathname: '/event',
+        params: { id: item.id },
       });
     }
   };
