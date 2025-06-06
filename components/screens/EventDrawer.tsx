@@ -48,18 +48,24 @@ export function Calendar() {
       onChange={({ date }) => setSelected(date)}
       classNames={{
         ...defaultClassNames,
-        today: 'border-blue-500',
         selected: 'bg-blue-500 border-blue-500',
         selected_label: 'text-white',
-        day: `${defaultClassNames.day} hover:bg-blue-100 p-0 m-0 flex-none`,
+        day: `${defaultClassNames.day} hover:bg-blue-100 p-0 m-0 flex-none rounded-xl`,
         disabled: 'opacity-50', // Make disabled dates appear more faded
         selected_month: 'bg-blue-500/50 rounded-full',
         selected_year: 'bg-blue-500/50 rounded-full',
         day_cell: 'm-0.5 aspect-square flex-none',
-        day_label: 'text-base',
+        day_label: 'text-base font-medium',
+        today: 'text-blue-500 border-blue-500 border-[3px]',
+        today_label: 'text-blue-500',
       }}
       styles={{
         day: {
+          // flex: 'none',
+          height: 32,
+        },
+        day_cell: {
+          flex: 'none',
           height: 32,
         },
       }}
