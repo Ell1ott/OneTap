@@ -4,9 +4,10 @@ import { View, ScrollView, Pressable, TextInput } from 'react-native';
 import { useState } from 'react';
 import { Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
-import { ChevronLeft, Plus } from 'lucide-react-native';
+import { CalendarIcon, ChevronLeft, Plus } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
+import { Icon } from 'components/base/LucideIcon';
 export default function EventDrawer({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(new Date());
@@ -24,13 +25,17 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
         <View className="mb-6">
           <View className="mb-4 flex-row items-center">
             <TextInput
-              className="text-3xl font-bold outline-none placeholder:text-foreground/40"
+              className="text-3xl font-bold text-foreground outline-none placeholder:text-foreground/40"
               value={title}
               onChangeText={setTitle}
               placeholder="Title"
             />
           </View>
-          <Calendar />
+          <View className="flex-row items-center gap-2 self-start rounded-full border-[2px] border-foregroundMuted/20 p-2 px-5">
+            <Icon icon={CalendarIcon} size={20} className="color-foregroundMuted" />
+            <AppText className="text-lg font-medium text-foregroundMuted">Today</AppText>
+          </View>
+          {/* <Calendar /> */}
         </View>
       </ScrollView>
     </Drawer>
