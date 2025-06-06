@@ -14,6 +14,7 @@ import Animated, {
   withSpring,
   interpolate,
   useAnimatedReaction,
+  withDecay,
 } from 'react-native-reanimated';
 import { Gesture } from 'react-native-gesture-handler';
 import { useTasksStore } from 'stores/tasksStore';
@@ -89,6 +90,7 @@ export default function CategoryScreen({
     setLastAddedTodoId(newId);
   };
   let startY = 0;
+
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
       // Gesture started
@@ -99,8 +101,10 @@ export default function CategoryScreen({
       translateY.value = startY + event.translationY;
     })
     .onEnd((event) => {
+      console.log(event.translationY + startY, event.velocityY);
       const shouldGoBack =
-        (event.translationY > 10 && event.velocityY > -100) || event.velocityY > 800;
+        (event.translationY + startY > topMargin + 10 && event.velocityY > 100) ||
+        event.velocityY > 2000;
 
       if (shouldGoBack) {
         // Animate out and navigate back
@@ -110,7 +114,7 @@ export default function CategoryScreen({
           {
             stiffness: 200,
             damping: 20,
-            velocity: event.velocityX,
+            velocity: event.velocityY,
           },
           () => {
             runOnJS(onClose)();
@@ -119,7 +123,24 @@ export default function CategoryScreen({
       } else {
         // Snap back to original position
 
-        translateY.value = withSpring(topMargin, { damping: 20, velocity: event.velocityX });
+        console.log(translateY.value);
+
+        if (translateY.value > topMargin) {
+          console.log('snap back');
+          translateY.value = withSpring(topMargin, {
+            damping: 10,
+            velocity: event.velocityY,
+          });
+        } else {
+          console.log('scroll');
+          translateY.value = withDecay({
+            velocity: event.velocityY,
+            deceleration: 0.998,
+            clamp: [-100, topMargin],
+            rubberBandEffect: true,
+            rubberBandFactor: 0.9,
+          });
+        }
       }
     });
 
@@ -176,8 +197,11 @@ export default function CategoryScreen({
       <GestureDetector gesture={gestureHandler}>
         <Animated.View style={[{ flex: 1 }, animatedStyle]}>
           <ScrollView
-            className="flex-1 rounded-t-3xl bg-background"
-            contentContainerClassName="px-6 pt-16 pb-6 flex-1"
+            className="flex-none rounded-t-3xl bg-background"
+            style={{
+              height: 2000,
+            }}
+            contentContainerClassName="px-6 pt-16 pb-6 flex-1 h-[100rem]"
             keyboardDismissMode="on-drag">
             {/* Header */}
             <View className="mb-6">
