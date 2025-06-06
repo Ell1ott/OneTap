@@ -112,6 +112,7 @@ export class Todo extends Task {
     }
 
     this.lastDone = this.doneTimes?.[this.doneTimes.length - 1];
+    console.log(this.lastDone);
   };
 
   renderEndContent = (updateTodo: (updates: Partial<Todo>) => void) => (
@@ -124,6 +125,7 @@ export class Todo extends Task {
             index === (this.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
           }`}
           onToggle={() => {
+            console.log('toggle');
             const newCompleted = [...(this.completed || [])];
             newCompleted[index] = !newCompleted[index];
             updateTodo({ completed: newCompleted });
