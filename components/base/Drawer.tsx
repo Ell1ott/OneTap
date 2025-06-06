@@ -13,7 +13,7 @@ import Animated, {
 import { Gesture } from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const screenHeight = Dimensions.get('window').height + 20;
 const topMargin = screenHeight * 0.1;
 
 interface DrawerProps {
@@ -48,7 +48,8 @@ export default function Drawer({ isOpen, onClose, scrollEnabled = true, children
     () => translateY.value,
     (value) => {
       if (!shouldClose.value) return;
-      if (value > screenHeight - 20) {
+      if (value > screenHeight - 40) {
+        console.log('close');
         runOnJS(onClose)();
         shouldClose.value = false;
       }
@@ -79,17 +80,11 @@ export default function Drawer({ isOpen, onClose, scrollEnabled = true, children
 
       if (shouldGoBack) {
         shouldClose.value = true;
-        translateY.value = withSpring(
-          screenHeight,
-          {
-            stiffness: 200,
-            damping: 20,
-            velocity: event.velocityY,
-          },
-          () => {
-            runOnJS(onClose)();
-          }
-        );
+        translateY.value = withSpring(screenHeight, {
+          stiffness: 200,
+          damping: 20,
+          velocity: event.velocityY,
+        });
       } else {
         if (translateY.value > topMargin || !scrollEnabled) {
           translateY.value = withSpring(topMargin, {
