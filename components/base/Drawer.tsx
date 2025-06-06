@@ -20,10 +20,11 @@ interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  scrollEnabled?: boolean;
 }
 
-export default function Drawer({ isOpen, onClose, children }: DrawerProps) {
-  const shouldClose = useRef(false);
+export default function Drawer({ isOpen, onClose, scrollEnabled = true, children }: DrawerProps) {
+  const shouldClose = useSharedValue(false);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -46,30 +47,38 @@ export default function Drawer({ isOpen, onClose, children }: DrawerProps) {
   useAnimatedReaction(
     () => translateY.value,
     (value) => {
-      if (!shouldClose.current) return;
+      if (!shouldClose.value) return;
       if (value > screenHeight - 20) {
         runOnJS(onClose)();
-        shouldClose.current = false;
+        shouldClose.value = false;
       }
     }
   );
 
-  let startY = 0;
+  const startY = useSharedValue(0);
 
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
-      startY = translateY.value;
+      startY.value = translateY.value;
+      console.log('startY', startY.value);
     })
     .onUpdate((event) => {
-      translateY.value = startY + event.translationY;
+      if (scrollEnabled) {
+        translateY.value = startY.value + event.translationY;
+      } else {
+        translateY.value = Math.max(startY.value + event.translationY, topMargin);
+      }
+
+      console.log('ss', startY.value);
+      // console.log('translateY', translateY.value);
     })
     .onEnd((event) => {
       const shouldGoBack =
-        (event.translationY + startY > topMargin + 10 && event.velocityY > 100) ||
+        (event.translationY + startY.value > topMargin + 10 && event.velocityY > 100) ||
         event.velocityY > 2000;
 
       if (shouldGoBack) {
-        shouldClose.current = true;
+        shouldClose.value = true;
         translateY.value = withSpring(
           screenHeight,
           {
@@ -82,7 +91,7 @@ export default function Drawer({ isOpen, onClose, children }: DrawerProps) {
           }
         );
       } else {
-        if (translateY.value > topMargin) {
+        if (translateY.value > topMargin || !scrollEnabled) {
           translateY.value = withSpring(topMargin, {
             damping: 10,
             velocity: event.velocityY,

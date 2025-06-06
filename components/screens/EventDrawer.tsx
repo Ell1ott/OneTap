@@ -15,7 +15,7 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
   const [date, setDate] = useState(new Date());
 
   return (
-    <Drawer isOpen={true} onClose={onClose}>
+    <Drawer isOpen={true} onClose={onClose} scrollEnabled={false}>
       <ScrollView
         className="flex-none rounded-t-3xl bg-card"
         style={{
