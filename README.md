@@ -54,7 +54,7 @@ bun run web
   - [] Start, end
   - [] Reminders
 - [] Make categories editable
-- [] Settings
+- [] Settingskjjjjj
   - [] Transcribtion langauge
   - [] Dark/light mode
 - [] Implement backend sync
