@@ -9,7 +9,7 @@ import { vars } from 'nativewind';
 export const themes = {
   light: vars({
     '--color-primary': '220 14% 11%',
-    '--color-background': '216 17% 94%',
+    '--color-background': '216 25% 96%',
     '--color-card': '0 0% 100%',
     '--color-foreground': '221 39% 11%',
     '--color-foreground-muted': '215 14% 34%',

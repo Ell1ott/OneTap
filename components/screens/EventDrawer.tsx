@@ -72,7 +72,7 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
 
         {/* Toggle Tabs */}
         <View className="mb-8">
-          <View className="flex-row rounded-full bg-muted p-1.5">
+          <View className="flex-row rounded-full bg-background p-1.5">
             <SelectableText
               onPress={() => setActiveTab('Event')}
               isSelected={activeTab === 'Event'}>
@@ -98,12 +98,12 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
 
           <View className="flex-row space-x-3">
             {/* Date */}
-            <Pressable className="flex-[1.5] flex-row rounded-full bg-muted p-1.5">
+            <Pressable className="flex-[1.5] flex-row rounded-full bg-background p-1.5">
               <SelectableText>{formatDate(date)}</SelectableText>
             </Pressable>
 
             {/* Time */}
-            <Pressable className="flex-[1] flex-row rounded-full bg-muted p-1.5">
+            <Pressable className="flex-[1] flex-row rounded-full bg-background p-1.5">
               <SelectableText>{formatTime(date)}</SelectableText>
             </Pressable>
           </View>
