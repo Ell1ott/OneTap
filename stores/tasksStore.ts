@@ -7,7 +7,7 @@ interface TasksStore {
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
   addTask: (task: Task) => void;
-  updateTask: (taskId: string, updater: (task: Task) => Task) => void;
+  updateTask: (taskId: string, updates: Partial<Task | Event | Todo | TaskCategory>) => void;
   removeTask: (taskId: string) => void;
   toggleTaskCompleted: (taskId: string, index?: number) => void;
   loadTasks: () => Promise<void>;
@@ -198,9 +198,14 @@ export const useTasksStore = create<TasksStore>((set, get) => ({
 
   addTask: (task) => set((state) => ({ tasks: [...state.tasks, task] })),
 
-  updateTask: (taskId, updater) =>
+  updateTask: (taskId, updates: Partial<Task | Event | Todo | TaskCategory>) =>
     set((state) => ({
-      tasks: state.tasks.map((task) => (task.id === taskId ? updater(task) : task)),
+      tasks: state.tasks.map((task) => {
+        if (task.id === taskId) {
+          Object.assign(task, updates);
+        }
+        return task;
+      }),
     })),
 
   removeTask: (taskId) =>

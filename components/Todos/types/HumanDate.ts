@@ -10,6 +10,11 @@ export class HumanDate {
     this.isTimeKnown = isTimeKnown ?? false;
   }
 
+  setDate = (date: Date) => {
+    this.date = date;
+    return this;
+  };
+
   static fromNaturalString = (date: string) => {
     const dateObj = parseNaturalDate(date);
     if (!dateObj) return undefined;

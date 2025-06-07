@@ -86,10 +86,7 @@ export const TodoItem = ({
   }
 
   function updateTodo(updates: Partial<Todo | Event | TaskCategory>) {
-    updateTask(item.id, (task) => {
-      Object.assign(task, updates);
-      return task;
-    });
+    updateTask(item.id, updates);
   }
 
   useEffect(() => {

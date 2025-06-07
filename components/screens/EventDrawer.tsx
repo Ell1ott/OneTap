@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import { Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { Calendar as CalendarIcon, ChevronLeft, Plus, Clock } from 'lucide-react-native';
-import { useTasksStore } from 'stores/tasksStore';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
 import { getRelativeDateString } from 'utils/dateUtils';
 import { TextInput } from 'react-native-gesture-handler';
+import { Event } from 'components/Todos/classes';
+import { useTasksStore } from 'stores/tasksStore';
 
 type TabType = 'Event' | 'Todo';
 
@@ -51,7 +52,7 @@ const SelectableText = ({
     disabled={!pressable}
     onPress={onPress}
     className={`h-[2rem] flex-1 items-center justify-center rounded-full px-4 ${
-      isSelected ? 'bg-card' : 'bg-transparent'
+      isSelected && pressable ? 'bg-card' : 'bg-transparent'
     }`}>
     <AppText
       className={`text-center font-medium ${
@@ -62,10 +63,20 @@ const SelectableText = ({
   </Pressable>
 );
 
-export default function EventDrawer({ onClose }: { onClose: () => void }) {
-  const [title, setTitle] = useState('Volleyball');
-  const [date, setDate] = useState(new Date());
+export default function EventDrawer({ onClose, event }: { onClose: () => void; event: Event }) {
+  const [title, setTitle] = useState(event.title);
+  const [date, setDate] = useState(event.start[0].date);
   const [activeTab, setActiveTab] = useState<TabType>('Event');
+  const updateTask = useTasksStore((state) => state.updateTask);
+
+  useEffect(() => {
+    event.title = title;
+    event.start[0].setDate(date);
+    updateTask(event.id, {
+      title: event.title,
+      start: event.start,
+    });
+  }, [title, date]);
 
   return (
     <Drawer isOpen={true} onClose={onClose} scrollEnabled={false} className="bg-card">
@@ -73,7 +84,7 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
         {/* Title */}
         <View className="mb-6">
           <TextInput
-            className="text-3xl font-bold text-foreground outline-none placeholder:text-foreground/40"
+            className="text-3xl font-bold leading-none text-foreground outline-none placeholder:text-foreground/40"
             value={title}
             onChangeText={setTitle}
             placeholder="Event Title"
@@ -135,8 +146,12 @@ export function DateTime({
         {/* Date */}
         <Pressable
           onPress={() => setCalenderOpen(!calenderOpen)}
-          className="flex-[1.5] flex-row rounded-full bg-background p-1.5">
-          <SelectableText pressable={false}>{formatDate(date as Date)}</SelectableText>
+          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${
+            calenderOpen ? 'bg-foreground/15' : ''
+          }`}>
+          <SelectableText pressable={false} isSelected={calenderOpen}>
+            {formatDate(date as Date)}
+          </SelectableText>
         </Pressable>
 
         {/* Time */}
@@ -163,7 +178,19 @@ export function Calendar({
     <DateTimePicker
       mode="single"
       date={date}
-      onChange={({ date }) => setDate(date as Date)}
+      onChange={({ date }) =>
+        setDate(
+          (prev) =>
+            new Date(
+              (date as Date).setHours(
+                prev.getHours(),
+                prev.getMinutes(),
+                prev.getSeconds(),
+                prev.getMilliseconds()
+              )
+            )
+        )
+      }
       classNames={{
         ...defaultClassNames,
         selected: 'bg-blue-500 border-blue-500',
