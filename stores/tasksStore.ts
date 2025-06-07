@@ -175,12 +175,12 @@ const createInitialTasks = (): Task[] => [
     emoji: '🥬',
   }),
   new TaskCategory({
-    id: '2',
+    id: '8',
     title: 'Groceries',
     note: 'Recommended, 9 items',
   }),
   new TaskCategory({
-    id: '3',
+    id: '9',
     title: 'Homework',
     note: '5 total, 3 urgent',
   }),
