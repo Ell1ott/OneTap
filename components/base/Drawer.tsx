@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Dimensions, BackHandler, ScrollView } from 'react-native';
+import { View, Dimensions, BackHandler, ScrollView, Pressable } from 'react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -86,12 +86,7 @@ export default function Drawer({
         event.velocityY > 2000;
 
       if (shouldGoBack) {
-        shouldClose.value = true;
-        translateY.value = withSpring(screenHeight, {
-          stiffness: 200,
-          damping: 20,
-          velocity: event.velocityY,
-        });
+        closingAnimation(event.velocityY);
       } else {
         if (translateY.value > topMargin || !scrollEnabled) {
           translateY.value = withSpring(topMargin, {
@@ -116,6 +111,15 @@ export default function Drawer({
     };
   });
 
+  function closingAnimation(velocityY: number) {
+    shouldClose.value = true;
+    translateY.value = withSpring(screenHeight, {
+      stiffness: 200,
+      damping: 20,
+      velocity: velocityY,
+    });
+  }
+
   // Background overlay style that becomes more transparent as we swipe
   const backgroundStyle = useAnimatedStyle(() => {
     const opacity = interpolate(translateY.value, [topMargin, screenHeight], [0.7, 0], 'clamp');
@@ -125,6 +129,8 @@ export default function Drawer({
   });
 
   if (!isOpen) return null;
+
+  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   return (
     <View
@@ -139,7 +145,7 @@ export default function Drawer({
         zIndex: 10,
       }}>
       {/* Background overlay */}
-      <Animated.View
+      <AnimatedPressable
         removeClippedSubviews={true}
         style={[
           {
@@ -152,7 +158,7 @@ export default function Drawer({
           },
           backgroundStyle,
         ]}
-        pointerEvents="none"
+        onPress={() => closingAnimation(0)}
       />
 
       <GestureDetector gesture={gestureHandler}>
