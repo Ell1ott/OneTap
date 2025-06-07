@@ -24,11 +24,11 @@ const SelectableText = ({
 }) => (
   <Pressable
     onPress={onPress}
-    className={`h-[2.2rem] flex-1 items-center justify-center rounded-full px-4 ${
+    className={`h-[2rem] flex-1 items-center justify-center rounded-full px-4 ${
       isSelected ? 'bg-card' : 'bg-transparent'
     }`}>
     <AppText
-      className={`text-center text-base font-medium ${
+      className={`text-center font-medium ${
         isSelected ? 'text-foreground' : 'text-foregroundMuted'
       }`}>
       {children}
