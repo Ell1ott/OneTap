@@ -21,9 +21,16 @@ interface DrawerProps {
   onClose: () => void;
   children: React.ReactNode;
   scrollEnabled?: boolean;
+  className?: string;
 }
 
-export default function Drawer({ isOpen, onClose, scrollEnabled = true, children }: DrawerProps) {
+export default function Drawer({
+  isOpen,
+  onClose,
+  scrollEnabled = true,
+  className,
+  children,
+}: DrawerProps) {
   const shouldClose = useSharedValue(false);
 
   useEffect(() => {
@@ -151,11 +158,11 @@ export default function Drawer({ isOpen, onClose, scrollEnabled = true, children
       <GestureDetector gesture={gestureHandler}>
         <Animated.View style={[{ flex: 1 }, animatedStyle]}>
           <ScrollView
-            className="flex-none rounded-t-[45px] bg-card"
+            className={`flex-none rounded-t-[45px] ${className}`}
             style={{
               height: 2000,
             }}
-            contentContainerClassName="px-5 pt-10 pb-6 flex-1 h-[100rem]"
+            contentContainerClassName="px-9 pt-12 pb-6 flex-1 h-[100rem]"
             keyboardDismissMode="on-drag">
             {children}
           </ScrollView>

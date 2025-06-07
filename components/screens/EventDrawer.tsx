@@ -58,10 +58,10 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <Drawer isOpen={true} onClose={onClose} scrollEnabled={false}>
-      <View className="flex-1 p-4">
+    <Drawer isOpen={true} onClose={onClose} scrollEnabled={false} className="bg-card">
+      <View className="flex-1">
         {/* Title */}
-        <View className="mb-8">
+        <View className="mb-6">
           <TextInput
             className="text-3xl font-bold text-foreground outline-none placeholder:text-foreground/40"
             value={title}
@@ -71,7 +71,7 @@ export default function EventDrawer({ onClose }: { onClose: () => void }) {
         </View>
 
         {/* Toggle Tabs */}
-        <View className="mb-8">
+        <View className="mb-6">
           <View className="flex-row rounded-full bg-background p-1.5">
             <SelectableText
               onPress={() => setActiveTab('Event')}
