@@ -9,6 +9,7 @@ import { Event, Todo } from 'components/Todos/classes';
 import { HumanDate, Time } from 'components/Todos/types';
 import { useTasksStore } from 'stores/tasksStore';
 import { fetch as expoFetch } from 'expo/fetch';
+import { supabaseAnonAuthHeaders } from 'utils/supabaseAuth';
 export const Response = ({ transcript }: { transcript: string }) => {
   const { addTask } = useTasksStore();
   const [responseMessage, setResponseMessage] = useState<string>('');
@@ -20,11 +21,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
     fetch: expoFetch as unknown as typeof globalThis.fetch,
     // api: 'https://onetap.expo.app/api/stream',
     api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
-    headers: {
-      //   'Content-Type': 'appplication/json',
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvYmZ6bXRra2F5YnVubGhobW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5NjYyOTEsImV4cCI6MjA2NDU0MjI5MX0.ZZZW31l9BI7TAHIx07JVJyxg81_AYpUQ2JZj_G0wdzk',
-    },
+    headers: supabaseAnonAuthHeaders,
     schema: z.unknown(),
     onFinish: ({ object }) => {
       console.log(object);
