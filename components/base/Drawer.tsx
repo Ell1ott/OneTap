@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Dimensions, BackHandler } from 'react-native';
+import { View, Dimensions, BackHandler, ScrollView } from 'react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -14,7 +14,7 @@ import { Gesture } from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height + 20;
-const topMargin = screenHeight * 0.1;
+const topMargin = screenHeight * 0.13;
 
 interface DrawerProps {
   isOpen: boolean;
@@ -149,7 +149,17 @@ export default function Drawer({ isOpen, onClose, scrollEnabled = true, children
       />
 
       <GestureDetector gesture={gestureHandler}>
-        <Animated.View style={[{ flex: 1 }, animatedStyle]}>{children}</Animated.View>
+        <Animated.View style={[{ flex: 1 }, animatedStyle]}>
+          <ScrollView
+            className="flex-none rounded-t-[45px] bg-card"
+            style={{
+              height: 2000,
+            }}
+            contentContainerClassName="px-5 pt-10 pb-6 flex-1 h-[100rem]"
+            keyboardDismissMode="on-drag">
+            {children}
+          </ScrollView>
+        </Animated.View>
       </GestureDetector>
     </View>
   );

@@ -4,75 +4,123 @@ import { View, ScrollView, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
-import { CalendarIcon, ChevronLeft, Plus } from 'lucide-react-native';
+import { Calendar as CalendarIcon, ChevronLeft, Plus, Clock } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
 import { getRelativeDateString } from 'utils/dateUtils';
 import { TextInput } from 'react-native-gesture-handler';
+
+type TabType = 'Event' | 'Todo';
+
+const SelectableText = ({
+  children,
+  onPress = () => {},
+  isSelected = false,
+}: {
+  children: React.ReactNode;
+  onPress?: () => void;
+  isSelected?: boolean;
+}) => (
+  <Pressable
+    onPress={onPress}
+    className={`h-[2.2rem] flex-1 items-center justify-center rounded-full px-4 ${
+      isSelected ? 'bg-card' : 'bg-transparent'
+    }`}>
+    <AppText
+      className={`text-center text-base font-medium ${
+        isSelected ? 'text-foreground' : 'text-foregroundMuted'
+      }`}>
+      {children}
+    </AppText>
+  </Pressable>
+);
+
 export default function EventDrawer({ onClose }: { onClose: () => void }) {
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState('Volleyball');
   const [date, setDate] = useState(new Date());
+  const [activeTab, setActiveTab] = useState<TabType>('Event');
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
 
   return (
     <Drawer isOpen={true} onClose={onClose} scrollEnabled={false}>
-      <ScrollView
-        className="flex-none rounded-t-3xl bg-card"
-        style={{
-          height: 2000,
-        }}
-        contentContainerClassName="px-6 pt-16 pb-6 flex-1 h-[100rem]"
-        keyboardDismissMode="on-drag">
-        {/* Header */}
+      <View className="flex-1 p-4">
+        {/* Title */}
+        <View className="mb-8">
+          <TextInput
+            className="text-3xl font-bold text-foreground outline-none placeholder:text-foreground/40"
+            value={title}
+            onChangeText={setTitle}
+            placeholder="Event Title"
+          />
+        </View>
+
+        {/* Toggle Tabs */}
+        <View className="mb-8">
+          <View className="flex-row rounded-full bg-muted p-1.5">
+            <SelectableText
+              onPress={() => setActiveTab('Event')}
+              isSelected={activeTab === 'Event'}>
+              Event
+            </SelectableText>
+            <SelectableText onPress={() => setActiveTab('Todo')} isSelected={activeTab === 'Todo'}>
+              <AppText
+                className={`text-center font-medium ${
+                  activeTab === 'Todo' ? 'text-foreground' : 'text-foregroundMuted'
+                }`}>
+                Todo
+              </AppText>
+            </SelectableText>
+          </View>
+        </View>
+
+        {/* Date & Time Section */}
         <View className="mb-6">
           <View className="mb-4 flex-row items-center">
-            <TextInput
-              className="text-3xl font-bold text-foreground outline-none placeholder:text-foreground/40"
-              value={title}
-              onChangeText={setTitle}
-              placeholder="Title"
-            />
+            <Icon icon={CalendarIcon} size={20} className="mr-2 text-foregroundMuted" />
+            <AppText className="text-base font-medium text-foregroundMuted">Date & Time</AppText>
           </View>
 
-          <DateButton />
+          <View className="flex-row space-x-3">
+            {/* Date */}
+            <Pressable className="flex-[1.5] flex-row rounded-full bg-muted p-1.5">
+              <SelectableText>{formatDate(date)}</SelectableText>
+            </Pressable>
+
+            {/* Time */}
+            <Pressable className="flex-[1] flex-row rounded-full bg-muted p-1.5">
+              <SelectableText>{formatTime(date)}</SelectableText>
+            </Pressable>
+          </View>
         </View>
-      </ScrollView>
+
+        {/* Content based on active tab */}
+        {activeTab === 'Event' && (
+          <View className="flex-1">{/* Event specific content can go here */}</View>
+        )}
+
+        {activeTab === 'Todo' && (
+          <View className="flex-1">{/* Todo specific content can go here */}</View>
+        )}
+      </View>
     </Drawer>
   );
 }
-
-const DateButton = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState<DateType>(new Date());
-  useEffect(() => {
-    console.log(date);
-  }, [date]);
-  return (
-    <>
-      <Pressable
-        onPress={() => setIsOpen((prev) => !prev)}
-        className={`flex-row items-center gap-2 self-start rounded-full border-[2px] border-foregroundMuted/20 p-2 px-5 ${isOpen ? '!border-blue-500' : ''}`}>
-        <Icon
-          icon={CalendarIcon}
-          size={20}
-          className={`${isOpen ? '!text-blue-500' : 'text-foregroundMuted'}`}
-        />
-        <AppText
-          className={`text-lg font-medium ${isOpen ? '!text-blue-500' : 'text-foregroundMuted'}`}>
-          {getRelativeDateString(new Date(date as string), false)
-            .charAt(0)
-            .toUpperCase() + getRelativeDateString(new Date(date as string), false).slice(1) ||
-            new Date(date as string).toLocaleDateString('en-US', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-        </AppText>
-      </Pressable>
-      {isOpen && <Calendar date={date} setDate={setDate} />}
-    </>
-  );
-};
 
 export function Calendar({ date, setDate }: { date: DateType; setDate: (date: DateType) => void }) {
   const defaultClassNames = useDefaultClassNames();
