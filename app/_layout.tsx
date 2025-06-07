@@ -9,6 +9,7 @@ import { useTasksStore } from 'stores/tasksStore';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import '../assets/font.css';
 
 export default function RootLayout() {
   const loadTasks = useTasksStore((state) => state.loadTasks);
