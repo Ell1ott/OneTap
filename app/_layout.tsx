@@ -13,12 +13,17 @@ import '../assets/font.css';
 import { Tables } from 'utils/database.types';
 import { todos$ as _todos$ } from '../utils/SupaLegend';
 import { observer } from '@legendapp/state/react';
+import { View } from 'react-native';
+import AppText from 'components/base/AppText';
 const Todos = observer(({ todos$ }: { todos$: typeof _todos$ }) => {
   // Get the todos from the state and subscribe to updates
   const todos = todos$.get();
-  const renderItem = ({ item: todo }: { item: Tables<'todos'> }) => <Todo todo={todo} />;
-  if (todos)
-    return <FlatList data={Object.values(todos)} renderItem={renderItem} style={styles.todos} />;
+  const renderItem = ({ item: todo }: { item: Tables<'todos'> }) => (
+    <View>
+      <AppText>{todo.title}</AppText>
+    </View>
+  );
+  if (todos) return <FlatList data={Object.values(todos)} renderItem={renderItem} />;
 
   return <></>;
 });

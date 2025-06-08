@@ -14,17 +14,34 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { router } from 'expo-router';
 import EventDrawer from 'components/screens/EventDrawer';
+import { Tables } from 'utils/database.types';
+import { todos$ as _todos$ } from 'utils/SupaLegend';
+import { observer } from '@legendapp/state/react';
+import { FlatList } from 'react-native';
+
+// const Todos = observer(({ todos$ }: { todos$: typeof _todos$ }) => {
+//   // Get the todos from the state and subscribe to updates
+//   const todos = todos$.get();
+//   const renderItem = ({ item: todo }: { item: Tables<'todos'> }) => (
+//     <View>
+//       <AppText>{todo.title}</AppText>
+//     </View>
+//   );
+//   if (todos) return <FlatList data={Object.values(todos)} renderItem={renderItem} />;
+//   return <></>;
+// });
+
 export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-
+  console.log(_todos$.get());
   return (
     <>
       {openCategory && (
         <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
-
+      {/* <Todos todos$={_todos$} /> */}
       <ScrollView
         className="flex-1 bg-background"
         contentContainerClassName="px-6 pt-16 pb-6"
