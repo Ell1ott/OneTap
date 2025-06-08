@@ -13,11 +13,13 @@ const supabase = createClient<Database>(
 );
 
 export async function signInAnonymously() {
-  const { data, error } = await supabase.auth.signInAnonymously();
-  if (error) {
-    throw error;
+  if (supabase.auth.getSession() === null) {
+    const { data, error } = await supabase.auth.signInAnonymously();
+    if (error) {
+      throw error;
+    }
+    return data;
   }
-  return data;
 }
 
 export const generateId = () => uuidv4();
