@@ -14,52 +14,61 @@ import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
 
-const _tasks$ = observable(() => [
-  ...Object.values(_todos$.get()),
-  ...Object.values(_events$.get()),
-]);
-
-const Todos = observer(({ tasks$ }: { tasks$: typeof _tasks$ }) => {
-  // Get the todos from the state and subscribe to updates
-  const tasks = tasks$
-    .get()
-    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-  const renderItem = ({ item: task }: { item: Tables<'todos'> | Tables<'events'> }) => (
-    <View>
-      <AppText>{task.title}</AppText>
-    </View>
-  );
-  if (tasks)
-    return (
-      <>
-        <FlatList data={tasks} renderItem={renderItem} />
-        <Pressable
-          onPress={() => {
-            addTodo({
-              title: 'todo',
-              category: 'test',
-              completed: [],
-            });
-          }}>
-          <AppText>add todo</AppText>;
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            addEvent({
-              title: 'event',
-              category: 'test',
-              start: [new Date().toISOString()],
-            });
-          }}>
-          <AppText>add event</AppText>;
-        </Pressable>
-      </>
+const Todos = observer(
+  ({ todos$, events$ }: { todos$: typeof _todos$; events$: typeof _events$ }) => {
+    // Get the todos from the state and subscribe to updates
+    const todos = todos$.get();
+    const events = events$.get();
+    console.log(
+      'tasks',
+      [...Object.values(todos), ...Object.values(events)].sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
     );
-  return <></>;
-});
+
+    console.log(todos);
+    console.log(events);
+    const renderItem = ({ item: task }: { item: Tables<'todos'> | Tables<'events'> }) => (
+      <View>
+        <AppText>{task.title}</AppText>
+      </View>
+    );
+    if (todos)
+      return (
+        <>
+          <FlatList
+            data={[...Object.values(todos)].sort(
+              (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+            )}
+            renderItem={renderItem}
+          />
+          <Pressable
+            onPress={() => {
+              addTodo({
+                title: 'todo',
+                category: 'test',
+                completed: [],
+              });
+            }}>
+            <AppText>add todo</AppText>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              addEvent({
+                title: 'event',
+                category: 'test',
+                start: [new Date().toISOString()],
+              });
+            }}>
+            <AppText>add event</AppText>
+          </Pressable>
+        </>
+      );
+    return <></>;
+  }
+);
 
 export function HomeScreen() {
-  console.log('tasks', _tasks$.get());
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
@@ -69,7 +78,7 @@ export function HomeScreen() {
         <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
       {/* <Todos todos$={_todos$} /> */}
-      <Todos tasks$={_tasks$} />
+      <Todos todos$={_todos$} events$={_events$} />
       <ScrollView
         className="flex-1 bg-background"
         contentContainerClassName="px-6 pt-16 pb-6"
