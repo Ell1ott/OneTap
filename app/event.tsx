@@ -1,11 +1,13 @@
 import EventDrawer from 'components/screens/EventDrawer';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useTasksStore } from 'stores/tasksStore';
+import { events$ } from 'utils/supabase/SupaLegend';
+import { Event } from 'components/Todos/classes/Event';
 
-export default function Event() {
+export default function EventRoute() {
   const { id } = useLocalSearchParams();
 
-  const event = useTasksStore((state) => state.tasks.find((event) => event.id === id));
+  const event = new Event(events$[id].get());
   return (
     <EventDrawer
       event={event}

@@ -32,15 +32,12 @@ export const TodoItem = ({
   onCategoryPress: (category: string) => void;
 }) => {
   const { theme } = useTheme();
-  const updateTask = useTasksStore((state) => state.updateTask);
-  const removeTask = useTasksStore((state) => state.removeTask);
-  const addTask = useTasksStore((state) => state.addTask);
   const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const textRef = useRef<Text>(null);
   const [textWidth, setTextWidth] = useState(0);
   // Animation for strikethrough effect
-  const isCompleted = item instanceof Todo && item.completed?.every(Boolean);
+  const isCompleted = item instanceof Todo && item.r.completed?.every(Boolean);
   const isEditable = !(item instanceof TaskCategory) && !isCompleted;
   const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
   const scaleHeight = useSharedValue(0);

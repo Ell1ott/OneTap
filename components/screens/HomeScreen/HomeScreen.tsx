@@ -35,6 +35,8 @@ export function HomeScreen() {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
   const tasks = tasks$.get();
+  console.log('tasks', tasks);
+  if (!tasks) return <AppText>Loading...</AppText>;
   return (
     <>
       {openCategory && (
@@ -57,7 +59,7 @@ export function HomeScreen() {
         <View className="flex-1 gap-6">
           <TodoSection
             title="Today"
-            tasks={tasks.filter((t) => taskHandler[t.type].isToday(t))}
+            tasks={tasks.filter((t) => t.isToday())}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
@@ -68,7 +70,7 @@ export function HomeScreen() {
           <TodoSection
             title="Other"
             tasks={tasks.filter(
-              (t) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.category)
+              (t) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category)
             )}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
