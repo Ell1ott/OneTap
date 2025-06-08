@@ -9,7 +9,7 @@ import { Event, Todo } from 'components/Todos/classes';
 import { HumanDate, Time } from 'components/Todos/types';
 import { useTasksStore } from 'stores/tasksStore';
 import { fetch as expoFetch } from 'expo/fetch';
-import { supabaseAnonAuthHeaders } from 'utils/supabaseAuth';
+import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
 export const Response = ({ transcript }: { transcript: string }) => {
   const { addTask } = useTasksStore();
   const [responseMessage, setResponseMessage] = useState<string>('');

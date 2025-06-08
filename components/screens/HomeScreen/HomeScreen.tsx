@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { useTasksStore } from 'stores/tasksStore';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { Tables } from 'utils/database.types';
+import { Tables } from 'utils/supabase/database.types';
 import {
   todos$ as _todos$,
   addTodo,
@@ -16,7 +16,7 @@ import {
   addEvent,
   events$,
   todos$,
-} from 'utils/SupaLegend';
+} from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';

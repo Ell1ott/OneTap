@@ -1,4 +1,4 @@
-import { Tables } from 'utils/database.types';
+import { Tables } from 'utils/supabase/database.types';
 import { isToday } from 'utils/dateUtils';
 
 export const taskHandler = {

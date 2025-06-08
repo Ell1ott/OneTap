@@ -4,7 +4,7 @@ import { JSX } from 'react';
 import { TaskCategory } from './TaskCategory';
 import { Todo } from './Todo';
 import { Event } from './Event';
-import { Tables } from 'utils/database.types';
+import { Tables } from 'utils/supabase/database.types';
 
 export class Task {
   r: Tables<'todos'> | Tables<'events'>;

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { isToday } from 'utils/dateUtils';
 import { Task } from './Task';
 import { HumanDate } from '../types';
-import { Tables } from 'utils/database.types';
+import { Tables } from 'utils/supabase/database.types';
 
 export class Event extends Task {
   r: Tables<'events'>;

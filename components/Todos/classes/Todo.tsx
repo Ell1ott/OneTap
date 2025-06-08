@@ -5,8 +5,8 @@ import { View } from 'react-native';
 import CheckBox from 'components/base/CheckBox';
 import { HumanDate } from '../types/HumanDate';
 import { JSX } from 'react';
-import { Tables } from 'utils/database.types';
-import { todos$ } from 'utils/SupaLegend';
+import { Tables } from 'utils/supabase/database.types';
+import { todos$ } from 'utils/supabase/SupaLegend';
 import { isToday } from 'utils/dateUtils';
 
 export class Todo extends Task {

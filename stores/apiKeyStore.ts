@@ -1,4 +1,4 @@
-import { supabaseAnonAuthHeaders } from 'utils/supabaseAuth';
+import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
 import { create } from 'zustand';
 
 interface ApiKeyStore {
