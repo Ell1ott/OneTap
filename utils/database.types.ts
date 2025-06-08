@@ -1,285 +1,275 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = any;
 
 export type Database = {
   graphql_public: {
     Tables: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
       graphql: {
         Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       categories: {
         Row: {
-          created_at: string
-          id: number
-          title: string | null
-        }
+          created_at: string;
+          id: number;
+          title: string | null;
+        };
         Insert: {
-          created_at?: string
-          id?: number
-          title?: string | null
-        }
+          created_at?: string;
+          id?: number;
+          title?: string | null;
+        };
         Update: {
-          created_at?: string
-          id?: number
-          title?: string | null
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          id?: number;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
       events: {
         Row: {
-          category: string | null
-          counter: number
-          created_at: string | null
-          deleted: boolean | null
-          emoji: string | null
-          end: Json[] | null
-          id: string
-          remind_at: Json[] | null
-          repeat: Json | null
-          start: Json[]
-          title: string | null
-          updated_at: string | null
-          user_id: string | null
-        }
+          category: string | null;
+          counter: number;
+          created_at: string;
+          deleted: boolean | null;
+          emoji: string | null;
+          end: Json[] | null;
+          id: string;
+          remind_at: Json[] | null;
+          repeat: Json | null;
+          start: Json[];
+          title: string | null;
+          updated_at: string | null;
+          user_id: string | null;
+        };
         Insert: {
-          category?: string | null
-          counter?: number
-          created_at?: string | null
-          deleted?: boolean | null
-          emoji?: string | null
-          end?: Json[] | null
-          id?: string
-          remind_at?: Json[] | null
-          repeat?: Json | null
-          start: Json[]
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
+          category?: string | null;
+          counter?: number;
+          created_at?: string;
+          deleted?: boolean | null;
+          emoji?: string | null;
+          end?: Json[] | null;
+          id?: string;
+          remind_at?: Json[] | null;
+          repeat?: Json | null;
+          start: Json[];
+          title?: string | null;
+          updated_at?: string | null;
+          user_id?: string | null;
+        };
         Update: {
-          category?: string | null
-          counter?: number
-          created_at?: string | null
-          deleted?: boolean | null
-          emoji?: string | null
-          end?: Json[] | null
-          id?: string
-          remind_at?: Json[] | null
-          repeat?: Json | null
-          start?: Json[]
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+          category?: string | null;
+          counter?: number;
+          created_at?: string;
+          deleted?: boolean | null;
+          emoji?: string | null;
+          end?: Json[] | null;
+          id?: string;
+          remind_at?: Json[] | null;
+          repeat?: Json | null;
+          start?: Json[];
+          title?: string | null;
+          updated_at?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
       todos: {
         Row: {
-          category: string | null
-          completed: boolean[] | null
-          counter: number
-          created_at: string | null
-          deleted: boolean | null
-          done_times: Json[] | null
-          emoji: string | null
-          end: Json | null
-          id: string
-          remind_at: Json[] | null
-          repeat: Json | null
-          soft_due: Json | null
-          soft_repeat: Json | null
-          start: Json | null
-          title: string | null
-          updated_at: string | null
-          user_id: string
-        }
+          category: string | null;
+          completed: boolean[] | null;
+          counter: number;
+          created_at: string;
+          deleted: boolean | null;
+          done_times: Json[] | null;
+          emoji: string | null;
+          end: Json | null;
+          id: string;
+          remind_at: Json[] | null;
+          repeat: Json | null;
+          soft_due: Json | null;
+          soft_repeat: Json | null;
+          start: Json | null;
+          title: string | null;
+          updated_at: string | null;
+          user_id: string;
+        };
         Insert: {
-          category?: string | null
-          completed?: boolean[] | null
-          counter?: number
-          created_at?: string | null
-          deleted?: boolean | null
-          done_times?: Json[] | null
-          emoji?: string | null
-          end?: Json | null
-          id?: string
-          remind_at?: Json[] | null
-          repeat?: Json | null
-          soft_due?: Json | null
-          soft_repeat?: Json | null
-          start?: Json | null
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
+          category?: string | null;
+          completed?: boolean[] | null;
+          counter?: number;
+          created_at?: string;
+          deleted?: boolean | null;
+          done_times?: Json[] | null;
+          emoji?: string | null;
+          end?: Json | null;
+          id?: string;
+          remind_at?: Json[] | null;
+          repeat?: Json | null;
+          soft_due?: Json | null;
+          soft_repeat?: Json | null;
+          start?: Json | null;
+          title?: string | null;
+          updated_at?: string | null;
+          user_id?: string;
+        };
         Update: {
-          category?: string | null
-          completed?: boolean[] | null
-          counter?: number
-          created_at?: string | null
-          deleted?: boolean | null
-          done_times?: Json[] | null
-          emoji?: string | null
-          end?: Json | null
-          id?: string
-          remind_at?: Json[] | null
-          repeat?: Json | null
-          soft_due?: Json | null
-          soft_repeat?: Json | null
-          start?: Json | null
-          title?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-    }
+          category?: string | null;
+          completed?: boolean[] | null;
+          counter?: number;
+          created_at?: string;
+          deleted?: boolean | null;
+          done_times?: Json[] | null;
+          emoji?: string | null;
+          end?: Json | null;
+          id?: string;
+          remind_at?: Json[] | null;
+          repeat?: Json | null;
+          soft_due?: Json | null;
+          soft_repeat?: Json | null;
+          start?: Json | null;
+          title?: string | null;
+          updated_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DefaultSchema = Database[Extract<keyof Database, 'public'>];
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+        Database[DefaultSchemaTableNameOrOptions['schema']]['Views'])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+  ? (Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+      Database[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+      Row: infer R;
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
+    | keyof DefaultSchema['Tables']
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+  ? Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Insert: infer I;
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
+    | keyof DefaultSchema['Tables']
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof Database[DefaultSchemaTableNameOrOptions['schema']]['Tables']
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+  ? Database[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Update: infer U;
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+  DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums'] | { schema: keyof Database },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof Database[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
+  ? Database[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
+    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
+    | keyof DefaultSchema['CompositeTypes']
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
+    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+    : never;
 
 export const Constants = {
   graphql_public: {
@@ -288,4 +278,4 @@ export const Constants = {
   public: {
     Enums: {},
   },
-} as const
+} as const;
