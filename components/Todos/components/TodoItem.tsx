@@ -53,7 +53,7 @@ export const TodoItem = ({
 
   useEffect(() => {
     if (isCompleted) {
-      textRef.current?.measure((width: number) => {
+      textRef.current?.measure((x: number, y: number, width: number) => {
         setTextWidth(width);
       });
     }
