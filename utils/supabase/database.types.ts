@@ -1,4 +1,6 @@
-export type Json = any;
+import { CustomJson } from './customJsonType';
+
+export type Json = CustomJson;
 
 export type Database = {
   graphql_public: {
