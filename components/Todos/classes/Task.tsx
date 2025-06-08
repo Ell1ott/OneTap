@@ -5,11 +5,12 @@ import { TaskCategory } from './TaskCategory';
 import { Todo } from './Todo';
 import { Event } from './Event';
 import { Tables } from 'utils/supabase/database.types';
+import { categories$ } from 'utils/supabase/SupaLegend';
 
 export class Task {
-  r: Tables<'todos'> | Tables<'events'>;
+  r: Tables<'todos'> | Tables<'events'> | Tables<'categories'>;
 
-  constructor(data: Tables<'todos'> | Tables<'events'>) {
+  constructor(data: Tables<'todos'> | Tables<'events'> | Tables<'categories'>) {
     this.r = data;
   }
 
@@ -26,11 +27,7 @@ export class Task {
       </AppText>
     );
 
-  EndContent = ({
-    updateTodo,
-  }: {
-    updateTodo: (updates: Partial<Todo | Event | TaskCategory>) => void;
-  }): JSX.Element | null => null;
+  EndContent = (): JSX.Element | null => null;
 
   isToday = () => false;
   isPriority = () => false;

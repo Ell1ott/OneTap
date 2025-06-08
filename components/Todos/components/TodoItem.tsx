@@ -24,7 +24,7 @@ export const TodoItem = ({
   classname,
   onCategoryPress,
 }: {
-  item: Task;
+  item: Todo | Event | TaskCategory;
   editing?: boolean;
   onnoteChange?: (note: string) => void;
   shouldFocus?: boolean;
@@ -44,16 +44,16 @@ export const TodoItem = ({
 
   useEffect(() => {
     if (item instanceof Todo) {
-      const allCompleted = item.completed?.every(Boolean) || false;
+      const allCompleted = item.r.completed?.every(Boolean) || false;
       strikethroughProgress.value = withTiming(allCompleted ? 1 : 0, {
         duration: 300,
       });
     }
-  }, [item instanceof Todo ? item.completed : null]);
+  }, [item instanceof Todo ? item.r.completed : null]);
 
   useEffect(() => {
     if (isCompleted) {
-      textRef.current?.measure((x, y, width, height, pageX, pageY) => {
+      textRef.current?.measure((width: number) => {
         setTextWidth(width);
       });
     }
@@ -79,11 +79,7 @@ export const TodoItem = ({
   });
 
   function onTextChange(text: string) {
-    updateTodo({ title: text });
-  }
-
-  function updateTodo(updates: Partial<Todo | Event | TaskCategory>) {
-    updateTask(item.id, updates);
+    item.$().title.set(text);
   }
 
   useEffect(() => {
@@ -94,20 +90,20 @@ export const TodoItem = ({
 
   const handlePress = () => {
     if (item instanceof Todo) {
-      console.log(item.completed);
-      if (item.completed?.length === 1) {
-        updateTodo({ completed: [!item.completed[0]] });
-        item.onToggle(item.completed);
+      console.log(item.r.completed);
+      if (item.r.completed?.length === 1) {
+        item.$().completed.set([!item.r.completed[0]]);
+        item.onToggle(item.r.completed);
       }
     } else if (item instanceof TaskCategory) {
       router.push({
         pathname: '/category',
-        params: { category: item.title },
+        params: { category: item.r.title },
       });
     } else if (item instanceof Event) {
       router.push({
         pathname: '/event',
-        params: { id: item.id },
+        params: { id: item.r.id },
       });
     }
   };
@@ -119,16 +115,16 @@ export const TodoItem = ({
   }, [isSwipeableOpen]);
 
   function handleDelete() {
-    removeTask(item.id);
-    toast('Deleted: ' + item.title, {
+    item.$().delete();
+    toast('Deleted: ' + item.r.title, {
       closeButton: true,
       dismissible: true,
-      id: item.id,
+      id: item.r.id,
       action: {
         label: 'Undo',
         onClick: () => {
-          addTask(item);
-          toast.dismiss(item.id);
+          item.$().deleted.set(false);
+          toast.dismiss(item.r.id);
         },
       },
     });
@@ -150,8 +146,8 @@ export const TodoItem = ({
             <View className="relative flex-1 flex-row items-baseline justify-start gap-1.5">
               {isEditable ? (
                 <>
-                  {item.emoji && (
-                    <AppText className="text-xl font-medium leading-7">{item.emoji}</AppText>
+                  {item.r.emoji && (
+                    <AppText className="text-xl font-medium leading-7">{item.r.emoji}</AppText>
                   )}
                   <Animated.View style={animatedTextStyle}>
                     <Pressable onPress={() => {}}>
@@ -160,7 +156,7 @@ export const TodoItem = ({
                         className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                         placeholder="New task..."
                         style={fontStyle}
-                        value={item.title}
+                        value={item.r.title}
                         onChangeText={onTextChange}
                         placeholderTextColor={
                           theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
@@ -178,9 +174,9 @@ export const TodoItem = ({
                   <AppText
                     ref={textRef}
                     className="m-0 mx-0 whitespace-nowrap p-0 text-xl font-medium leading-7 outline-none">
-                    {item.emoji}
-                    {item.emoji && ' '}
-                    {item.title}
+                    {item.r.emoji}
+                    {item.r.emoji && ' '}
+                    {item.r.title}
                   </AppText>
                 </Animated.View>
               )}
@@ -190,7 +186,7 @@ export const TodoItem = ({
             </View>
             {item.renderSubtext()}
           </View>
-          <item.EndContent updateTodo={updateTodo} />
+          <item.EndContent />
         </View>
       </Pressable>
     </Swipeable>

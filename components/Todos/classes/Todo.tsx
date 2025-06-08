@@ -17,6 +17,10 @@ export class Todo extends Task {
     this.r = data;
   }
 
+  table = todos$;
+
+  $ = () => this.table[this.r.id as string];
+
   isToday = () =>
     (this.r.end && HumanDate.isToday(this.r.end)) ||
     (this.r.soft_due && HumanDate.isToday(this.r.soft_due)) ||
@@ -106,7 +110,7 @@ export class Todo extends Task {
     }
   };
 
-  EndContent = ({ updateTodo }: { updateTodo: (updates: Partial<Todo>) => void }): JSX.Element => (
+  EndContent = (): JSX.Element => (
     <View className="flex-row items-center">
       {this.r.completed?.map((completed, index) => (
         <CheckBox

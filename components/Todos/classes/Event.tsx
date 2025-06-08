@@ -4,6 +4,7 @@ import { isToday, isTomorrow, timeBetween } from 'utils/dateUtils';
 import { Task } from './Task';
 import { HumanDate } from '../types';
 import { Tables } from 'utils/supabase/database.types';
+import { events$ } from 'utils/supabase/SupaLegend';
 
 export class Event extends Task {
   r: Tables<'events'>;
@@ -13,19 +14,24 @@ export class Event extends Task {
     this.r = data;
   }
 
+  table = events$;
+
+  $ = () => this.table[this.r.id as string];
+
   getNextStart = () => {
     const now = new Date();
-    return this.r.start
-      .map((s) => ({
-        date: new Date(s.date),
-        isTimeKnown: s.isTimeKnown,
-      }))
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .filter((date) => date.date.getTime() > now.getTime())[0];
+    console.log('this.r.start', this.r.start);
+
+    const nextStart = this.r.start.sort(
+      (a, b) => (a.date as Date).getTime() - (b.date as Date).getTime()
+    )[0];
+    // .filter((date) => date.date.getTime() > now.getTime())[0];
+    console.log('nextStart', nextStart);
+    return nextStart;
   };
 
   getNextEnd = () => {
-    const now = new Date();
+    const startOfToday = new Date().setHours(0, 0, 0, 0);
     if (!this.r.end) return null;
     return this.r.end
       .map((e) => ({
@@ -33,10 +39,10 @@ export class Event extends Task {
         isTimeKnown: e.isTimeKnown,
       }))
       .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .filter((date) => date.date.getTime() > now.getTime())[0];
+      .filter((date) => date.date.getTime() > startOfToday)[0];
   };
 
-  isToday = () => isToday(this.getNextStart().date);
+  isToday = () => this.r.start.length > 0 && this.r.start.some((s) => isToday(new Date(s.date)));
 
   renderSubtext = () => (
     <View className="rounded-sm">
@@ -46,6 +52,7 @@ export class Event extends Task {
 
   renderTimeInfo = () => {
     const nextStart = this.getNextStart();
+    if (!nextStart) return <AppText>No start date</AppText>;
     if (isToday(nextStart.date)) {
       return (
         <>

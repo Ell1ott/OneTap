@@ -22,21 +22,21 @@ import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
 import { isToday } from 'utils/dateUtils';
 import { taskHandler } from 'components/Todos/classes/taskHandler';
+import { tasks$ as _tasks$ } from 'app/(tabs)';
 
-const tasks$ = observable(() => {
-  const todos = todos$.get();
-  const events = events$.get();
-  return [
-    ...Object.values(todos).map((t) => new Todo(t)),
-    ...Object.values(events).map((e) => new Event(e)),
-  ] as (Todo | Event)[];
-});
-export function HomeScreen() {
+export const HomeScreen = observer(({ tasks$ }: { tasks$: typeof _tasks$ }) => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-  const tasks = tasks$.get();
+  const todos = todos$.get();
+  const events = events$.get();
+  if (!todos || !events) return <AppText>Loading...</AppText>;
+  const tasks = [
+    ...Object.values(todos).map((t) => new Todo(t)),
+    ...Object.values(events).map((e) => new Event(e)),
+  ];
+  console.log('todos', todos);
+  console.log('events', events);
   console.log('tasks', tasks);
-  if (!tasks) return <AppText>Loading...</AppText>;
   return (
     <>
       {openCategory && (
@@ -79,4 +79,4 @@ export function HomeScreen() {
       </ScrollView>
     </>
   );
-}
+});

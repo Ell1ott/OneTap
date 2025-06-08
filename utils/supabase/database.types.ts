@@ -32,19 +32,34 @@ export type Database = {
     Tables: {
       categories: {
         Row: {
+          counter: number;
           created_at: string;
-          id: number;
+          deleted: boolean | null;
+          emoji: string | null;
+          id: string;
           title: string | null;
+          updated_at: string | null;
+          user_id: string | null;
         };
         Insert: {
+          counter?: number;
           created_at?: string;
-          id?: number;
+          deleted?: boolean | null;
+          emoji?: string | null;
+          id?: string;
           title?: string | null;
+          updated_at?: string | null;
+          user_id?: string | null;
         };
         Update: {
+          counter?: number;
           created_at?: string;
-          id?: number;
+          deleted?: boolean | null;
+          emoji?: string | null;
+          id?: string;
           title?: string | null;
+          updated_at?: string | null;
+          user_id?: string | null;
         };
         Relationships: [];
       };
@@ -76,7 +91,7 @@ export type Database = {
           note?: string | null;
           remind_at?: Json[] | null;
           repeat?: Json | null;
-          start: Json[];
+          start?: Json[];
           title?: string | null;
           updated_at?: string | null;
           user_id?: string | null;

@@ -20,7 +20,7 @@ export async function signInAnonymously() {
   return data;
 }
 
-const generateId = () => uuidv4();
+export const generateId = () => uuidv4();
 // Create a configured sync function
 const customSynced = configureSynced(syncedSupabase, {
   // Use React Native Async Storage
@@ -72,6 +72,23 @@ export const events$ = observable(
     },
   })
 );
+export const categories$ = observable(
+  customSynced({
+    supabase,
+    collection: 'categories',
+    select: (from) => from.select('*'),
+    actions: ['read', 'create', 'update', 'delete'],
+    realtime: true,
+    // Persist data and pending changes locally
+    persist: {
+      name: 'categories',
+      retrySync: true, // Persist pending changes and retry
+    },
+    retry: {
+      infinite: true, // Retry changes with exponential backoff
+    },
+  })
+);
 
 export function addTodo(todo: TablesInsert<'todos'>) {
   const id = generateId();
@@ -86,6 +103,14 @@ export function addEvent(event: TablesInsert<'events'>) {
   const id = generateId();
   events$[id].assign({
     ...event,
+    id,
+  });
+}
+
+export function addCategory(category: TablesInsert<'categories'>) {
+  const id = generateId();
+  categories$[id].assign({
+    ...category,
     id,
   });
 }

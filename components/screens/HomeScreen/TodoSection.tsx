@@ -7,6 +7,7 @@ import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';
 import { useTasksStore } from 'stores/tasksStore';
+import { addTodo, generateId } from 'utils/supabase/SupaLegend';
 
 interface TodoSectionProps {
   title: string;
@@ -19,14 +20,13 @@ export const TodoSection: React.FC<TodoSectionProps> = ({ title, tasks, onCatego
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string | undefined>();
 
   const handleAddTodo = () => {
-    const newId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
-    const newTodo = new Todo({
-      id: newId,
+    const newId = generateId();
+    addTodo({
+      id: generateId(),
       title: '',
       completed: [false],
       note: '',
     });
-    addTask(newTodo);
     setLastAddedTodoId(newId);
   };
 
