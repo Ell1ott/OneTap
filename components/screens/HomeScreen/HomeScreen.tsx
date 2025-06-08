@@ -9,11 +9,24 @@ import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { useTasksStore } from 'stores/tasksStore';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { Tables } from 'utils/database.types';
-import { todos$ as _todos$, addTodo, events$ as _events$, addEvent } from 'utils/SupaLegend';
+import {
+  todos$ as _todos$,
+  addTodo,
+  events$ as _events$,
+  addEvent,
+  events$,
+  todos$,
+} from 'utils/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
-
+const tasks$ = observable(() => {
+  const todos = todos$.get();
+  const events = events$.get();
+  return [...Object.values(todos), ...Object.values(events)].sort(
+    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+  );
+});
 const Todos = observer(
   ({ todos$, events$ }: { todos$: typeof _todos$; events$: typeof _events$ }) => {
     // Get the todos from the state and subscribe to updates
@@ -21,9 +34,11 @@ const Todos = observer(
     const events = events$.get();
     console.log(
       'tasks',
-      [...Object.values(todos), ...Object.values(events)].sort(
-        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      )
+      Object.values(todos)
+        .concat(Object.values(events))
+        .sort((a, b) => {
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        })
     );
 
     console.log(todos);
@@ -46,7 +61,7 @@ const Todos = observer(
             onPress={() => {
               addTodo({
                 title: 'todo',
-                category: 'test',
+                category: 'test2',
                 completed: [],
               });
             }}>
@@ -56,7 +71,7 @@ const Todos = observer(
             onPress={() => {
               addEvent({
                 title: 'event',
-                category: 'test',
+                category: 'test2',
                 start: [new Date().toISOString()],
               });
             }}>
