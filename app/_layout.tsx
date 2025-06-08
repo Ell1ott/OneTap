@@ -12,12 +12,17 @@ import { Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
 import { v4 as uuidv4 } from 'uuid';
+import { signInAnonymously } from 'utils/SupaLegend';
 export default function RootLayout() {
   const loadTasks = useTasksStore((state) => state.loadTasks);
   useEffect(() => {
     loadTasks();
   }, []);
   console.log(uuidv4());
+
+  useEffect(() => {
+    signInAnonymously();
+  }, []);
 
   return (
     <GestureHandlerRootView className="">

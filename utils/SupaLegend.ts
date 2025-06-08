@@ -12,6 +12,14 @@ const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+export async function signInAnonymously() {
+  const { data, error } = await supabase.auth.signInAnonymously();
+  if (error) {
+    throw error;
+  }
+  return data;
+}
+
 const generateId = () => uuidv4();
 // Create a configured sync function
 const customSynced = configureSynced(syncedSupabase, {
