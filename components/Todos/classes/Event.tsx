@@ -3,45 +3,29 @@ import { View } from 'react-native';
 import { isToday } from 'utils/dateUtils';
 import { Task } from './Task';
 import { HumanDate } from '../types';
+import { Tables } from 'utils/database.types';
 
 export class Event extends Task {
-  start: HumanDate[];
-  end?: HumanDate[];
-  cancelled?: boolean;
+  r: Tables<'events'>;
 
-  constructor(
-    data: Partial<Task> & {
-      id: string;
-      title: string;
-      start: HumanDate | HumanDate[];
-      end?: HumanDate | HumanDate[];
-      cancelled?: boolean;
-    }
-  ) {
+  constructor(data: Tables<'events'>) {
     super(data);
-    if (data.start instanceof HumanDate) {
-      this.start = [data.start];
-    } else {
-      this.start = data.start;
-    }
-    if (data.end instanceof HumanDate) {
-      this.end = [data.end];
-    } else {
-      this.end = data.end;
-    }
-
-    this.cancelled = data.cancelled;
+    this.r = data;
   }
 
   getNextStart = () => {
     const now = new Date();
-    return this.start.sort((a, b) => -a.timeTo(now).toDays() - -b.timeTo(now).toDays())[0];
+    return this.r.start
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .filter((date) => new Date(date.date).getTime() > now.getTime())[0];
   };
 
   getNextEnd = () => {
     const now = new Date();
-    const futureDates = this.end?.filter((date) => date.timeTo(now).toDays() > 0);
-    return futureDates?.sort((a, b) => a.timeTo(now).toDays() - b.timeTo(now).toDays())[0];
+    if (!this.r.end) return null;
+    return this.r.end
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .filter((date) => new Date(date.date).getTime() > now.getTime())[0];
   };
 
   isToday = () => this.getNextStart().isToday();

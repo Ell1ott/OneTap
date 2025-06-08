@@ -2,7 +2,7 @@ import { View, Pressable } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Todo } from 'components/Todos/classes';
+import { Event, Todo } from 'components/Todos/classes';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
@@ -27,9 +27,9 @@ const tasks$ = observable(() => {
   const todos = todos$.get();
   const events = events$.get();
   return [
-    ...Object.values(todos).map((t) => ({ ...t, type: 'todo' })),
-    ...Object.values(events).map((e) => ({ ...e, type: 'event' })),
-  ] as ((Tables<'todos'> | Tables<'events'>) & { type: 'todo' | 'event' })[];
+    ...Object.values(todos).map((t) => new Todo(t)),
+    ...Object.values(events).map((e) => new Event(e)),
+  ] as (Todo | Event)[];
 });
 export function HomeScreen() {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
