@@ -5,8 +5,9 @@ import { configureSynced } from '@legendapp/state/sync';
 import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
+import { Database } from './database.types';
 
-const supabase = createClient(
+const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!
 );
@@ -33,7 +34,7 @@ export const todos$ = observable(
   customSynced({
     supabase,
     collection: 'todos',
-    select: (from) => from.select('id,counter,title,completed,created_at,updated_at,deleted'),
+    select: (from) => from.select('*'),
     actions: ['read', 'create', 'update', 'delete'],
     realtime: true,
     // Persist data and pending changes locally
@@ -46,3 +47,12 @@ export const todos$ = observable(
     },
   })
 );
+
+export function addTodo(text: string) {
+  const id = generateId();
+  // Add keyed by id to the todos$ observable to trigger a create in Supabase
+  todos$[id]?.assign?.({
+    id,
+    title: text,
+  });
+}

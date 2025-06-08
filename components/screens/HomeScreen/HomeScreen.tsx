@@ -15,7 +15,7 @@ import { ThemeToggle } from 'components/ThemeToggle';
 import { router } from 'expo-router';
 import EventDrawer from 'components/screens/EventDrawer';
 import { Tables } from 'utils/database.types';
-import { todos$ as _todos$ } from 'utils/SupaLegend';
+import { todos$ as _todos$, addTodo } from 'utils/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 
@@ -35,6 +35,7 @@ export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
+  addTodo('test');
   return (
     <>
       {openCategory && (
