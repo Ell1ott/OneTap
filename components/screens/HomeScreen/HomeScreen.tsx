@@ -1,19 +1,13 @@
-import * as React from 'react';
-import { View, Pressable, Text, LayoutChangeEvent, findNodeHandle, UIManager } from 'react-native';
+import { View, Pressable } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
-import { Time } from 'components/Todos/types';
-import { useEffect, useState, useRef } from 'react';
+import { Todo } from 'components/Todos/classes';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
-import { isToday } from 'utils/dateUtils';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { useTasksStore } from 'stores/tasksStore';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { router } from 'expo-router';
-import EventDrawer from 'components/screens/EventDrawer';
 import { Tables } from 'utils/database.types';
 import { todos$ as _todos$, addTodo } from 'utils/SupaLegend';
 import { observer } from '@legendapp/state/react';
@@ -22,12 +16,24 @@ import { FlatList } from 'react-native';
 const Todos = observer(({ todos$ }: { todos$: typeof _todos$ }) => {
   // Get the todos from the state and subscribe to updates
   const todos = todos$.get();
+  console.log(todos);
   const renderItem = ({ item: todo }: { item: Tables<'todos'> }) => (
     <View>
       <AppText>{todo.title}</AppText>
     </View>
   );
-  if (todos) return <FlatList data={Object.values(todos)} renderItem={renderItem} />;
+  if (todos)
+    return (
+      <>
+        <FlatList data={Object.values(todos)} renderItem={renderItem} />
+        <Pressable
+          onPress={() => {
+            addTodo('test');
+          }}>
+          <AppText>add todo</AppText>;
+        </Pressable>
+      </>
+    );
   return <></>;
 });
 
@@ -35,7 +41,6 @@ export function HomeScreen() {
   const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-  addTodo('test');
   return (
     <>
       {openCategory && (

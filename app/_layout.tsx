@@ -4,30 +4,14 @@ import 'react-native-reanimated';
 import 'react-native-gesture-handler';
 import '../global.css';
 import '../utils/polyfills';
+
 import { useEffect } from 'react';
 import { useTasksStore } from 'stores/tasksStore';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
-import { Tables } from 'utils/database.types';
 import { todos$ as _todos$ } from '../utils/SupaLegend';
-import { observer } from '@legendapp/state/react';
-import { View } from 'react-native';
-import AppText from 'components/base/AppText';
-const Todos = observer(({ todos$ }: { todos$: typeof _todos$ }) => {
-  // Get the todos from the state and subscribe to updates
-  const todos = todos$.get();
-  const renderItem = ({ item: todo }: { item: Tables<'todos'> }) => (
-    <View>
-      <AppText>{todo.title}</AppText>
-    </View>
-  );
-  if (todos) return <FlatList data={Object.values(todos)} renderItem={renderItem} />;
-
-  return <></>;
-});
-
 export default function RootLayout() {
   const loadTasks = useTasksStore((state) => state.loadTasks);
   useEffect(() => {
