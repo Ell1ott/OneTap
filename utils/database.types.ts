@@ -55,6 +55,7 @@ export type Database = {
           emoji: string | null;
           end: Json[] | null;
           id: string;
+          note: string | null;
           remind_at: Json[] | null;
           repeat: Json | null;
           start: Json[];
@@ -70,6 +71,7 @@ export type Database = {
           emoji?: string | null;
           end?: Json[] | null;
           id?: string;
+          note?: string | null;
           remind_at?: Json[] | null;
           repeat?: Json | null;
           start: Json[];
@@ -85,6 +87,7 @@ export type Database = {
           emoji?: string | null;
           end?: Json[] | null;
           id?: string;
+          note?: string | null;
           remind_at?: Json[] | null;
           repeat?: Json | null;
           start?: Json[];
@@ -101,10 +104,11 @@ export type Database = {
           counter: number;
           created_at: string;
           deleted: boolean | null;
-          done_times: Json[] | null;
+          done_times: string[];
           emoji: string | null;
           end: Json | null;
           id: string;
+          note: string | null;
           remind_at: Json[] | null;
           repeat: Json | null;
           soft_due: Json | null;
@@ -120,10 +124,11 @@ export type Database = {
           counter?: number;
           created_at?: string;
           deleted?: boolean | null;
-          done_times?: Json[] | null;
+          done_times?: string[];
           emoji?: string | null;
           end?: Json | null;
           id?: string;
+          note?: string | null;
           remind_at?: Json[] | null;
           repeat?: Json | null;
           soft_due?: Json | null;
@@ -139,10 +144,11 @@ export type Database = {
           counter?: number;
           created_at?: string;
           deleted?: boolean | null;
-          done_times?: Json[] | null;
+          done_times?: string[];
           emoji?: string | null;
           end?: Json | null;
           id?: string;
+          note?: string | null;
           remind_at?: Json[] | null;
           repeat?: Json | null;
           soft_due?: Json | null;

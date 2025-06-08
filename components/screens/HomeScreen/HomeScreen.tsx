@@ -20,80 +20,28 @@ import {
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
+import { isToday } from 'utils/dateUtils';
+import { taskHandler } from 'components/Todos/classes/taskHandler';
+
 const tasks$ = observable(() => {
   const todos = todos$.get();
   const events = events$.get();
-  return [...Object.values(todos), ...Object.values(events)].sort(
-    (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-  );
+  return [
+    ...Object.values(todos).map((t) => ({ ...t, type: 'todo' })),
+    ...Object.values(events).map((e) => ({ ...e, type: 'event' })),
+  ] as ((Tables<'todos'> | Tables<'events'>) & { type: 'todo' | 'event' })[];
 });
-const Todos = observer(
-  ({ todos$, events$ }: { todos$: typeof _todos$; events$: typeof _events$ }) => {
-    // Get the todos from the state and subscribe to updates
-    const todos = todos$.get();
-    const events = events$.get();
-    console.log(
-      'tasks',
-      Object.values(todos)
-        .concat(Object.values(events))
-        .sort((a, b) => {
-          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-        })
-    );
-
-    console.log(todos);
-    console.log(events);
-    const renderItem = ({ item: task }: { item: Tables<'todos'> | Tables<'events'> }) => (
-      <View>
-        <AppText>{task.title}</AppText>
-      </View>
-    );
-    if (todos)
-      return (
-        <>
-          <FlatList
-            data={[...Object.values(todos)].sort(
-              (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-            )}
-            renderItem={renderItem}
-          />
-          <Pressable
-            onPress={() => {
-              addTodo({
-                title: 'todo',
-                category: 'test2',
-                completed: [],
-              });
-            }}>
-            <AppText>add todo</AppText>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              addEvent({
-                title: 'event',
-                category: 'test2',
-                start: [new Date().toISOString()],
-              });
-            }}>
-            <AppText>add event</AppText>
-          </Pressable>
-        </>
-      );
-    return <></>;
-  }
-);
-
 export function HomeScreen() {
-  const { tasks } = useTasksStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
+  const tasks = tasks$.get();
   return (
     <>
       {openCategory && (
         <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
       {/* <Todos todos$={_todos$} /> */}
-      <Todos todos$={_todos$} events$={_events$} />
+
       <ScrollView
         className="flex-1 bg-background"
         contentContainerClassName="px-6 pt-16 pb-6"
@@ -109,7 +57,7 @@ export function HomeScreen() {
         <View className="flex-1 gap-6">
           <TodoSection
             title="Today"
-            tasks={tasks.filter((t) => t.isToday())}
+            tasks={tasks.filter((t) => taskHandler[t.type].isToday(t))}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection

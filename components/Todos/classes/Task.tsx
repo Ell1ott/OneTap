@@ -4,26 +4,17 @@ import { JSX } from 'react';
 import { TaskCategory } from './TaskCategory';
 import { Todo } from './Todo';
 import { Event } from './Event';
+import { Tables } from 'utils/database.types';
 
 export class Task {
-  id: string;
-  title: string;
-  emoji?: string;
-  note?: string;
-  repeat?: Time; // Also resets completion on todos
-  tags?: string[];
+  r: Tables<'todos'> | Tables<'events'>;
 
-  constructor(data: Partial<Task> & { id: string; title: string }) {
-    this.id = data.id;
-    this.title = data.title;
-    this.emoji = data.emoji;
-    this.note = data.note;
-    this.repeat = data.repeat;
-    this.tags = data.tags;
+  constructor(data: Tables<'todos'> | Tables<'events'>) {
+    this.r = data;
   }
 
   get subtext() {
-    return this.note;
+    return this.r.note;
   }
 
   getSubtextClasses = () => '';
