@@ -28,7 +28,11 @@ const Todos = observer(({ todos$ }: { todos$: typeof _todos$ }) => {
         <FlatList data={Object.values(todos)} renderItem={renderItem} />
         <Pressable
           onPress={() => {
-            addTodo('test');
+            addTodo({
+              title: 'test',
+              category: 'test',
+              completed: [],
+            });
           }}>
           <AppText>add todo</AppText>;
         </Pressable>

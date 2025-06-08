@@ -5,7 +5,7 @@ import { configureSynced } from '@legendapp/state/sync';
 import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
-import { Database, Tables } from './database.types';
+import { Database, TablesInsert } from './database.types';
 
 const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -48,7 +48,7 @@ export const todos$ = observable(
   })
 );
 
-export function addTodo(todo: Tables<'todos'>) {
+export function addTodo(todo: TablesInsert<'todos'>) {
   const id = generateId();
   // Add keyed by id to the todos$ observable to trigger a create in Supabase
   todos$[id].assign({
