@@ -16,6 +16,8 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
 import { toast } from 'sonner-native';
 import { useTheme } from 'components/ThemeProvider';
+import { $View, $Text, $TextInput } from '@legendapp/state/react-native';
+import { useObservable } from '@legendapp/state/react';
 export const TodoItem = ({
   item,
   editing = false,
@@ -130,6 +132,11 @@ export const TodoItem = ({
     });
   }
 
+  console.log('rerender');
+
+  const [isInFocus, setIsInFocus] = useState(false);
+
+  const state$ = useObservable({ name: 'hi', age: 18 });
   return (
     // <Animated.View layout={LinearTransition.springify()}>
     <Swipeable
@@ -152,15 +159,17 @@ export const TodoItem = ({
                   <Animated.View style={animatedTextStyle}>
                     <Pressable onPress={() => {}}>
                       <TextInput
-                        ref={inputRef}
                         className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                         placeholder="New task..."
                         style={fontStyle}
-                        value={item.r.title}
+                        value={isInFocus ? undefined : (item.r.title ?? '')}
                         onChangeText={onTextChange}
+                        ref={inputRef}
                         placeholderTextColor={
                           theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
                         }
+                        onFocus={() => setIsInFocus(true)}
+                        onBlur={() => setIsInFocus(false)}
                         multiline={false}
                       />
                     </Pressable>

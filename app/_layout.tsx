@@ -21,7 +21,9 @@ export default function RootLayout() {
   console.log(uuidv4());
 
   useEffect(() => {
-    signInAnonymously();
+    signInAnonymously().then((data) => {
+      console.log(data);
+    });
   }, []);
 
   return (
