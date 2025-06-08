@@ -44,15 +44,6 @@ export class HumanDate {
     });
   }
 
-  static timeBetween(_date1: HumanDateType | Date, _date2: HumanDateType | Date): Time {
-    const date1 = _date1 instanceof Date ? _date1 : _date1.date;
-    const date2 = _date2 instanceof Date ? _date2 : _date2.date;
-
-    return new Time({
-      minutes: date1.getTime() - date2.getTime(),
-    });
-  }
-
   toLocaleString = () => {
     return this.date.toLocaleDateString('en-US', {
       weekday: 'short',

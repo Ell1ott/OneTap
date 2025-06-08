@@ -1,6 +1,6 @@
 import AppText from 'components/base/AppText';
 import { View } from 'react-native';
-import { isToday } from 'utils/dateUtils';
+import { isToday, isTomorrow, timeBetween } from 'utils/dateUtils';
 import { Task } from './Task';
 import { HumanDate } from '../types';
 import { Tables } from 'utils/supabase/database.types';
@@ -16,19 +16,27 @@ export class Event extends Task {
   getNextStart = () => {
     const now = new Date();
     return this.r.start
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .filter((date) => new Date(date.date).getTime() > now.getTime())[0];
+      .map((s) => ({
+        date: new Date(s.date),
+        isTimeKnown: s.isTimeKnown,
+      }))
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .filter((date) => date.date.getTime() > now.getTime())[0];
   };
 
   getNextEnd = () => {
     const now = new Date();
     if (!this.r.end) return null;
     return this.r.end
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .filter((date) => new Date(date.date).getTime() > now.getTime())[0];
+      .map((e) => ({
+        date: new Date(e.date),
+        isTimeKnown: e.isTimeKnown,
+      }))
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .filter((date) => date.date.getTime() > now.getTime())[0];
   };
 
-  isToday = () => this.getNextStart().isToday();
+  isToday = () => isToday(this.getNextStart().date);
 
   renderSubtext = () => (
     <View className="rounded-sm">
@@ -37,13 +45,14 @@ export class Event extends Task {
   );
 
   renderTimeInfo = () => {
-    if (this.getNextStart().isToday()) {
+    const nextStart = this.getNextStart();
+    if (isToday(nextStart.date)) {
       return (
         <>
           <AppText className="text-foregroundMuted">At</AppText>
           <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foregroundMuted">
             <AppText>
-              {this.getNextStart().date.toLocaleTimeString('en-US', {
+              {nextStart.date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
@@ -57,12 +66,12 @@ export class Event extends Task {
 
     const atString = this.getNextStart().isTimeKnown
       ? ' at ' +
-        this.getNextStart().date.toLocaleTimeString('en-US', {
+        nextStart.date.toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
         })
       : '';
-    if (this.getNextStart().isTomorrow()) {
+    if (isTomorrow(nextStart.date)) {
       return (
         <>
           <AppText className="text-foregroundMuted">Tomorrow{atString}</AppText>
@@ -70,14 +79,14 @@ export class Event extends Task {
       );
     }
 
-    const daysToNow = -this.getNextStart().timeTo(new Date()).toDays();
+    const daysToNow = timeBetween(new Date(), nextStart.date).toDays();
 
     console.log('daysToNow', daysToNow);
 
     if (daysToNow < 7) {
       return (
         <AppText className="text-foregroundMuted">
-          {this.getNextStart().date.toLocaleDateString('en-US', { weekday: 'long' })}
+          {nextStart.date.toLocaleDateString('en-US', { weekday: 'long' })}
           {atString}
         </AppText>
       );
