@@ -47,12 +47,37 @@ export const todos$ = observable(
     },
   })
 );
+export const events$ = observable(
+  customSynced({
+    supabase,
+    collection: 'events',
+    select: (from) => from.select('*'),
+    actions: ['read', 'create', 'update', 'delete'],
+    realtime: true,
+    // Persist data and pending changes locally
+    persist: {
+      name: 'events',
+      retrySync: true, // Persist pending changes and retry
+    },
+    retry: {
+      infinite: true, // Retry changes with exponential backoff
+    },
+  })
+);
 
 export function addTodo(todo: TablesInsert<'todos'>) {
   const id = generateId();
   // Add keyed by id to the todos$ observable to trigger a create in Supabase
   todos$[id].assign({
     ...todo,
+    id,
+  });
+}
+
+export function addEvent(event: TablesInsert<'events'>) {
+  const id = generateId();
+  events$[id].assign({
+    ...event,
     id,
   });
 }

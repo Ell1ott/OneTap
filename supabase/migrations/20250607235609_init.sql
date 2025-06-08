@@ -30,6 +30,6 @@ CREATE OR REPLACE FUNCTION handle_times()
     $$ language plpgsql;
 
 CREATE TRIGGER handle_times
-    BEFORE INSERT OR UPDATE ON todos
+    BEFORE INSERT OR UPDATE ON events
     FOR EACH ROW
 EXECUTE PROCEDURE handle_times();
