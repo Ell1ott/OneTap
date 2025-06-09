@@ -22,11 +22,14 @@ export class Event extends Task {
     console.log('this.r.start', this.r.start);
 
     const nextStart = this.r.start.sort(
-      (a, b) => (a.date as Date).getTime() - (b.date as Date).getTime()
+      (a, b) => new Date(a.date as string).getTime() - new Date(b.date as string).getTime()
     )[0];
     // .filter((date) => date.date.getTime() > now.getTime())[0];
     console.log('nextStart', nextStart);
-    return nextStart;
+    return {
+      date: new Date(nextStart.date as string),
+      isTimeKnown: nextStart.isTimeKnown,
+    };
   };
 
   getNextEnd = () => {
@@ -34,14 +37,15 @@ export class Event extends Task {
     if (!this.r.end) return null;
     return this.r.end
       .map((e) => ({
-        date: new Date(e.date),
+        date: new Date(e.date as string),
         isTimeKnown: e.isTimeKnown,
       }))
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .filter((date) => date.date.getTime() > startOfToday)[0];
   };
 
-  isToday = () => this.r.start.length > 0 && this.r.start.some((s) => isToday(new Date(s.date)));
+  isToday = () =>
+    this.r.start.length > 0 && this.r.start.some((s) => isToday(new Date(s.date as string)));
 
   renderSubtext = () => (
     <View className="rounded-sm">

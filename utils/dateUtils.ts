@@ -7,6 +7,7 @@ import { Time } from 'components/Todos/types/Time';
  * @returns true if the date is today, false otherwise
  */
 export const isToday = (date: Date): boolean => {
+  console.log('isToday', date);
   const today = new Date();
   return (
     date.getDate() === today.getDate() &&
