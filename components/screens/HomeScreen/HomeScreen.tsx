@@ -17,55 +17,19 @@ import {
   events$,
   todos$,
   categories$,
+  tasks$,
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
-import { isToday } from 'utils/dateUtils';
-
-const state$ = observable({
-  fname: 'Annyong',
-  lname: 'Bluth',
-  // A child is computed
-  fullName: () => state$.fname.get() + ' ' + state$.lname.get(),
-});
-
-class exampleClass {
-  name: string;
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-export class ExampleClassToo {
-  r: Tables<'todos'>;
-
-  constructor(data: Tables<'todos'>) {
-    this.r = data;
-  }
-
-  hejmeddig = todos$;
-}
-
-const names$ = observable({ 1: 'John', 2: 'Jane', 3: 'Jim' });
-const exampleObservable$ = observable(() => {
-  const names = names$.get();
-  return Object.values(names).map((n) => new ExampleClassToo({ id: n }));
-});
 
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-  const todos = todos$.get();
-  const events = events$.get();
-  const categories = categories$.get();
-  if (!todos || !events || !categories) return <AppText>Loading...</AppText>;
-  console.log('tasks$', exampleObservable$.get());
-  const tasks = [];
+  const tasks = tasks$.get();
+
+  if (!tasks) return <AppText>Loading...</AppText>;
   console.log('tasks', tasks);
-  // console.log('todos', todos);
-  // console.log('events', events);
-  // console.log('tasks', tasks);
   return (
     <>
       {openCategory && (

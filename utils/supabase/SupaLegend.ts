@@ -6,6 +6,8 @@ import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
 import { Database, TablesInsert } from './database.types';
+import { Event, TaskCategory } from 'components/Todos/classes';
+import { Todo } from 'components/Todos/classes';
 
 const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -118,3 +120,15 @@ export function addCategory(category: TablesInsert<'categories'>) {
     id,
   });
 }
+
+export const tasks$ = observable(() => {
+  const todos = todos$.get();
+  const events = events$.get();
+  const categories = categories$.get();
+  if (!todos || !events || !categories) return [];
+  return [
+    ...Object.values(todos).map((t) => new Todo(t)),
+    ...Object.values(events).map((e) => new Event(e)),
+    ...Object.values(categories).map((c) => new TaskCategory(c)),
+  ].filter((t) => t.r.title !== undefined && t.r.title !== null);
+});
