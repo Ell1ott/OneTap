@@ -10,7 +10,6 @@ import { Icon } from 'components/base/LucideIcon';
 import { getRelativeDateString } from 'utils/dateUtils';
 import { TextInput } from 'react-native-gesture-handler';
 import { Event } from 'components/Todos/classes';
-import { useTasksStore } from 'stores/tasksStore';
 
 type TabType = 'Event' | 'Todo';
 
@@ -64,10 +63,10 @@ const SelectableText = ({
 );
 
 export default function EventDrawer({ onClose, event }: { onClose: () => void; event: Event }) {
+  return <AppText>Event</AppText>;
   const [title, setTitle] = useState(event.title);
   const [date, setDate] = useState(event.start[0].date);
   const [activeTab, setActiveTab] = useState<TabType>('Event');
-  const updateTask = useTasksStore((state) => state.updateTask);
 
   useEffect(() => {
     event.title = title;

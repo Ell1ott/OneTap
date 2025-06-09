@@ -11,7 +11,6 @@ import AppText, { fontStyle } from '../../base/AppText';
 import { useRef, useEffect, useState } from 'react';
 import { Task, TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
-import { useTasksStore } from 'stores/tasksStore';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
 import { toast } from 'sonner-native';

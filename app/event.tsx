@@ -1,6 +1,5 @@
 import EventDrawer from 'components/screens/EventDrawer';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useTasksStore } from 'stores/tasksStore';
 import { events$ } from 'utils/supabase/SupaLegend';
 import { Event } from 'components/Todos/classes/Event';
 

@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
-import { useTasksStore } from 'stores/tasksStore';
 import { addTodo, tasks$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 

@@ -6,7 +6,6 @@ import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
-import { useTasksStore } from 'stores/tasksStore';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { Tables } from 'utils/supabase/database.types';
 import {

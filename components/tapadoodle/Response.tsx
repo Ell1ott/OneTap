@@ -7,14 +7,12 @@ import { z } from 'zod';
 import { TodoAIData, TodoPreviewCard } from './TodoPreviewCard';
 import { Event, Todo } from 'components/Todos/classes';
 import { HumanDate, Time } from 'components/Todos/types';
-import { useTasksStore } from 'stores/tasksStore';
 import { fetch as expoFetch } from 'expo/fetch';
 import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
 import { TablesInsert } from 'utils/supabase/database.types';
 import { addEvent, addTodo } from 'utils/supabase/SupaLegend';
 import { CustomJson } from 'utils/supabase/customJsonType';
 export const Response = ({ transcript }: { transcript: string }) => {
-  const { addTask } = useTasksStore();
   const [responseMessage, setResponseMessage] = useState<string>('');
   const {
     object: _object,
