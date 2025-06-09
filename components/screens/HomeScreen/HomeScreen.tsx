@@ -18,10 +18,12 @@ import {
   categories$,
   tasks$,
   addCategory,
+  generateId,
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
+import { HumanDateType } from 'components/Todos/types/HumanDate';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -43,7 +45,6 @@ const otherTasks$ = observable(() => {
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category));
 });
-
 // Length-based observables for performance optimization
 const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
@@ -63,12 +64,9 @@ export const HomeScreen = observer(() => {
   const priorityTasks = priorityTasks$.peek();
   const otherTasks = otherTasks$.peek();
 
+  console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
+
   if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
-  if (!priorityTasks.some((t: Task) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
-    addCategory({
-      title: 'Groceries',
-    });
-  }
 
   console.log('tasks', todaysTasks);
   return (

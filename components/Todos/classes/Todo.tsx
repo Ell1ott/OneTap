@@ -7,7 +7,7 @@ import { HumanDate } from '../types/HumanDate';
 import { JSX } from 'react';
 import { Tables } from 'utils/supabase/database.types';
 import { todos$ } from 'utils/supabase/SupaLegend';
-import { isToday } from 'utils/dateUtils';
+import { isToday, timeBetween } from 'utils/dateUtils';
 
 export class Todo extends Task {
   r: Tables<'todos'>;
@@ -41,12 +41,12 @@ export class Todo extends Task {
 
   get daysSinceLastDone() {
     const lastDone = new Date(this.r.done_times?.[this.r.done_times.length - 1]);
-    return HumanDate.timeBetween(lastDone, new Date()).toDays();
+    return timeBetween(lastDone, new Date()).toDays();
   }
 
   get daysTillSoftDue() {
     if (!this.r.soft_due) return Infinity;
-    return HumanDate.timeBetween(new Date(this.r.soft_due), new Date()).toDays();
+    return timeBetween(new Date(this.r.soft_due.date as string), new Date()).toDays();
   }
 
   get isOverdue() {

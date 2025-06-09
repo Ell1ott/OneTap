@@ -20,6 +20,45 @@ export async function signInAnonymously() {
     if (error) {
       throw error;
     }
+
+    setTimeout(() => {
+      console.log('adding initial tasks');
+      todos$['063b9060-aef6-4dad-b995-5d560d56416e'].assign({
+        title: 'Walk the dog',
+        note: 'Twice every day',
+        completed: [true, false],
+        id: '063b9060-aef6-4dad-b995-5d560d56416e',
+      });
+      events$['9ce5c7d7-dbbd-48ce-95ef-8d5b90ae3f44'].assign({
+        title: 'Volleyball practice',
+        start: [
+          {
+            date: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
+            isTimeKnown: true,
+          },
+        ],
+        id: '9ce5c7d7-dbbd-48ce-95ef-8d5b90ae3f44',
+      });
+      categories$['699f3b6f-b0ba-401e-9f6b-fd8ed8b7fded'].assign({
+        title: 'Groceries',
+        id: '699f3b6f-b0ba-401e-9f6b-fd8ed8b7fded',
+      });
+      categories$['26c24322-b5ce-4de2-9b59-6a06017a2930'].assign({
+        title: 'Homework',
+        id: '26c24322-b5ce-4de2-9b59-6a06017a2930',
+      });
+      todos$['26c24322-b5ce-4de2-9b59-6a06017a2930'].assign({
+        title: 'Clean Room',
+        note: 'Done 4 days ago',
+        completed: [true, false],
+        soft_repeat: { days: 7 },
+        id: '26c24322-b5ce-4de2-9b59-6a06017a2930',
+      });
+      addTodo({
+        title: 'Hello',
+      });
+    }, 1000);
+
     return data;
   } else {
     console.log('fej', await supabase.auth.getSession());
@@ -27,6 +66,7 @@ export async function signInAnonymously() {
 }
 
 export const generateId = () => uuidv4();
+
 // Create a configured sync function
 const customSynced = configureSynced(syncedSupabase, {
   // Use React Native Async Storage
