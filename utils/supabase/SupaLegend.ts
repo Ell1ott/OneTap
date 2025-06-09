@@ -103,6 +103,7 @@ export function addTodo(todo: TablesInsert<'todos'>) {
     ...todo,
     id,
   });
+  return id;
 }
 
 export function addEvent(event: TablesInsert<'events'>) {
@@ -111,6 +112,7 @@ export function addEvent(event: TablesInsert<'events'>) {
     ...event,
     id,
   });
+  return id;
 }
 
 export function addCategory(category: TablesInsert<'categories'>) {
@@ -119,6 +121,7 @@ export function addCategory(category: TablesInsert<'categories'>) {
     ...category,
     id,
   });
+  return id;
 }
 
 export const tasks$ = observable(() => {
