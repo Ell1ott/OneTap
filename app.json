@@ -86,7 +86,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ell10tt.OneTap",
+      "bundleIdentifier": "dk.elliottf.OneTap",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
