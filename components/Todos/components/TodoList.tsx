@@ -27,8 +27,14 @@ export const TodoList = ({
     <View className="overflow-hidden rounded-xl bg-card">
       {tasks
         .sort((a, b) => {
-          const av = a instanceof Event ? a.getNextStart().date.getTime() : Number.MAX_SAFE_INTEGER;
-          const bv = b instanceof Event ? b.getNextStart().date.getTime() : Number.MAX_SAFE_INTEGER;
+          const av =
+            a instanceof Event && a.r.start.length > 0
+              ? a.getNextStart().date.getTime()
+              : Number.MAX_SAFE_INTEGER;
+          const bv =
+            b instanceof Event && b.r.start.length > 0
+              ? b.getNextStart().date.getTime()
+              : Number.MAX_SAFE_INTEGER;
           return av - bv;
         })
         .map((task, i) => (

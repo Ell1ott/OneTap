@@ -1,29 +1,80 @@
-import * as React from 'react';
-import { View, Pressable, Text, LayoutChangeEvent, findNodeHandle, UIManager } from 'react-native';
+import { View, Pressable } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
-import { Time } from 'components/Todos/types';
-import { useEffect, useState, useRef } from 'react';
+import { Event, TaskCategory, Todo, Task } from 'components/Todos/classes';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
-import { isToday } from 'utils/dateUtils';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
-import { useTasksStore } from 'stores/tasksStore';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { router } from 'expo-router';
-import EventDrawer from 'components/screens/EventDrawer';
-export function HomeScreen() {
-  const { tasks } = useTasksStore();
+import { Tables } from 'utils/supabase/database.types';
+import {
+  todos$ as _todos$,
+  addTodo,
+  events$ as _events$,
+  addEvent,
+  events$,
+  todos$,
+  categories$,
+  tasks$,
+  addCategory,
+  generateId,
+} from 'utils/supabase/SupaLegend';
+import { observer } from '@legendapp/state/react';
+import { FlatList } from 'react-native';
+import { observable } from '@legendapp/state';
+import { HumanDateType } from 'components/Todos/types/HumanDate';
+
+const todayTasks$ = observable(() => {
+  const tasks = tasks$.get();
+  return tasks
+    .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
+    .filter((t: Task) => t.isToday());
+});
+
+const priorityTasks$ = observable(() => {
+  const tasks = tasks$.get();
+  return tasks
+    .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
+    .filter((t: Task) => t.isPriority());
+});
+
+const otherTasks$ = observable(() => {
+  const tasks = tasks$.get();
+  return tasks
+    .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
+    .filter((t: Task) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category));
+});
+// Length-based observables for performance optimization
+const todayTasksLength$ = observable(() => todayTasks$.get().length);
+const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
+const otherTasksLength$ = observable(() => otherTasks$.get().length);
+
+export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
 
+  // Use length observables to trigger rerenders only when lengths change
+  const todayTasksLength = todayTasksLength$.get();
+  const priorityTasksLength = priorityTasksLength$.get();
+  const otherTasksLength = otherTasksLength$.get();
+
+  // Get actual tasks when needed (without subscribing to changes)
+  const todaysTasks = todayTasks$.peek();
+  const priorityTasks = priorityTasks$.peek();
+  const otherTasks = otherTasks$.peek();
+
+  console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
+
+  if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
+
+  console.log('tasks', todaysTasks);
   return (
     <>
       {openCategory && (
         <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
       )}
+      {/* <Todos todos$={_todos$} /> */}
 
       <ScrollView
         className="flex-1 bg-background"
@@ -40,19 +91,20 @@ export function HomeScreen() {
         <View className="flex-1 gap-6">
           <TodoSection
             title="Today"
-            tasks={tasks.filter((t) => t.isToday())}
+            tasks={todaysTasks}
+            tasksLength={todayTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Priority"
-            tasks={tasks.filter((t) => t.isPriority())}
+            tasks={priorityTasks}
+            tasksLength={priorityTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Other"
-            tasks={tasks.filter(
-              (t) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.category)
-            )}
+            tasks={otherTasks}
+            tasksLength={otherTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>
@@ -60,4 +112,4 @@ export function HomeScreen() {
       </ScrollView>
     </>
   );
-}
+});

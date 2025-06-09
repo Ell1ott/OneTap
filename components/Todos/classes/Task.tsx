@@ -4,26 +4,18 @@ import { JSX } from 'react';
 import { TaskCategory } from './TaskCategory';
 import { Todo } from './Todo';
 import { Event } from './Event';
+import { Tables } from 'utils/supabase/database.types';
+import { categories$ } from 'utils/supabase/SupaLegend';
 
 export class Task {
-  id: string;
-  title: string;
-  emoji?: string;
-  note?: string;
-  repeat?: Time; // Also resets completion on todos
-  tags?: string[];
+  r: Tables<'todos'> | Tables<'events'> | Tables<'categories'>;
 
-  constructor(data: Partial<Task> & { id: string; title: string }) {
-    this.id = data.id;
-    this.title = data.title;
-    this.emoji = data.emoji;
-    this.note = data.note;
-    this.repeat = data.repeat;
-    this.tags = data.tags;
+  constructor(data: Tables<'todos'> | Tables<'events'> | Tables<'categories'>) {
+    this.r = data;
   }
 
   get subtext() {
-    return this.note;
+    return this.r.note;
   }
 
   getSubtextClasses = () => '';
@@ -35,11 +27,7 @@ export class Task {
       </AppText>
     );
 
-  EndContent = ({
-    updateTodo,
-  }: {
-    updateTodo: (updates: Partial<Todo | Event | TaskCategory>) => void;
-  }): JSX.Element | null => null;
+  EndContent = (): JSX.Element | null => null;
 
   isToday = () => false;
   isPriority = () => false;

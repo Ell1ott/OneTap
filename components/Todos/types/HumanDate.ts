@@ -1,6 +1,11 @@
 import { isToday, isTomorrow, parseNaturalDate } from 'utils/dateUtils';
 import { Time } from './Time';
 
+export type HumanDateType = {
+  date: Date;
+  isTimeKnown: boolean;
+};
+
 export class HumanDate {
   date: Date;
   isTimeKnown: boolean;
@@ -9,6 +14,13 @@ export class HumanDate {
     this.date = date ?? new Date();
     this.isTimeKnown = isTimeKnown ?? false;
   }
+
+  toDictionary = () => {
+    return {
+      date: this.date,
+      isTimeKnown: this.isTimeKnown,
+    };
+  };
 
   setDate = (date: Date) => {
     this.date = date;
@@ -50,5 +62,7 @@ export class HumanDate {
   };
 
   isToday = () => isToday(this.date);
+  static isToday = ({ date }: HumanDateType) => isToday(date);
   isTomorrow = () => isTomorrow(this.date);
+  static isTomorrow = ({ date }: HumanDateType) => isTomorrow(date);
 }

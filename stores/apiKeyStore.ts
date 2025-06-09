@@ -1,3 +1,4 @@
+import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
 import { create } from 'zustand';
 
 interface ApiKeyStore {
@@ -26,10 +27,7 @@ export const useApiKeyStore = create<ApiKeyStore>((set, get) => ({
       const response = await fetch(
         'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/deepgram-api-key',
         {
-          headers: {
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvYmZ6bXRra2F5YnVubGhobW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg5NjYyOTEsImV4cCI6MjA2NDU0MjI5MX0.ZZZW31l9BI7TAHIx07JVJyxg81_AYpUQ2JZj_G0wdzk',
-          },
+          headers: supabaseAnonAuthHeaders,
         }
       );
       if (!response.ok) {

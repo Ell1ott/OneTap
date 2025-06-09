@@ -10,7 +10,8 @@ import { Icon } from 'components/base/LucideIcon';
 import { getRelativeDateString } from 'utils/dateUtils';
 import { TextInput } from 'react-native-gesture-handler';
 import { Event } from 'components/Todos/classes';
-import { useTasksStore } from 'stores/tasksStore';
+import { observer } from '@legendapp/state/react';
+import { events$ } from 'utils/supabase/SupaLegend';
 
 type TabType = 'Event' | 'Todo';
 
@@ -63,20 +64,11 @@ const SelectableText = ({
   </Pressable>
 );
 
-export default function EventDrawer({ onClose, event }: { onClose: () => void; event: Event }) {
-  const [title, setTitle] = useState(event.title);
-  const [date, setDate] = useState(event.start[0].date);
+export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id: string }) => {
+  const event$ = events$[id];
+  const [title, setTitle] = useState(event$.title);
+  const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
-  const updateTask = useTasksStore((state) => state.updateTask);
-
-  useEffect(() => {
-    event.title = title;
-    event.start[0].setDate(date);
-    updateTask(event.id, {
-      title: event.title,
-      start: event.start,
-    });
-  }, [title, date]);
 
   return (
     <Drawer isOpen={true} onClose={onClose} scrollEnabled={false} className="bg-card">
@@ -85,8 +77,11 @@ export default function EventDrawer({ onClose, event }: { onClose: () => void; e
         <View className="mb-6">
           <TextInput
             className="text-3xl font-bold leading-none text-foreground outline-none placeholder:text-foreground/40"
-            value={title}
-            onChangeText={setTitle}
+            value={event$.title.get() || ''}
+            onChangeText={(text) => {
+              event$.updated_at.set(new Date().toISOString());
+              event$.title.set(text);
+            }}
             placeholder="Event Title"
           />
         </View>
@@ -109,7 +104,14 @@ export default function EventDrawer({ onClose, event }: { onClose: () => void; e
             </SelectableText>
           </View>
         </View>
-        <DateTime date={date} setDate={setDate} />
+        <DateTime
+          date={new Date(event$.start[0].date.get() as string)}
+          setDate={(date) => {
+            console.log('ddd', date);
+
+            event$.start[0].date.set(new Date(date).toISOString());
+          }}
+        />
 
         {/* Content based on active tab */}
         {activeTab === 'Event' && (
@@ -122,15 +124,9 @@ export default function EventDrawer({ onClose, event }: { onClose: () => void; e
       </View>
     </Drawer>
   );
-}
+});
 
-export function DateTime({
-  date,
-  setDate,
-}: {
-  date: DateType;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
-}) {
+export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Date) => void }) {
   const [calenderOpen, setCalenderOpen] = useState(false);
   useEffect(() => {
     console.log(calenderOpen);
@@ -164,13 +160,7 @@ export function DateTime({
   );
 }
 
-export function Calendar({
-  date,
-  setDate,
-}: {
-  date: DateType;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
-}) {
+export function Calendar({ date, setDate }: { date: DateType; setDate: (date: Date) => void }) {
   const defaultClassNames = useDefaultClassNames();
   const [selected, setSelected] = useState<DateType>();
 
@@ -178,17 +168,16 @@ export function Calendar({
     <DateTimePicker
       mode="single"
       date={date}
-      onChange={({ date }) =>
+      onChange={({ date: newDate }) =>
         setDate(
-          (prev) =>
-            new Date(
-              (date as Date).setHours(
-                prev.getHours(),
-                prev.getMinutes(),
-                prev.getSeconds(),
-                prev.getMilliseconds()
-              )
+          new Date(
+            (newDate as Date).setHours(
+              (date as Date).getHours(),
+              (date as Date).getMinutes(),
+              (date as Date).getSeconds(),
+              (date as Date).getMilliseconds()
             )
+          )
         )
       }
       classNames={{

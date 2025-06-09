@@ -1,4 +1,5 @@
 import * as chrono from 'chrono-node';
+import { Time } from 'components/Todos/types/Time';
 
 /**
  * Checks if a given date is today
@@ -6,6 +7,7 @@ import * as chrono from 'chrono-node';
  * @returns true if the date is today, false otherwise
  */
 export const isToday = (date: Date): boolean => {
+  console.log('isToday', date);
   const today = new Date();
   return (
     date.getDate() === today.getDate() &&
@@ -100,3 +102,9 @@ export const parseNaturalDate = (dateString: string | null) => {
     return null;
   }
 };
+
+export function timeBetween(date1: Date, date2: Date): Time {
+  return new Time({
+    minutes: (date2.getTime() - date1.getTime()) / 1000 / 60,
+  });
+}

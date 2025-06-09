@@ -1,6 +1,9 @@
 {
   "name": "OneTap",
   "version": "1.0.0",
+  "trustedDependencies": [
+    "supabase"
+  ],
   "scripts": {
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -12,7 +15,8 @@
     "editor:dev": "vite --config ./editor-web/vite.config.ts -w build",
     "editor:build": "vite --config ./editor-web/vite.config.ts build && npm run editor:post-build",
     "editor:post-build": "node ./node_modules/@10play/tentap-editor/scripts/buildEditor.js ./editor-web/build/index.html",
-    "reverse-android": "adb reverse tcp:3000 tcp:3000"
+    "reverse-android": "adb reverse tcp:3000 tcp:3000",
+    "db-types": "supabase gen types --lang=typescript --linked > utils/supabase/database.types.ts"
   },
   "dependencies": {
     "@10play/react-native-web-webview": "^0.0.3",
@@ -21,10 +25,12 @@
     "@ai-sdk/react": "^1.2.12",
     "@deepgram/sdk": "^4.2.0",
     "@expo-google-fonts/inter": "^0.3.0",
+    "@legendapp/state": "^3.0.0-beta.31",
     "@marceloterreiro/flash-calendar": "^1.3.0",
-    "@react-native-async-storage/async-storage": "^2.1.2",
+    "@react-native-async-storage/async-storage": "2.1.2",
     "@siteed/expo-audio-studio": "^2.9.0",
     "@stardazed/streams-text-encoding": "^1.0.2",
+    "@supabase/supabase-js": "^2.50.0",
     "@tiptap/react": "^2.12.0",
     "@ungap/structured-clone": "^1.3.0",
     "ai": "^4.3.16",
@@ -39,7 +45,7 @@
     "expo-calendar": "~14.1.4",
     "expo-checkbox": "~4.1.4",
     "expo-constants": "^17.1.6",
-    "expo-crypto": "^14.1.4",
+    "expo-crypto": "~14.1.5",
     "expo-dev-client": "^5.1.8",
     "expo-file-system": "^18.1.10",
     "expo-font": "^13.3.1",
@@ -55,10 +61,11 @@
     "lucide-react-native": "^0.511.0",
     "nativewind": "latest",
     "react": "19.0.0",
-    "react-dom": "^19.0.0",
+    "react-dom": "19.0.0",
     "react-native": "0.79.2",
     "react-native-date-picker": "^5.0.13",
     "react-native-gesture-handler": "^2.25.0",
+    "react-native-get-random-values": "~1.11.0",
     "react-native-haptic-feedback": "^2.3.3",
     "react-native-reanimated": "^3.17.5",
     "react-native-safe-area-context": "^5.4.0",
@@ -69,6 +76,7 @@
     "react-native-web": "^0.20.0",
     "react-native-webview": "^13.13.5",
     "sonner-native": "^0.20.0",
+    "supabase": "^2.24.3",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

@@ -4,17 +4,21 @@ import 'react-native-reanimated';
 import 'react-native-gesture-handler';
 import '../global.css';
 import '../utils/polyfills';
+import 'react-native-get-random-values';
 import { useEffect } from 'react';
-import { useTasksStore } from 'stores/tasksStore';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
-
+import { v4 as uuidv4 } from 'uuid';
+import { signInAnonymously } from 'utils/supabase/SupaLegend';
 export default function RootLayout() {
-  const loadTasks = useTasksStore((state) => state.loadTasks);
+  console.log(uuidv4());
+
   useEffect(() => {
-    loadTasks();
+    signInAnonymously().then((data) => {
+      console.log(data);
+    });
   }, []);
 
   return (
