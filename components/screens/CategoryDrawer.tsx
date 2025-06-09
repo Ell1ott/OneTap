@@ -11,6 +11,7 @@ import { observer } from '@legendapp/state/react';
 const CategoryDrawer = observer(
   ({ category, onClose }: { category: string; onClose: () => void }) => {
     const tasks = tasks$.get();
+    console.log('tasks', tasks);
     const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
 
     // Filter tasks by category

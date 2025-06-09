@@ -133,5 +133,5 @@ export const tasks$ = observable(() => {
     ...Object.values(todos).map((t) => new Todo(t)),
     ...Object.values(events).map((e) => new Event(e)),
     ...Object.values(categories).map((c) => new TaskCategory(c)),
-  ].filter((t) => t.r.title !== undefined && t.r.title !== null);
+  ];
 });

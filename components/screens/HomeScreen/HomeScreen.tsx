@@ -2,7 +2,7 @@ import { View, Pressable } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Event, TaskCategory, Todo } from 'components/Todos/classes';
+import { Event, TaskCategory, Todo, Task } from 'components/Todos/classes';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
@@ -23,20 +23,54 @@ import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
 
+const todayTasks$ = observable(() => {
+  const tasks = tasks$.get();
+  return tasks
+    .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
+    .filter((t: Task) => t.isToday());
+});
+
+const priorityTasks$ = observable(() => {
+  const tasks = tasks$.get();
+  return tasks
+    .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
+    .filter((t: Task) => t.isPriority());
+});
+
+const otherTasks$ = observable(() => {
+  const tasks = tasks$.get();
+  return tasks
+    .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
+    .filter((t: Task) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category));
+});
+
+// Length-based observables for performance optimization
+const todayTasksLength$ = observable(() => todayTasks$.get().length);
+const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
+const otherTasksLength$ = observable(() => otherTasks$.get().length);
+
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-  const tasks: (Todo | Event | TaskCategory)[] = tasks$.get();
 
-  if (!tasks) return <AppText>Loading...</AppText>;
+  // Use length observables to trigger rerenders only when lengths change
+  const todayTasksLength = todayTasksLength$.get();
+  const priorityTasksLength = priorityTasksLength$.get();
+  const otherTasksLength = otherTasksLength$.get();
 
-  if (!tasks.some((t) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
+  // Get actual tasks when needed (without subscribing to changes)
+  const todaysTasks = todayTasks$.peek();
+  const priorityTasks = priorityTasks$.peek();
+  const otherTasks = otherTasks$.peek();
+
+  if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
+  if (!priorityTasks.some((t: Task) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
     addCategory({
       title: 'Groceries',
     });
   }
 
-  console.log('tasks', tasks);
+  console.log('tasks', todaysTasks);
   return (
     <>
       {openCategory && (
@@ -59,19 +93,20 @@ export const HomeScreen = observer(() => {
         <View className="flex-1 gap-6">
           <TodoSection
             title="Today"
-            tasks={tasks.filter((t) => t.isToday())}
+            tasks={todaysTasks}
+            tasksLength={todayTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Priority"
-            tasks={tasks.filter((t) => t.isPriority())}
+            tasks={priorityTasks}
+            tasksLength={priorityTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Other"
-            tasks={tasks.filter(
-              (t) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category)
-            )}
+            tasks={otherTasks}
+            tasksLength={otherTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>

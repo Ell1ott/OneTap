@@ -37,9 +37,9 @@ export const TodoItem = observer(
   }) => {
     const row$ = _item.$();
 
-    console.log('swiss', row$.get);
     if (!row$.get) return <AppText>Loading...</AppText>;
     const row = row$.get();
+    console.log('rerendered item', row.title);
     const item = new _item.constructor(row);
     const { theme } = useTheme();
     const router = useRouter();
