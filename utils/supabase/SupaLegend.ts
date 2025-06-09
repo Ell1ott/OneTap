@@ -23,13 +23,12 @@ export async function signInAnonymously() {
 
     setTimeout(() => {
       console.log('adding initial tasks');
-      todos$['063b9060-aef6-4dad-b995-5d560d56416e'].assign({
+      addTodo({
         title: 'Walk the dog',
         note: 'Twice every day',
         completed: [true, false],
-        id: '063b9060-aef6-4dad-b995-5d560d56416e',
       });
-      events$['9ce5c7d7-dbbd-48ce-95ef-8d5b90ae3f44'].assign({
+      addEvent({
         title: 'Volleyball practice',
         start: [
           {
@@ -37,25 +36,18 @@ export async function signInAnonymously() {
             isTimeKnown: true,
           },
         ],
-        id: '9ce5c7d7-dbbd-48ce-95ef-8d5b90ae3f44',
       });
-      categories$['699f3b6f-b0ba-401e-9f6b-fd8ed8b7fded'].assign({
+      addCategory({
         title: 'Groceries',
-        id: '699f3b6f-b0ba-401e-9f6b-fd8ed8b7fded',
       });
-      categories$['26c24322-b5ce-4de2-9b59-6a06017a2930'].assign({
+      addCategory({
         title: 'Homework',
-        id: '26c24322-b5ce-4de2-9b59-6a06017a2930',
-      });
-      todos$['26c24322-b5ce-4de2-9b59-6a06017a2930'].assign({
-        title: 'Clean Room',
-        note: 'Done 4 days ago',
-        completed: [true, false],
-        soft_repeat: { days: 7 },
-        id: '26c24322-b5ce-4de2-9b59-6a06017a2930',
       });
       addTodo({
-        title: 'Hello',
+        title: 'Clean Room',
+        note: 'Done 4 days ago',
+        completed: [false],
+        soft_repeat: { days: 7 },
       });
     }, 1000);
 
