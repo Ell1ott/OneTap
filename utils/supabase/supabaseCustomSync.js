@@ -140,8 +140,8 @@ function syncedSupabase(props) {
       ? updateParam
         ? wrapSupabaseFn(updateParam, 'update')
         : async (input, params) => {
-            params.value$.updated_at.set(new Date().toISOString());
-            console.log('sb input', params.value$.updated_at.get());
+            // params.value$[input.id].updated_at.set(new Date().toISOString());
+            // console.log('sb input', params.value$.get());
 
             const { onError } = params;
             const res = await client

@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { observable } from '@legendapp/state';
-import { syncedSupabase } from '@legendapp/state/sync-plugins/supabase';
+import { syncedSupabase } from './supabaseCustomSync';
 import { configureSynced } from '@legendapp/state/sync';
 import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/async-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
