@@ -11,7 +11,8 @@ import { useTasksStore } from 'stores/tasksStore';
 import { fetch as expoFetch } from 'expo/fetch';
 import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
 import { TablesInsert } from 'utils/supabase/database.types';
-import { addTodo } from 'utils/supabase/SupaLegend';
+import { addEvent, addTodo } from 'utils/supabase/SupaLegend';
+import { CustomJson } from 'utils/supabase/customJsonType';
 export const Response = ({ transcript }: { transcript: string }) => {
   const { addTask } = useTasksStore();
   const [responseMessage, setResponseMessage] = useState<string>('');
@@ -39,7 +40,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
       } else if ((object as any).type === 'event') {
         const event = toEventClass(object as any as TodoAIData);
         if (event) {
-          addTask(event);
+          addEvent(event);
         } else {
           console.log('Error: Event is null');
         }
@@ -88,16 +89,16 @@ export const Response = ({ transcript }: { transcript: string }) => {
     return r;
   };
 
-  const toHumanDateArray = (date: string | string[] | null): HumanDate[] | undefined => {
+  const toHumanDateArray = (date: string | string[] | null): CustomJson[] | undefined => {
     if (!date) return undefined;
     if (Array.isArray(date)) {
       return date
-        .map((date) => HumanDate.fromNaturalString(date))
+        .map((date) => HumanDate.fromNaturalString(date)?.toDictionary())
         .filter((date) => date !== undefined);
     }
     const humanDate = HumanDate.fromNaturalString(date);
     if (!humanDate) return undefined;
-    return [humanDate];
+    return [humanDate.toDictionary()];
   };
 
   const toEventClass = (event: TodoAIData) => {
@@ -106,14 +107,14 @@ export const Response = ({ transcript }: { transcript: string }) => {
     const starts = toHumanDateArray(event.start);
 
     if (!starts) return null;
-    return new Event({
-      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+    const r: TablesInsert<'events'> = {
       title: event.title,
       emoji: event.emoji,
       note: event.note,
       start: starts,
       end: event.end ? toHumanDateArray(event.end) : undefined,
-    });
+    };
+    return r;
   };
   const object = _object as any;
 

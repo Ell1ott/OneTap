@@ -7,7 +7,7 @@ import { Event } from 'components/Todos/classes/Event';
 export default function EventRoute() {
   const { id } = useLocalSearchParams();
 
-  const event = new Event(events$[id].get());
+  const event = new Event(events$[id as string].get());
   return (
     <EventDrawer
       event={event}

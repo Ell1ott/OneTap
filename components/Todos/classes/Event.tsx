@@ -12,6 +12,7 @@ export class Event extends Task {
   constructor(data: Tables<'events'>) {
     super(data);
     this.r = data;
+    console.log('new event', data);
   }
 
   $ = () => events$[this.r.id as string];
