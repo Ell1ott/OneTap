@@ -9,6 +9,7 @@ import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { useTasksStore } from 'stores/tasksStore';
 import { ThemeToggle } from 'components/ThemeToggle';
 import { Tables } from 'utils/supabase/database.types';
+import 'react-native-get-random-values';
 import {
   todos$ as _todos$,
   addTodo,
@@ -21,27 +22,21 @@ import {
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { observable } from '@legendapp/state';
-import { v4 as uuidv4 } from 'uuid';
 
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
 
-  const tasks$ = observable(
-    [
-      ...Object.values(todos$.get()).map((t) => new Todo(t)),
-      ...Object.values(events$.get()).map((e) => new Event(e)),
-      ...Object.values(categories$.get()).map((c) => new TaskCategory(c)),
-    ].filter((t) => t.r.title !== null && t.r.title !== undefined)
-  );
+  // const tasks = tasks$.get();
+  console.log('tasks$', todos$.get());
 
-  const tasks = tasks$.get();
+  const tasks = [];
   if (!tasks) return <AppText>Loading...</AppText>;
 
-  if (!tasks.some((t) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
-    addCategory({ title: 'Groceries' });
-    console.log('added groceries');
-  }
+  // if (!tasks.some((t) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
+  //   addCategory({ title: 'Groceries' });
+  //   console.log('added groceries');
+  // }
   console.log('tasks', tasks);
   return (
     <>
