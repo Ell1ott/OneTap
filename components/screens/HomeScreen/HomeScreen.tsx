@@ -2,7 +2,7 @@ import { View, Pressable } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Event, Todo } from 'components/Todos/classes';
+import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
@@ -16,12 +16,12 @@ import {
   addEvent,
   events$,
   todos$,
+  categories$,
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
 import { isToday } from 'utils/dateUtils';
-import { taskHandler } from 'components/Todos/classes/taskHandler';
 import { tasks$ as _tasks$ } from 'app/(tabs)';
 
 export const HomeScreen = observer(({ tasks$ }: { tasks$: typeof _tasks$ }) => {
@@ -29,10 +29,12 @@ export const HomeScreen = observer(({ tasks$ }: { tasks$: typeof _tasks$ }) => {
   const [openAddEvent, setOpenAddEvent] = useState(false);
   const todos = todos$.get();
   const events = events$.get();
-  if (!todos || !events) return <AppText>Loading...</AppText>;
+  const categories = categories$.get();
+  if (!todos || !events || !categories) return <AppText>Loading...</AppText>;
   const tasks = [
     ...Object.values(todos).map((t) => new Todo(t)),
     ...Object.values(events).map((e) => new Event(e)),
+    ...Object.values(categories).map((c) => new TaskCategory(c)),
   ];
   console.log('todos', todos);
   console.log('events', events);
