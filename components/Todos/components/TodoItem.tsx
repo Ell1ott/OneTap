@@ -168,8 +168,6 @@ export const TodoItem = ({
                         placeholderTextColor={
                           theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'
                         }
-                        onFocus={() => setIsInFocus(true)}
-                        onBlur={() => setIsInFocus(false)}
                         multiline={false}
                       />
                     </Pressable>

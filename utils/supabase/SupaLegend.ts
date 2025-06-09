@@ -13,12 +13,14 @@ const supabase = createClient<Database>(
 );
 
 export async function signInAnonymously() {
-  if (supabase.auth.getSession() === null) {
+  if ((await supabase.auth.getSession()).data.session === null) {
     const { data, error } = await supabase.auth.signInAnonymously();
     if (error) {
       throw error;
     }
     return data;
+  } else {
+    console.log('fej', await supabase.auth.getSession());
   }
 }
 
