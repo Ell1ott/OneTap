@@ -13,7 +13,7 @@ export interface TodoAIData {
   end?: string | string[] | null;
   due?: string | string[] | null;
   softDue?: string | null;
-  remindAt?: string | null;
+  remindAt?: string | string[] | null;
   repeat?: { days?: number; weeks?: number; months?: number } | null;
   repeatSoftly?: boolean | null;
   amount?: number | null;

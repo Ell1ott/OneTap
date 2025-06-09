@@ -15,6 +15,13 @@ export class HumanDate {
     this.isTimeKnown = isTimeKnown ?? false;
   }
 
+  toDictionary = () => {
+    return {
+      date: this.date,
+      isTimeKnown: this.isTimeKnown,
+    };
+  };
+
   setDate = (date: Date) => {
     this.date = date;
     return this;

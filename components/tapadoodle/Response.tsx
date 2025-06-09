@@ -10,6 +10,7 @@ import { HumanDate, Time } from 'components/Todos/types';
 import { useTasksStore } from 'stores/tasksStore';
 import { fetch as expoFetch } from 'expo/fetch';
 import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
+import { TablesInsert } from 'utils/supabase/database.types';
 export const Response = ({ transcript }: { transcript: string }) => {
   const { addTask } = useTasksStore();
   const [responseMessage, setResponseMessage] = useState<string>('');
@@ -43,8 +44,34 @@ export const Response = ({ transcript }: { transcript: string }) => {
     },
   });
 
+
   const toTodoClass = (todo: TodoAIData) => {
     console.log(todo);
+
+    const start = todo.start
+      ? HumanDate.fromNaturalString(Array.isArray(todo.start) ? todo.start[0] : todo.start)?.toDictionary()
+      : undefined;
+    const end = todo.end
+      ? HumanDate.fromNaturalString(Array.isArray(todo.end) ? todo.end[0] : todo.end)?.toDictionary()
+      : undefined;
+    const remind_at = todo.remindAt
+      ? HumanDate.fromNaturalString(Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt)?.toDictionary()
+      : undefined;
+
+    const r: TablesInsert<'todos'> = {
+      title: todo.title,
+      emoji: todo.emoji,
+      note: todo.note,
+      start: start,
+      end: end,
+      soft_due: todo.softDue ? HumanDate.fromNaturalString(todo.softDue)?.toDictionary() : undefined,
+      remind_at: remind_at ? [remind_at] : undefined,
+      repeat: todo.repeat
+      soft_repeat: todo.repeatSoftly
+      amount: todo.amount || undefined,
+      category: todo.category || undefined,
+    }
+
     return new Todo({
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
       title: todo.title,
