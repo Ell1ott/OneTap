@@ -19,7 +19,7 @@ export class Todo extends Task {
 
   table = todos$;
 
-  $ = () => this.table[this.r.id as string];
+  hi = () => this.table[this.r.id as string];
 
   isToday = () =>
     (this.r.end && HumanDate.isToday(this.r.end)) ||
