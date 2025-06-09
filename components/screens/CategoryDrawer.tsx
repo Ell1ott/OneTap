@@ -2,10 +2,11 @@ import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
 import { View, ScrollView, Pressable } from 'react-native';
 import { useState } from 'react';
-import { Todo } from 'components/Todos/classes';
+import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { useTasksStore } from 'stores/tasksStore';
+import { addTodo } from 'utils/supabase/SupaLegend';
 
 export default function CategoryDrawer({
   category,
@@ -14,16 +15,15 @@ export default function CategoryDrawer({
   category: string;
   onClose: () => void;
 }) {
-  const { tasks, addTask } = useTasksStore();
+  const tasks = [];
+
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
 
   // Filter tasks by category
-  const categoryTasks = tasks.filter((task) => {
-    if (task instanceof Todo) {
-      return task.category?.toLowerCase() === category.toLowerCase();
+  const categoryTasks = tasks.filter((task: Todo | Event | TaskCategory) => {
+    if (task instanceof Todo || task instanceof Event) {
+      return task.r.category?.toLowerCase() === category.toLowerCase();
     }
-    // For TaskCategory items, you might want to include them based on some logic
-    // For now, let's exclude them from category filtering
     return false;
   });
 
@@ -33,21 +33,20 @@ export default function CategoryDrawer({
 
   const handleAddTask = () => {
     const newId = `new_${Date.now()}`;
-    const newTask = new Todo({
+    addTodo({
       id: newId,
       title: '',
       completed: [false],
       category: category || '',
     });
-    addTask(newTask);
     setLastAddedTodoId(newId);
   };
 
   const completedCount = categoryTasks.filter(
-    (task) => task instanceof Todo && task.completed?.every(Boolean)
+    (task: Todo | Event) => task instanceof Todo && task.r.completed?.every(Boolean)
   ).length;
 
-  const totalTodos = categoryTasks.filter((task) => task instanceof Todo).length;
+  const totalTodos = categoryTasks.filter((task: Todo | Event) => task instanceof Todo).length;
   const pendingCount = totalTodos - completedCount;
 
   return (

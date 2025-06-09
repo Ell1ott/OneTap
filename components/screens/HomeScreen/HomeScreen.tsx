@@ -2,7 +2,7 @@ import { View, Pressable } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Event, Todo } from 'components/Todos/classes';
+import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
@@ -16,26 +16,32 @@ import {
   addEvent,
   events$,
   todos$,
+  addCategory,
+  categories$,
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
-import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
-import { isToday } from 'utils/dateUtils';
-import { taskHandler } from 'components/Todos/classes/taskHandler';
-import { tasks$ as _tasks$ } from 'app/(tabs)';
+import { v4 as uuidv4 } from 'uuid';
 
-export const HomeScreen = observer(({ tasks$ }: { tasks$: typeof _tasks$ }) => {
+export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-  const todos = todos$.get();
-  const events = events$.get();
-  if (!todos || !events) return <AppText>Loading...</AppText>;
-  const tasks = [
-    ...Object.values(todos).map((t) => new Todo(t)),
-    ...Object.values(events).map((e) => new Event(e)),
-  ];
-  console.log('todos', todos);
-  console.log('events', events);
+
+  const tasks$ = observable(
+    [
+      ...Object.values(todos$.get()).map((t) => new Todo(t)),
+      ...Object.values(events$.get()).map((e) => new Event(e)),
+      ...Object.values(categories$.get()).map((c) => new TaskCategory(c)),
+    ].filter((t) => t.r.title !== null && t.r.title !== undefined)
+  );
+
+  const tasks = tasks$.get();
+  if (!tasks) return <AppText>Loading...</AppText>;
+
+  if (!tasks.some((t) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
+    addCategory({ title: 'Groceries' });
+    console.log('added groceries');
+  }
   console.log('tasks', tasks);
   return (
     <>

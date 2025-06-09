@@ -6,6 +6,7 @@ import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
 import { Database, TablesInsert } from './database.types';
+import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 
 const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
