@@ -18,6 +18,7 @@ import {
   todos$,
   categories$,
   tasks$,
+  addCategory,
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
@@ -26,9 +27,16 @@ import { observable } from '@legendapp/state';
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
-  const tasks = tasks$.get();
+  const tasks: (Todo | Event | TaskCategory)[] = tasks$.get();
 
   if (!tasks) return <AppText>Loading...</AppText>;
+
+  if (!tasks.some((t) => t instanceof TaskCategory && t.r.title === 'Groceries')) {
+    addCategory({
+      title: 'Groceries',
+    });
+  }
+
   console.log('tasks', tasks);
   return (
     <>
