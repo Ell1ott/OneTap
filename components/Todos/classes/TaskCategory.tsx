@@ -12,9 +12,7 @@ export class TaskCategory extends Task {
     this.r = data;
   }
 
-  table = categories$;
-
-  $ = () => this.table[this.r.id as string];
+  $ = () => categories$[this.r.id as string];
 
   isPriority = () => true;
 

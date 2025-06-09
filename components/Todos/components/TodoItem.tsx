@@ -36,8 +36,12 @@ export const TodoItem = observer(
     classname?: string;
     onCategoryPress: (category: string) => void;
   }) => {
-    const row = _item.$().get();
-    const item = new row.constructor(row);
+    const row$ = _item.$();
+
+    console.log('swiss', row$.get);
+    if (!row$.get) return <AppText>Loading...</AppText>;
+    const row = row$.get();
+    const item = new _item.constructor(row);
     const { theme } = useTheme();
     const router = useRouter();
     const inputRef = useRef<TextInput>(null);

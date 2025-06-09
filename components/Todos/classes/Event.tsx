@@ -14,9 +14,7 @@ export class Event extends Task {
     this.r = data;
   }
 
-  table = events$;
-
-  $ = () => this.table[this.r.id as string];
+  $ = () => events$[this.r.id as string];
 
   getNextStart = () => {
     const now = new Date();
