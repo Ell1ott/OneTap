@@ -81,8 +81,10 @@ export const TodoItem = ({
   });
 
   function onTextChange(text: string) {
+    item.$().updated_at.set(new Date().toISOString());
     item.$().title.set(text);
   }
+
 
   useEffect(() => {
     if (shouldFocus && inputRef.current) {
@@ -157,7 +159,7 @@ export const TodoItem = ({
                     <AppText className="text-xl font-medium leading-7">{item.r.emoji}</AppText>
                   )}
                   <Animated.View style={animatedTextStyle}>
-                    <Pressable onPress={() => {}}>
+                    <Pressable onPress={() => { }}>
                       <TextInput
                         className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                         placeholder="New task..."
