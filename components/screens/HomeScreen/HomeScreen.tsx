@@ -56,6 +56,7 @@ export const HomeScreen = observer(() => {
   console.log('tasks', tasks$.get());
   console.log('taskTest', taskTest$.get());
   console.log('taskTest2', taskTest2$.get());
+  console.log('events', events$.get());
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
 
