@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "OneTap",
-    "slug": "OneTap",
-    "version": "1.0.0",
+    "description": "Speak once. It remembers, connects, and resurfaces what matters. Right on time.",
+    "slug": "onetap",
+    "version": "0.0.1",
     "scheme": "onetap",
     "web": {
       "favicon": "./assets/favicon.png",
@@ -13,6 +14,7 @@
       "tsconfigPaths": true,
       "typedRoutes": true
     },
+    "newArchEnabled": false,
     "plugins": [
       "@siteed/expo-audio-studio",
       [
@@ -83,26 +85,30 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "dk.elliottf.OneTap",
+      "bundleIdentifier": "dk.elliottf.onetap",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": true
       }
     },
     "android": {
-      "permissions": ["android.permission.VIBRATE"],
+      "permissions": [
+        "android.permission.VIBRATE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.qazwsxedc123.OneTap"
+      "package": "dk.elliottf.onetap"
     },
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "ab315ddf-9061-40a5-b960-cad0d80e1643"
+        "projectId": "76787476-c912-423f-9f38-07901087b51c"
       }
     }
   }

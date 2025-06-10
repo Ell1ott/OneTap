@@ -10,11 +10,10 @@ import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
-import { v4 as uuidv4 } from 'uuid';
 import { signInAnonymously } from 'utils/supabase/SupaLegend';
+import { v4 as uuidv4 } from 'uuid';
 export default function RootLayout() {
   console.log(uuidv4());
-
   useEffect(() => {
     signInAnonymously().then((data) => {
       console.log(data);

@@ -39,9 +39,9 @@ export const TodoList = ({
         })
         .map((task, i) => (
           <TodoItem
-            key={task.id}
+            key={task.r.id}
             item={task}
-            shouldFocus={task.id === focusedTodoId}
+            shouldFocus={task.r.id === focusedTodoId}
             classname={i != 0 ? 'border-t-[1.5px] border-t-foregroundMuted/15' : ''}
             onCategoryPress={onCategoryPress}
           />
