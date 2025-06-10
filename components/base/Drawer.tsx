@@ -162,9 +162,10 @@ export default function Drawer({
       />
 
       <GestureDetector gesture={gestureHandler}>
-        <Animated.View style={[{ flex: 1 }, animatedStyle]}>
+        <Animated.View
+          style={[{ flex: 1, width: '100%', maxWidth: 480, alignSelf: 'center' }, animatedStyle]}>
           <ScrollView
-            className={`flex-none rounded-t-[45px] ${className} w-full max-w-[30rem] self-center`}
+            className={`flex-none rounded-t-[45px] ${className}`}
             style={{
               height: 2000,
             }}
