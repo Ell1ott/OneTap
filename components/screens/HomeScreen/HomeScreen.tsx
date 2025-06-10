@@ -67,6 +67,8 @@ export const HomeScreen = observer(() => {
   const priorityTasks = priorityTasks$.peek();
   const otherTasks = otherTasks$.peek();
 
+  console.log('events', events$.get(), 'todos', todos$.get(), 'categories', categories$.get());
+
   console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
 
   if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
