@@ -49,6 +49,16 @@ export async function signInAnonymously() {
         completed: [false],
         soft_repeat: { days: 7 },
       });
+      addTodo({
+        title: 'Milk',
+        completed: [false],
+        category: 'Groceries',
+      });
+      addTodo({
+        title: 'Bread',
+        completed: [false],
+        category: 'Groceries',
+      });
     }, 1000);
 
     return data;

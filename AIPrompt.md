@@ -148,6 +148,27 @@ emoji: 'relevant emoji';
 }
 ```
 
+**Input:** "I got football every monday and wensday at 6pm. please remind me an hour before"
+
+```json
+{
+  "msg": "Football schedule added! I'll make sure to remind you an hour before each game. Have fun on the field!",
+  "title": "Football",
+  "type": "event",
+  "note": "",
+  "start": ["Date(Monday 6:00 pm)", "Date(Wensday 6:00 pm)"],
+  "end": null,
+  "due": null,
+  "softDue": null,
+  "remindAt": ["Date(Monday 5:00 pm)", "Date(Wensday 5:00 pm)"],
+  "repeat": { "weeks": 1 },
+  "repeatSoftly": false,
+  "amount": null,
+  "category": null,
+  "emoji": "⚽"
+}
+```
+
 **Input:** "Remind me to take out the trash every Thursday night"
 
 ```json
