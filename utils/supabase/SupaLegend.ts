@@ -121,11 +121,6 @@ export const events$ = observable(
     },
   })
 );
-
-todos$.onChange((todos) => {
-  console.log('todos', todos);
-});
-
 export const categories$ = observable(
   customSynced({
     supabase,
@@ -182,8 +177,4 @@ export const tasks$ = observable(() => {
     ...Object.values(events).map((e) => new Event(e)),
     ...Object.values(categories).map((c) => new TaskCategory(c)),
   ];
-});
-
-tasks$.onChange((tasks) => {
-  console.log('tasks', tasks);
 });
