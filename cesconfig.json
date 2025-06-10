@@ -12,13 +12,13 @@
     "noInstall": false,
     "overwrite": false,
     "importAlias": true,
-    "packageManager": "npm",
+    "packageManager": "bun",
     "eas": false,
     "publish": false
   },
   "packageManager": {
-    "type": "npm",
-    "version": "10.9.2"
+    "type": "bun",
+    "version": "1.2.15"
   },
   "os": {
     "type": "Windows_NT",
