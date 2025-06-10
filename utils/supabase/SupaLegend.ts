@@ -177,3 +177,7 @@ export const tasks$ = observable(() => {
     ...Object.values(categories).map((c) => new TaskCategory(c)),
   ];
 });
+
+tasks$.onChange((tasks) => {
+  console.log('tasks', tasks);
+});
