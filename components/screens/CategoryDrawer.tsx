@@ -7,31 +7,29 @@ import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
 import { addTodo, tasks$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
+import { Observable, observable } from '@legendapp/state';
 
 const CategoryDrawer = observer(
-  ({ category, onClose }: { category: string; onClose: () => void }) => {
-    const tasks = tasks$.get().objs;
-    console.log('tasks', tasks);
+  ({
+    categoryTasks$,
+    name,
+    onClose,
+  }: {
+    categoryTasks$: Observable<Todo[] | Event[] | TaskCategory[]>;
+    name: string;
+    onClose: () => void;
+  }) => {
+    console.log('tasks', categoryTasks$.get());
     const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
 
-    // Filter tasks by category
-    const categoryTasks = tasks.filter((task: Todo | Event | TaskCategory) => {
-      if (task instanceof Todo) {
-        return task.r.category?.toLowerCase() === category.toLowerCase();
-      }
-      // For TaskCategory items, you might want to include them based on some logic
-      // For now, let's exclude them from category filtering
-      return false;
-    });
+    const categoryTasks = categoryTasks$.get();
 
-    console.log(categoryTasks);
-
-    const categoryName = category?.charAt(0).toUpperCase() + category?.slice(1) || 'Category';
+    const categoryName = name?.charAt(0).toUpperCase() + name?.slice(1) || 'Category';
 
     const handleAddTask = () => {
       const newId = addTodo({
         title: '',
-        category: category || '',
+        category: name || '',
       });
       setLastAddedTodoId(newId);
     };
@@ -47,7 +45,7 @@ const CategoryDrawer = observer(
     const pendingCount = totalTodos - completedCount;
 
     return (
-      <Drawer isOpen={!!category} onClose={onClose} className="bg-background">
+      <Drawer isOpen={!!name} onClose={onClose} className="bg-background">
         {/* Header */}
         <View className="mb-6">
           <View className="mb-4 flex-row items-center">

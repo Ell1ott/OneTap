@@ -51,6 +51,7 @@ const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
 export const HomeScreen = observer(() => {
+  console.log('tasks', tasks$.get());
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
 
@@ -71,9 +72,6 @@ export const HomeScreen = observer(() => {
 
   return (
     <>
-      {openCategory && (
-        <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
-      )}
       {/* <Todos todos$={_todos$} /> */}
 
       <ScrollView
