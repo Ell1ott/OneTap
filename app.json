@@ -16,20 +16,6 @@
     },
     "newArchEnabled": false,
     "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35,
-            "buildToolsVersion": "35.0.2",
-            "kotlinVersion": "2.0.21"
-          },
-          "ios": {
-            "deploymentTarget": "15.1"
-          }
-        }
-      ],
       "@siteed/expo-audio-studio",
       [
         "expo-build-properties",
@@ -99,7 +85,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "dk.elliottf.onetap",
@@ -108,7 +96,9 @@
       }
     },
     "android": {
-      "permissions": ["android.permission.VIBRATE"],
+      "permissions": [
+        "android.permission.VIBRATE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -118,7 +108,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "ab315ddf-9061-40a5-b960-cad0d80e1643"
+        "projectId": "76787476-c912-423f-9f38-07901087b51c"
       }
     }
   }
