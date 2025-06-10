@@ -57,9 +57,9 @@ export const Response = ({ transcript }: { transcript: string }) => {
           Array.isArray(todo.start) ? todo.start[0] : todo.start
         )?.toDictionary()
       : undefined;
-    const end = todo.end
+    const end = todo.due
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.end) ? todo.end[0] : todo.end
+          Array.isArray(todo.due) ? todo.due[0] : todo.due
         )?.toDictionary()
       : undefined;
     const remind_at = todo.remindAt
