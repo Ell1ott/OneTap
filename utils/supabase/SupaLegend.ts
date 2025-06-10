@@ -103,6 +103,7 @@ export const todos$ = observable(
     },
   })
 );
+
 export const events$ = observable(
   customSynced({
     supabase,
@@ -120,6 +121,11 @@ export const events$ = observable(
     },
   })
 );
+
+todos$.onChange((todos) => {
+  console.log('todos', todos);
+});
+
 export const categories$ = observable(
   customSynced({
     supabase,
