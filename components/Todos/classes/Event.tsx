@@ -74,7 +74,7 @@ export class Event extends Task {
       );
     }
 
-    const atString = this.getNextStart().isTimeKnown
+    const atString = nextStart.isTimeKnown
       ? ' at ' +
         nextStart.date.toLocaleTimeString('en-US', {
           hour: '2-digit',
@@ -107,7 +107,7 @@ export class Event extends Task {
 
     return (
       <AppText>
-        {this.getNextStart().toLocaleString()}
+        {nextStart.date.toLocaleString()}
         {' - '}
         in {weeksToNow} weeks{days > 0 && ` and ${days} days`}
       </AppText>
