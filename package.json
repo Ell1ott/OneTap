@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@10play/react-native-web-webview": "^0.0.3",
-    "@10play/tentap-editor": "^0.7.0",
+    "@10play/tentap-editor": "0.7.0",
     "@ai-sdk/openai": "^1.3.22",
     "@ai-sdk/react": "^1.2.12",
     "@deepgram/sdk": "^4.2.0",
