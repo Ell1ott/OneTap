@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "OneTap",
-    "slug": "OneTap",
-    "version": "1.0.0",
+    "description": "Speak once. It remembers, connects, and resurfaces what matters. Right on time.",
+    "slug": "onetap",
+    "version": "0.0.1",
     "scheme": "onetap",
     "web": {
       "favicon": "./assets/favicon.png",
@@ -13,7 +14,22 @@
       "tsconfigPaths": true,
       "typedRoutes": true
     },
+    "newArchEnabled": false,
     "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.2",
+            "kotlinVersion": "2.0.21"
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ],
       "@siteed/expo-audio-studio",
       [
         "expo-build-properties",
@@ -86,9 +102,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "dk.elliottf.OneTap",
+      "bundleIdentifier": "dk.elliottf.onetap",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": true
       }
     },
     "android": {
@@ -97,7 +113,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.qazwsxedc123.OneTap"
+      "package": "dk.elliottf.onetap"
     },
     "extra": {
       "router": {},
