@@ -27,21 +27,21 @@ import { HumanDateType } from 'components/Todos/types/HumanDate';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
-  return tasks
+  return tasks.objs
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => t.isToday());
 });
 
 const priorityTasks$ = observable(() => {
   const tasks = tasks$.get();
-  return tasks
+  return tasks.objs
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => t.isPriority());
 });
 
 const otherTasks$ = observable(() => {
   const tasks = tasks$.get();
-  return tasks
+  return tasks.objs
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category));
 });
@@ -67,13 +67,8 @@ export const HomeScreen = observer(() => {
   const priorityTasks = priorityTasks$.peek();
   const otherTasks = otherTasks$.peek();
 
-  console.log('events', events$.get(), 'todos', todos$.get(), 'categories', categories$.get());
-
-  console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
-
   if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
 
-  console.log('tasks', todaysTasks);
   return (
     <>
       {openCategory && (

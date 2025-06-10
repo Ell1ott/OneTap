@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { observable } from '@legendapp/state';
+import { observable, observe } from '@legendapp/state';
 import { configureSynced, synced } from '@legendapp/state/sync';
 import { syncedSupabase } from '@legendapp/state/sync-plugins/supabase';
 import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/async-storage';
@@ -171,10 +171,27 @@ export const tasks$ = observable(() => {
   const todos = todos$.get();
   const events = events$.get();
   const categories = categories$.get();
-  if (!todos || !events || !categories) return [];
-  return [
-    ...Object.values(todos).map((t) => new Todo(t)),
-    ...Object.values(events).map((e) => new Event(e)),
-    ...Object.values(categories).map((c) => new TaskCategory(c)),
-  ];
+  if (!todos || !events || !categories) return { objs: [], todos, events, categories };
+  return {
+    objs: [
+      ...Object.values(todos).map((t) => new Todo(t)),
+      ...Object.values(events).map((e) => new Event(e)),
+      ...Object.values(categories).map((c) => new TaskCategory(c)),
+    ],
+    todos,
+    events,
+    categories,
+  };
 });
+
+// const profile = { name: 'Test user' };
+// const state$ = observable({ profile, test: 0 });
+
+// // get the underlying value from the observable
+// const name = state$.profile.name.get();
+
+// observe(state$.profile.name, (name) => {
+//   console.log('name', name);
+// });
+
+// state$.profile.name.set('Test user 2');

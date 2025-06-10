@@ -10,7 +10,7 @@ import { observer } from '@legendapp/state/react';
 
 const CategoryDrawer = observer(
   ({ category, onClose }: { category: string; onClose: () => void }) => {
-    const tasks = tasks$.get();
+    const tasks = tasks$.get().objs;
     console.log('tasks', tasks);
     const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
 
