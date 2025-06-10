@@ -49,15 +49,6 @@ const otherTasks$ = observable(() => {
 const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
-todayTasksLength$.subscribe((length) => {
-  console.log('todayTasksLength', length);
-});
-priorityTasksLength$.subscribe((length) => {
-  console.log('priorityTasksLength', length);
-});
-otherTasksLength$.subscribe((length) => {
-  console.log('otherTasksLength', length);
-});
 
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -65,8 +56,11 @@ export const HomeScreen = observer(() => {
 
   // Use length observables to trigger rerenders only when lengths change
   const todayTasksLength = todayTasksLength$.get();
+  console.log('todayTasksLength', todayTasksLength);
   const priorityTasksLength = priorityTasksLength$.get();
+  console.log('priorityTasksLength', priorityTasksLength);
   const otherTasksLength = otherTasksLength$.get();
+  console.log('otherTasksLength', otherTasksLength);
 
   // Get actual tasks when needed (without subscribing to changes)
   const todaysTasks = todayTasks$.peek();
