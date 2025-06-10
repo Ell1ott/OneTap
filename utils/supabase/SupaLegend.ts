@@ -184,6 +184,20 @@ export const tasks$ = observable(() => {
   };
 });
 
+export const taskTest$ = observable(() => {
+  const todos = todos$.get();
+  const events = events$.get();
+  const categories = categories$.get();
+  return { todos, events, categories };
+});
+
+export const taskTest2$ = observable(() => {
+  const todos = todos$.get();
+  const events = events$.get();
+  const categories = categories$.get();
+  return [...Object.values(todos), ...Object.values(events), ...Object.values(categories)];
+});
+
 // const profile = { name: 'Test user' };
 // const state$ = observable({ profile, test: 0 });
 

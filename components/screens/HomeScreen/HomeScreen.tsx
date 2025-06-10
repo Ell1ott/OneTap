@@ -19,6 +19,8 @@ import {
   tasks$,
   addCategory,
   generateId,
+  taskTest$,
+  taskTest2$,
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
@@ -52,6 +54,8 @@ const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
 export const HomeScreen = observer(() => {
   console.log('tasks', tasks$.get());
+  console.log('taskTest', taskTest$.get());
+  console.log('taskTest2', taskTest2$.get());
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
 
