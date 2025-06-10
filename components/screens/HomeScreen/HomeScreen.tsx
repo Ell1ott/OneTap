@@ -49,6 +49,15 @@ const otherTasks$ = observable(() => {
 const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
+todayTasksLength$.subscribe((length) => {
+  console.log('todayTasksLength', length);
+});
+priorityTasksLength$.subscribe((length) => {
+  console.log('priorityTasksLength', length);
+});
+otherTasksLength$.subscribe((length) => {
+  console.log('otherTasksLength', length);
+});
 
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
