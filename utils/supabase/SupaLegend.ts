@@ -195,6 +195,8 @@ export const taskTest2$ = observable(() => {
   const todos = todos$.get();
   const events = events$.get();
   const categories = categories$.get();
+  if (!todos || !events || !categories) return [];
+  console.log('tgtg', todos, events, categories);
   return [...Object.values(todos), ...Object.values(events), ...Object.values(categories)];
 });
 
