@@ -92,19 +92,16 @@ export const HomeScreen = observer(() => {
           <TodoSection
             title="Today"
             tasks={todaysTasks}
-            tasksLength={todayTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Priority"
             tasks={priorityTasks}
-            tasksLength={priorityTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
           <TodoSection
             title="Other"
             tasks={otherTasks}
-            tasksLength={otherTasksLength}
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>

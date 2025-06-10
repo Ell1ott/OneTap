@@ -11,49 +11,40 @@ import { addTodo, generateId } from 'utils/supabase/SupaLegend';
 interface TodoSectionProps {
   title: string;
   tasks: Task[];
-  tasksLength: number;
+
   onCategoryPress: (category: string) => void;
 }
 
-export const TodoSection: React.FC<TodoSectionProps> = React.memo(
-  ({ title, tasks, tasksLength, onCategoryPress }) => {
-    const [lastAddedTodoId, setLastAddedTodoId] = useState<string | undefined>();
+export const TodoSection: React.FC<TodoSectionProps> = ({
+  title,
+  tasks,
 
-    const handleAddTodo = () => {
-      const newId = generateId();
-      addTodo({
-        id: generateId(),
-        title: '',
-        completed: [false],
-        note: '',
-      });
-      setLastAddedTodoId(newId);
-    };
+  onCategoryPress,
+}) => {
+  const [lastAddedTodoId, setLastAddedTodoId] = useState<string | undefined>();
 
-    return (
-      <View>
-        <View className="flex-row items-center justify-between">
-          <AppText f className="mb-1 text-lg font-extrabold text-foreground/60">
-            {title}
-          </AppText>
-          <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
-            <Plus size={20} />
-          </HapticTab>
-        </View>
-        <TodoList
-          tasks={tasks}
-          lastAddedTodoId={lastAddedTodoId}
-          onCategoryPress={onCategoryPress}
-        />
+  const handleAddTodo = () => {
+    const newId = generateId();
+    addTodo({
+      id: generateId(),
+      title: '',
+      completed: [false],
+      note: '',
+    });
+    setLastAddedTodoId(newId);
+  };
+
+  return (
+    <View>
+      <View className="flex-row items-center justify-between">
+        <AppText f className="mb-1 text-lg font-extrabold text-foreground/60">
+          {title}
+        </AppText>
+        <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
+          <Plus size={20} />
+        </HapticTab>
       </View>
-    );
-  },
-  (prevProps, nextProps) => {
-    // Only rerender if the length of tasks changes or other essential props change
-    return (
-      prevProps.tasksLength === nextProps.tasksLength &&
-      prevProps.title === nextProps.title &&
-      prevProps.onCategoryPress === nextProps.onCategoryPress
-    );
-  }
-);
+      <TodoList tasks={tasks} lastAddedTodoId={lastAddedTodoId} onCategoryPress={onCategoryPress} />
+    </View>
+  );
+};

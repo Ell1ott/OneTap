@@ -20,9 +20,9 @@ export class Todo extends Task {
   $ = () => todos$[this.r.id as string];
 
   isToday = () =>
-    (this.r.end && HumanDate.isToday(this.r.end)) ||
-    (this.r.soft_due && HumanDate.isToday(this.r.soft_due)) ||
-    (this.r.start && HumanDate.isToday(this.r.end)) ||
+    (this.r.end && isToday(new Date(this.r.end.date as string))) ||
+    (this.r.soft_due && isToday(new Date(this.r.soft_due.date as string))) ||
+    (this.r.start && isToday(new Date(this.r.start.date as string))) ||
     false;
 
   isPriority = () => {
