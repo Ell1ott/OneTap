@@ -120,10 +120,9 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
 });
 
 export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Date) => void }) {
-  const [calendarOpen, setCalendarOpen] = useState(false);
-  useEffect(() => {
-    console.log(calendarOpen);
-  }, [calendarOpen]);
+
+  const [currentView, setCurrentView] = useState<'day' | 'month' | 'year' | 'time' | undefined>('day');
+
   return (
     <View className="mb-6">
       <View className="mb-4 flex-row items-center">
@@ -134,31 +133,47 @@ export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Da
       <View className="mb-2 flex-row space-x-3">
         {/* Date */}
         <Pressable
-          onPress={() => setCalendarOpen(!calendarOpen)}
-          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${calendarOpen ? 'bg-foreground/15' : ''
+          onPress={() => {
+            if (currentView === 'day') {
+              setCurrentView(undefined);
+            } else {
+              setCurrentView('day');
+            }
+          }}
+          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${currentView === 'day' ? 'bg-foreground/15' : ''
             }`}>
-          <SelectableText pressable={false} isSelected={calendarOpen}>
+          <SelectableText pressable={false} isSelected={currentView === 'day'}>
             {formatDate(date as Date)}
           </SelectableText>
         </Pressable>
 
         {/* Time */}
-        <Pressable className="flex-[1] flex-row rounded-full bg-background p-1.5">
-          <SelectableText>{formatTime(date as Date)}</SelectableText>
+        <Pressable onPress={() => {
+          if (currentView === 'time') {
+            setCurrentView(undefined);
+          } else {
+            setCurrentView('time');
+          }
+        }} className="flex-[1] flex-row rounded-full bg-background p-1.5">
+          <SelectableText pressable={false} isSelected={currentView === 'time'}>{formatTime(date as Date)}</SelectableText>
         </Pressable>
       </View>
-      {calendarOpen && <Calendar date={date} setDate={setDate} />}
+
+      {currentView === 'day' && <Calendar date={date} setDate={setDate} currentView={'day'} />}
+      {currentView === 'time' && <Calendar date={date} setDate={setDate} currentView={'time'} />}
     </View>
   );
 }
 
-export function Calendar({ date, setDate }: { date: DateType; setDate: (date: Date) => void }) {
+export function Calendar({ date, setDate, currentView }: { date: DateType; setDate: (date: Date) => void, currentView: 'day' | 'month' | 'year' | 'time' }) {
   const defaultClassNames = useDefaultClassNames();
   const [selected, setSelected] = useState<DateType>();
 
   return (
     <DateTimePicker
       timePicker={true}
+      initialView={currentView}
+
       mode="single"
       date={date}
       onChange={({ date: newDate }) =>
