@@ -25,16 +25,8 @@ Deno.serve(async (req) => {
   const { input, currentDate } = await req.json();
   console.log(input);
 
-  // Inject current date/time context
-  const now = new Date(currentDate);
-  const formattedDate = now.toLocaleString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  const contextualizedPrompt = prompt.replace('{CURRENT_DATETIME}', formattedDate);
+  // Use the pre-formatted date/time provided by the user
+  const contextualizedPrompt = prompt.replace('{CURRENT_DATETIME}', currentDate || 'Not specified');
   const ObjectStream = streamObject({
     model: openai('gpt-4.1-mini'),
     temperature: 1.5,

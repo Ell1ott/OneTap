@@ -117,7 +117,16 @@ export const Response = ({ transcript }: { transcript: string }) => {
   const object = _object as any;
 
   useEffect(() => {
-    submit({ input: transcript, currentDate: +new Date() });
+    submit({
+      input: transcript,
+      currentDate:
+        new Date().toLocaleString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+    });
   }, []);
 
   useEffect(() => {
