@@ -8,13 +8,17 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { Database, TablesInsert } from './database.types';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
+import { Platform } from 'react-native';
 
 const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
   {
     auth: {
-      storage: AsyncStorage,
+      
+        ...(Platform.OS !== 'web'
+          ? { storage: AsyncStorage }
+          : { }),
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: false,
