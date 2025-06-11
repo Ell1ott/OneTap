@@ -6,7 +6,7 @@ import TabBarBackground from 'components/ui/TabBarBackground';
 import { Calendar, Feather, Plane } from 'lucide-react-native';
 import { TapadoodleBox } from 'components/tapadoodle/TapadoodleBox';
 import { useTheme } from '../../components/ThemeProvider';
-import { useEffect } from 'react';
+
 // import * as ExpoCalendar from 'expo-calendar';
 export default function TabLayout() {
   const { theme } = useTheme();

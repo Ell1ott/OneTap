@@ -62,3 +62,27 @@
   --color-destructive: 0 84% 60%;
   --color-destructive-foreground: 210 40% 98%;
 }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+@media (min-aspect-ratio: 3/4) {
+  #root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+  }
+
+  #root > div {
+    max-width: clamp(320px, 30vw, 430px);
+    max-height: 80vh;
+    aspect-ratio: 9 / 19.5;
+    width: auto;
+    height: auto;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+}
