@@ -24,8 +24,9 @@ import {
 } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
-import { observable } from '@legendapp/state';
+import { observable, observe } from '@legendapp/state';
 import { HumanDateType } from 'components/Todos/types/HumanDate';
+import { use$ } from '@legendapp/state/react';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -33,7 +34,6 @@ const todayTasks$ = observable(() => {
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => t.isToday());
 });
-
 const priorityTasks$ = observable(() => {
   const tasks = tasks$.get();
   return tasks.objs
@@ -52,13 +52,66 @@ const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
+const todosWrapper$ = observable(() => {
+  return Object.values(todos$);
+});
+
+const items$ = observable({
+  id1: { id: 'id1', status: 'ready', name: 'item1' },
+  id2: { id: 'id2', status: 'disabled', name: 'item' },
+});
+
+const itemsAsList$ = observable(() => {
+  const items = items$.get();
+  return Object.values(items);
+});
+
+const hackyItemAsList$ = observable({});
+observe(() => {
+  hackyItemAsList$.set(Object.values(items$.get()));
+  console.log('observe set hacky:' + Object.values(items$.get()).map((i) => i.name));
+});
+
+observe(() => {
+  console.log('observe:' + itemsAsList$.get().map((i) => i.name));
+});
+observe(() => {
+  console.log('observe hacky:' + hackyItemAsList$.get().map((i) => i.name));
+});
+
 export const HomeScreen = observer(() => {
-  console.log('tasks', tasks$.get());
+  const tasks = tasks$.get();
+  if (!tasks) return <AppText>Loading...</AppText>;
+
+  // observe(() => {
+  //   if (state$.itemsReady.get) {
+  //     console.log('observe:' + state$.itemsReady.get());
+  //   }
+  // });
+  // const events = todosWrapper$.get();
+  console.log('tasks', tasks);
+  // console.log('tasksevents', events);
   console.log('taskTest', taskTest$.get());
   console.log('taskTest2', taskTest2$.get());
-  console.log('events', events$.get());
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
+
+  useEffect(() => {
+    // Works
+    todos$.onChange((todos) => {
+      console.log('tasksOnTodos', todos.value);
+    });
+
+    // Does not work
+    todosWrapper$.onChange((todos) => {
+      console.log('tasksOnTodos Wrapper', todos.value);
+    });
+  }, []);
+
+  items$.id2.name.set('item2');
+  items$.id2.name.set('item22');
+  items$.id3.set({ id: 'id3', status: 'ready', name: 'item3' });
+  // state$.itemsReady[0].status.set('disabled');
 
   // Use length observables to trigger rerenders only when lengths change
   const todayTasksLength = todayTasksLength$.get();
