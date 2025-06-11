@@ -1,18 +1,19 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { streamObject } from 'npm:ai@4.3.16';
-import { createOpenAI } from 'npm:@ai-sdk/openai@1.3.22';
-import { prompt } from '../openai-completion/prompt.js';
-const openai = createOpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY'),
-});
+import { google } from 'npm:@ai-sdk/google@1.2.19';
+import { prompt } from './prompt.ts';
 
-// Load the AI prompt from the markdown file
+// Google provider with search grounding - using Gemini 2.0 Flash
+const model = google('gemini-2.0-flash-exp', {
+  useSearchGrounding: true,
+});
 
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
 Deno.serve(async (req) => {
   // This is needed if you're planning to invoke your function from a browser.
   if (req.method === 'OPTIONS') {
@@ -28,7 +29,7 @@ Deno.serve(async (req) => {
   // Use the pre-formatted date/time provided by the user
   const contextualizedPrompt = prompt.replace('{CURRENT_DATETIME}', currentDate || 'Not specified');
   const ObjectStream = streamObject({
-    model: openai('gpt-4.1-mini'),
+    model,
     temperature: 1.5,
     output: 'no-schema',
     messages: [
@@ -41,9 +42,9 @@ Deno.serve(async (req) => {
         content: input,
       },
     ],
-    onError: (e) => console.log(e),
+    onError: (e: any) => console.log(e),
   });
-  console.log('object stream created');
+  console.log('object stream created with Gemini 2.0 Flash');
   console.log('returning object stream');
   return ObjectStream.toTextStreamResponse({
     headers: {

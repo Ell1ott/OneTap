@@ -21,7 +21,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
   } = experimental_useObject({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
     // api: 'https://onetap.expo.app/api/stream',
-    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
+    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/gemini-flash',
     headers: supabaseAnonAuthHeaders,
     schema: z.unknown(),
     onFinish: ({ object }) => {
