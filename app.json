@@ -15,7 +15,15 @@
       "typedRoutes": true
     },
     "plugins": [
-      "@siteed/expo-audio-studio",
+      [
+        "@siteed/expo-audio-studio",
+        {
+          "enableBackgroundAudio": false,
+          "enablePhoneStateHandling": false,
+          "enableNotifications": false,
+          "enableDeviceDetection": false
+        }
+      ],
       [
         "expo-build-properties",
         {
@@ -97,6 +105,10 @@
     "android": {
       "permissions": [
         "android.permission.VIBRATE"
+      ],
+      "blockedPermissions": [
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MICROPHONE"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
