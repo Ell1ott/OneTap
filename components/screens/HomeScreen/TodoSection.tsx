@@ -41,7 +41,7 @@ export const TodoSection: React.FC<TodoSectionProps> = ({
           {title}
         </AppText>
         <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
-          <Plus size={20} />
+          <Plus size={20} className="text-foreground/60" />
         </HapticTab>
       </View>
       <TodoList tasks={tasks} lastAddedTodoId={lastAddedTodoId} onCategoryPress={onCategoryPress} />

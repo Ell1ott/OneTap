@@ -1,15 +1,11 @@
 import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
-import { View, ScrollView, Pressable } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Todo } from 'components/Todos/classes';
-import { TodoList } from 'components/Todos/components/TodoList';
-import { Calendar as CalendarIcon, ChevronLeft, Plus, Clock } from 'lucide-react-native';
+import { Calendar as CalendarIcon } from 'lucide-react-native';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
-import { getRelativeDateString } from 'utils/dateUtils';
 import { TextInput } from 'react-native-gesture-handler';
-import { Event } from 'components/Todos/classes';
 import { observer } from '@legendapp/state/react';
 import { events$ } from 'utils/supabase/SupaLegend';
 
