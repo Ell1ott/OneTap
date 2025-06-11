@@ -79,8 +79,8 @@ body,
   }
 
   #root > div {
-    max-width: clamp(320px, 30vw, 430px);
-    max-height: 90vh;
+    max-width: clamp(350px, 43vh, 430px);
+    max-height: 93vh;
     aspect-ratio: 9 / 19.5;
     width: auto;
     height: auto;
