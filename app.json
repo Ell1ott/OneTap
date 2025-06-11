@@ -89,20 +89,25 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "dk.elliottf.onetap",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": true
+      },
+      "icon": {
+        "light": "./assets/ios-light.png",
+        "dark": "./assets/ios-dark.png",
+        "tinted": "./assets/ios-tinted.png"
       }
     },
     "android": {
+      "icon": "./assets/icon.png",
       "permissions": [
         "android.permission.VIBRATE"
       ],
@@ -112,9 +117,10 @@
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "monochromeImage": "./assets/adaptive-icon-monochrome.png"
       },
-      "package": "dk.elliottf.onetap"
+      "package": "dk.elliottf.onetap",
+      "edgeToEdgeEnabled": true
     },
     "extra": {
       "router": {},
