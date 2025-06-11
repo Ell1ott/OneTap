@@ -34,7 +34,7 @@ Deno.serve(async (req) => {
     day: 'numeric',
   });
 
-  const contextualizedPrompt = prompt.replace('{CURRENT_DATETIME}', currentDateTime);
+  const contextualizedPrompt = prompt.replace('{CURRENT_DATETIME}', formattedDate);
   const ObjectStream = streamObject({
     model: openai('gpt-4.1-mini'),
     temperature: 1.5,
