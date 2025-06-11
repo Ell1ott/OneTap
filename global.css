@@ -63,7 +63,9 @@
   --color-destructive-foreground: 210 40% 98%;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
 }
@@ -78,7 +80,7 @@ html, body, #root {
 
   #root > div {
     max-width: clamp(320px, 30vw, 430px);
-    max-height: 80vh;
+    max-height: 90vh;
     aspect-ratio: 9 / 19.5;
     width: auto;
     height: auto;
