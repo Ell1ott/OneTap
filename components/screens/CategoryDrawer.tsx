@@ -47,7 +47,7 @@ const CategoryDrawer = observer(
     const pendingCount = totalTodos - completedCount;
 
     return (
-      <Drawer isOpen={!!category} onClose={onClose} className="bg-background">
+      <Drawer isOpen={!!category} onClose={onClose} scrollEnabled={true} className="bg-background">
         {/* Header */}
         <View className="mb-6">
           <View className="mb-4 flex-row items-center">
