@@ -14,7 +14,6 @@
       "tsconfigPaths": true,
       "typedRoutes": true
     },
-    "newArchEnabled": false,
     "plugins": [
       "@siteed/expo-audio-studio",
       [
