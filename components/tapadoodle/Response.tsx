@@ -27,6 +27,22 @@ export const Response = ({ transcript }: { transcript: string }) => {
     onFinish: ({ object }) => {
       console.log(object);
       console.log(toTodoClass(object as any as TodoAIData));
+      if (Array.isArray(object)) {
+        object.forEach((o) => {
+          if (o.type === 'todo') {
+            const todo = toTodoClass(o as any as TodoAIData);
+            if (todo) {
+              addTodo(todo);
+            }
+          }
+          if (o.type === 'event') {
+            const event = toEventClass(o as any as TodoAIData);
+            if (event) {
+              addEvent(event);
+            }
+          }
+        });
+      }
       if (!(object as any).title) return;
       if ((object as any).type === 'todo') {
         const todo = toTodoClass(object as any as TodoAIData);
@@ -135,10 +151,11 @@ export const Response = ({ transcript }: { transcript: string }) => {
 
   return (
     <View>
-      {object?.msg && (
-        <FadeInText className="text-lg leading-5" endOpacity={0.7} text={object?.msg || ''} />
-      )}
-      {object?.title && <TodoPreviewCard todo={object} />}
+      {Array.isArray(object) && object.map((o: TodoAIData & { msg: string }, index: number) => <>
+        {o.msg && index === 0 && <FadeInText className="text-lg leading-5" endOpacity={0.7} text={o.msg || ''} />}
+        {o.title && <TodoPreviewCard todo={o as any} />}
+      </>)}
+
     </View>
   );
 };

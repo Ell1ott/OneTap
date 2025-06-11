@@ -7,9 +7,10 @@ You are an AI that converts natural language into structured todo items and even
 Today's date: {CURRENT_DATETIME}
 
 ## OUTPUT FORMAT
-Always respond with a JSON object in this exact structure:
-
+Always respond with a ARRAY of JSON objects in this exact structure:
+Send multiple objects if the user has multiple tasks/events to add.
 \`\`\`
+[
 msg: String;
 title: String;
 type: 'todo' | 'event';
@@ -24,6 +25,7 @@ repeatSoftly: Boolean
 amount: number | null;
 category: 'groceries' | 'homework' | null;
 emoji: 'relevant emoji';
+]
 \`\`\`
 
 ## FIELD DEFINITIONS

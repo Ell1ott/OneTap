@@ -2,7 +2,7 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { streamObject } from 'npm:ai@4.3.16';
 import { google } from 'npm:@ai-sdk/google@1.2.19';
-import { prompt } from './prompt.ts';
+import { prompt } from '../_shared/prompt.ts';
 
 // Google provider with search grounding - using Gemini 2.0 Flash
 const model = google('gemini-2.0-flash-exp', {

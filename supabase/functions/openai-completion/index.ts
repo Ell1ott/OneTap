@@ -2,7 +2,7 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { streamObject } from 'npm:ai@4.3.16';
 import { createOpenAI } from 'npm:@ai-sdk/openai@1.3.22';
-import { prompt } from '../openai-completion/prompt.js';
+import { prompt } from '../_shared/prompt.ts';
 const openai = createOpenAI({
   apiKey: Deno.env.get('OPENAI_API_KEY'),
 });
