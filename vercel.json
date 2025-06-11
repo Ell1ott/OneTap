@@ -1,0 +1,4 @@
+{
+  "buildCommand": "expo export -p web",
+  "outputDirectory": "dist/client"
+}
