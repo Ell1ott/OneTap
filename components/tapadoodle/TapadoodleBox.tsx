@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Dimensions, LayoutChangeEvent, Pressable, View } from 'react-native';
+import { Dimensions, LayoutChangeEvent, Platform, Pressable, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -20,8 +20,35 @@ const SPRING_CONFIG = {
 };
 
 export const TapadoodleBox = () => {
-  // Get screen width
-  const screenWidth = Dimensions.get('window').width;
+
+
+  const _screenWidth = Dimensions.get('window').width;
+  const _screenHeight = Dimensions.get('window').height;
+
+  // Get screen width - for web, calculate based on CSS media query rules
+  const getActualWidth = () => {
+    if (Platform.OS === 'web') {
+      const aspectRatio = _screenWidth / _screenHeight;
+
+      // Check if we're in the desktop layout (min-aspect-ratio: 3/4)
+      if (aspectRatio >= 3 / 4) {
+        // Calculate the clamp(350px, 43vh, 430px) value
+        const viewportHeight = _screenHeight;
+        const clampedWidth = Math.max(350, Math.min(0.43 * viewportHeight, 430));
+        return clampedWidth;
+      }
+
+      // Mobile web layout - use full width
+      return _screenWidth;
+    }
+
+    // Native mobile - subtract 10px as before
+    return _screenWidth - 10;
+  };
+
+  const screenWidth = getActualWidth();
+
+
 
   const [isOpen, setIsOpen] = useState(false);
   // const [dynamicHeight, setDynamicHeight] = useState(false);
