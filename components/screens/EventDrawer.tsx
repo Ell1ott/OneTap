@@ -120,10 +120,10 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
 });
 
 export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Date) => void }) {
-  const [calenderOpen, setCalenderOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   useEffect(() => {
-    console.log(calenderOpen);
-  }, [calenderOpen]);
+    console.log(calendarOpen);
+  }, [calendarOpen]);
   return (
     <View className="mb-6">
       <View className="mb-4 flex-row items-center">
@@ -134,10 +134,10 @@ export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Da
       <View className="mb-2 flex-row space-x-3">
         {/* Date */}
         <Pressable
-          onPress={() => setCalenderOpen(!calenderOpen)}
-          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${calenderOpen ? 'bg-foreground/15' : ''
+          onPress={() => setCalendarOpen(!calendarOpen)}
+          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${calendarOpen ? 'bg-foreground/15' : ''
             }`}>
-          <SelectableText pressable={false} isSelected={calenderOpen}>
+          <SelectableText pressable={false} isSelected={calendarOpen}>
             {formatDate(date as Date)}
           </SelectableText>
         </Pressable>
@@ -147,7 +147,7 @@ export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Da
           <SelectableText>{formatTime(date as Date)}</SelectableText>
         </Pressable>
       </View>
-      {calenderOpen && <Calendar date={date} setDate={setDate} />}
+      {calendarOpen && <Calendar date={date} setDate={setDate} />}
     </View>
   );
 }
