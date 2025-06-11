@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
-import AppText from 'components/base/AppText';
+import AppText, { fontStyle } from 'components/base/AppText';
 import FadeInText from 'components/base/FadeInText';
 import { useApiKey } from '../../hooks/useApiKey';
 import { useApiKeyStore } from 'stores/apiKeyStore';
 import * as Haptics from 'expo-haptics';
+import { TextInput } from 'react-native-gesture-handler';
+import { View } from 'react-native';
+import { StyledInput } from 'components/base/StyledInput';
 interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
@@ -28,12 +31,14 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
 
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
+  const [textInput, setTextInput] = useState<string>('');
+
   // Connect to Deepgram when recording starts, disconnect when it stops
   useEffect(() => {
     if (!apiKey) return;
 
     // Only open connection when recording starts
-    if (isRecording && !socket) {
+    if (isRecording && !socket && textInput === '') {
       console.log('Initializing Deepgram connection');
       setConnectionStatus('Connecting to Deepgram...');
 
@@ -150,6 +155,15 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
     }
   }, [isFinished]);
 
+  useEffect(() => {
+    if (textInput && textInput !== '') {
+      socket?.finish();
+      setSocket(null);
+      setIsConnected(false);
+      setConnectionStatus('Idle');
+    }
+  }, [textInput]);
+
   // const exampleTexts = "Hey, I really wanna talk more with Tim. I would optimally call him every 5 days".split(' ');
   // const i = useRef<number>(0);
   // useEffect(() => {
@@ -166,7 +180,18 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       text={getCompleteTranscript()}
       splitMode="words"
       className={`text-lg ${textClassName}`}
-      fallbackContent={<AppText className="text-foreground/40">Go ahead, I'm listening...</AppText>}
+      fallbackContent={
+        <TextInput
+          style={fontStyle}
+          value={textInput}
+          onChangeText={setTextInput}
+          placeholder="Go ahead, I'm listening..."
+          className={`text-lg placeholder:text-foreground/40 outline-none ${textClassName}`}
+          onSubmitEditing={() => {
+            finishCallback?.(textInput);
+          }}
+        ></TextInput>
+      }
     />
   );
 };

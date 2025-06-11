@@ -92,30 +92,32 @@ export const FadeInText: React.FC<FadeInTextProps> = ({
 
   const textSegments = splitText(currentText);
 
+  if (textSegments.length === 0) {
+    return fallbackContent;
+  }
+
   return (
     <Text ref={textRef} onLayout={onLayout} className={className}>
-      {textSegments.length === 0
-        ? fallbackContent
-        : textSegments.map((segment, index) => {
-            const segmentKey = `segment-${index}-${segment}`;
-            const animValue = getAnimationValue(segmentKey);
+      {textSegments.map((segment, index) => {
+        const segmentKey = `segment-${index}-${segment}`;
+        const animValue = getAnimationValue(segmentKey);
 
-            // Use color interpolation for fade-in effect
-            const textColor = animValue.interpolate({
-              inputRange: [0, 1],
-              outputRange: [`rgba(${foreground},0)`, `rgba(${foreground},${endOpacity})`],
-            });
+        // Use color interpolation for fade-in effect
+        const textColor = animValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [`rgba(${foreground},0)`, `rgba(${foreground},${endOpacity})`],
+        });
 
-            const separator = splitMode === 'characters' ? '' : ' ';
-            const isLast = index === textSegments.length - 1;
+        const separator = splitMode === 'characters' ? '' : ' ';
+        const isLast = index === textSegments.length - 1;
 
-            return (
-              <Animated.Text key={segmentKey} style={{ color: textColor }}>
-                {segment}
-                {!isLast ? separator : ''}
-              </Animated.Text>
-            );
-          })}
+        return (
+          <Animated.Text key={segmentKey} style={{ color: textColor }}>
+            {segment}
+            {!isLast ? separator : ''}
+          </Animated.Text>
+        );
+      })}
     </Text>
   );
 };
