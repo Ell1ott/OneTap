@@ -73,7 +73,7 @@ html, body, #root {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: hsl(var(--color-background));
+    background-color: hsl(var(--color-foreground));
   }
 
   #root > div {
