@@ -36,7 +36,7 @@ const formatTime = (date: Date) => {
 
 const SelectableText = ({
   children,
-  onPress = () => {},
+  onPress = () => { },
   isSelected = false,
   pressable = true,
 }: {
@@ -48,13 +48,11 @@ const SelectableText = ({
   <Pressable
     disabled={!pressable}
     onPress={onPress}
-    className={`h-[2rem] flex-1 items-center justify-center rounded-full px-4 ${
-      isSelected && pressable ? 'bg-card' : 'bg-transparent'
-    }`}>
-    <AppText
-      className={`text-center font-medium ${
-        isSelected ? 'text-foreground' : 'text-foregroundMuted'
+    className={`h-[2rem] flex-1 items-center justify-center rounded-full px-4 ${isSelected && pressable ? 'bg-card' : 'bg-transparent'
       }`}>
+    <AppText
+      className={`text-center font-medium ${isSelected ? 'text-foreground' : 'text-foregroundMuted'
+        }`}>
       {children}
     </AppText>
   </Pressable>
@@ -92,9 +90,8 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
             </SelectableText>
             <SelectableText onPress={() => setActiveTab('Todo')} isSelected={activeTab === 'Todo'}>
               <AppText
-                className={`text-center font-medium ${
-                  activeTab === 'Todo' ? 'text-foreground' : 'text-foregroundMuted'
-                }`}>
+                className={`text-center font-medium ${activeTab === 'Todo' ? 'text-foreground' : 'text-foregroundMuted'
+                  }`}>
                 Todo
               </AppText>
             </SelectableText>
@@ -138,9 +135,8 @@ export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Da
         {/* Date */}
         <Pressable
           onPress={() => setCalenderOpen(!calenderOpen)}
-          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${
-            calenderOpen ? 'bg-foreground/15' : ''
-          }`}>
+          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${calenderOpen ? 'bg-foreground/15' : ''
+            }`}>
           <SelectableText pressable={false} isSelected={calenderOpen}>
             {formatDate(date as Date)}
           </SelectableText>
@@ -162,17 +158,13 @@ export function Calendar({ date, setDate }: { date: DateType; setDate: (date: Da
 
   return (
     <DateTimePicker
+      timePicker={true}
       mode="single"
       date={date}
       onChange={({ date: newDate }) =>
         setDate(
           new Date(
-            (newDate as Date).setHours(
-              (date as Date).getHours(),
-              (date as Date).getMinutes(),
-              (date as Date).getSeconds(),
-              (date as Date).getMilliseconds()
-            )
+            (newDate as Date)
           )
         )
       }
@@ -191,17 +183,17 @@ export function Calendar({ date, setDate }: { date: DateType; setDate: (date: Da
         today_label: 'text-blue-500',
       }}
       containerHeight={250}
-      // styles={{
-      //   day: {
-      //     flex: 'none',
-      //     aspectRatio: 1,
-      //   },
-      //   day_cell: {
-      //     flex: 'none',
-      //     aspectRatio: 1,
-      //   },
+    // styles={{
+    //   day: {
+    //     flex: 'none',
+    //     aspectRatio: 1,
+    //   },
+    //   day_cell: {
+    //     flex: 'none',
+    //     aspectRatio: 1,
+    //   },
 
-      // }}
+    // }}
     />
   );
 }
