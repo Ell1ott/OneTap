@@ -2,7 +2,7 @@
   "expo": {
     "name": "OneTap",
     "description": "Speak once. It remembers, connects, and resurfaces what matters. Right on time.",
-    "slug": "onetap",
+    "slug": "OneTap",
     "version": "0.0.1",
     "scheme": "onetap",
     "web": {
