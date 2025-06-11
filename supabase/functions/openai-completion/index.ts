@@ -2,21 +2,13 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { streamObject } from 'npm:ai@4.3.16';
 import { createOpenAI } from 'npm:@ai-sdk/openai@1.3.22';
-
+import { prompt } from './prompt.ts';
 const openai = createOpenAI({
   apiKey: Deno.env.get('OPENAI_API_KEY'),
 });
 
 // Load the AI prompt from the markdown file
-async function loadAIPrompt(): Promise<string> {
-  try {
-    const promptPath = new URL('./prompt.md', import.meta.url);
-    return await Deno.readTextFile(promptPath);
-  } catch (error) {
-    console.error('Failed to load prompt file:', error);
-    throw new Error('Could not load AI prompt');
-  }
-}
+
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -30,19 +22,19 @@ Deno.serve(async (req) => {
   }
   console.log('getting input');
   console.log(req);
-  const { input } = await req.json();
+  const { input, currentDate } = await req.json();
   console.log(input);
 
   // Inject current date/time context
-  const now = new Date();
-  const currentDateTime = now.toLocaleString('en-US', {
+  const now = new Date(currentDate);
+  const formattedDate = now.toLocaleString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  const contextualizedPrompt = AIPrompt.replace('{CURRENT_DATETIME}', currentDateTime);
+  const contextualizedPrompt = prompt.replace('{CURRENT_DATETIME}', currentDateTime);
   const ObjectStream = streamObject({
     model: openai('gpt-4.1-mini'),
     temperature: 1.5,

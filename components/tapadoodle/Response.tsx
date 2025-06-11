@@ -54,18 +54,18 @@ export const Response = ({ transcript }: { transcript: string }) => {
 
     const start = todo.start
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.start) ? todo.start[0] : todo.start
-        )?.toDictionary()
+        Array.isArray(todo.start) ? todo.start[0] : todo.start
+      )?.toDictionary()
       : undefined;
     const end = todo.due
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.due) ? todo.due[0] : todo.due
-        )?.toDictionary()
+        Array.isArray(todo.due) ? todo.due[0] : todo.due
+      )?.toDictionary()
       : undefined;
     const remind_at = todo.remindAt
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt
-        )?.toDictionary()
+        Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt
+      )?.toDictionary()
       : undefined;
 
     const r: TablesInsert<'todos'> = {
@@ -117,7 +117,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
   const object = _object as any;
 
   useEffect(() => {
-    submit({ input: transcript });
+    submit({ input: transcript, currentDate: +new Date() });
   }, []);
 
   useEffect(() => {
