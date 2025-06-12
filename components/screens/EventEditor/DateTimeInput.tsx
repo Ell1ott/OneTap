@@ -4,6 +4,29 @@ import { useState } from 'react';
 import { Calendar as CalendarIcon, CalendarPlus } from 'lucide-react-native';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
+import { SelectableText } from './SelectableText';
+const formatDate = (date: Date) => {
+    if (date.getFullYear() === new Date().getFullYear()) {
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            weekday: 'short',
+        });
+    }
+    return date.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    });
+};
+
+const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+    });
+};
 
 export function DateTime({ startDate, endDate, setStartDate, setEndDate }: { startDate: DateType; endDate: DateType | undefined; setStartDate: (date: Date) => void; setEndDate: (date: Date) => void }) {
     const [currentView, setCurrentView] = useState<{ view: 'day' | 'month' | 'year' | 'time' | undefined, index: number | undefined }>({ view: undefined, index: undefined });

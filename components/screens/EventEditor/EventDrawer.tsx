@@ -14,28 +14,6 @@ import { TypeSelector } from './TypeInput';
 
 export type TabType = 'Event' | 'Todo';
 
-const formatDate = (date: Date) => {
-  if (date.getFullYear() === new Date().getFullYear()) {
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      weekday: 'short',
-    });
-  }
-  return date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-};
-
-const formatTime = (date: Date) => {
-  return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-};
 export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id: string }) => {
   const event$ = events$[id];
   const [title, setTitle] = useState(event$.title);
