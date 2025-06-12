@@ -1,4 +1,4 @@
-import { EventDrawer } from 'components/screens/EventEditor/EventDrawer/EventDrawer';
+import { EventDrawer } from 'components/screens/EventEditor/EventDrawer';
 import { router, useLocalSearchParams } from 'expo-router';
 import { events$ } from 'utils/supabase/SupaLegend';
 import { Event } from 'components/Todos/classes/Event';
