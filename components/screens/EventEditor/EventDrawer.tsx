@@ -1,7 +1,7 @@
 import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
 import { View, Pressable, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import { Calendar as CalendarIcon, CalendarPlus } from 'lucide-react-native';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
@@ -10,8 +10,9 @@ import { observer } from '@legendapp/state/react';
 import { events$ } from 'utils/supabase/SupaLegend';
 import { SelectableText } from './SelectableText';
 import { DateTime } from './DateTimeInput';
+import { TypeSelector } from './TypeInput';
 
-type TabType = 'Event' | 'Todo';
+export type TabType = 'Event' | 'Todo';
 
 const formatDate = (date: Date) => {
   if (date.getFullYear() === new Date().getFullYear()) {
@@ -41,6 +42,8 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
   const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
 
+  setActiveTab('Event')
+
   const startDate = new Date(event$.start[0].date.get() as string);
   const endDateString = event$.end[0].date.get() as string | undefined;
   const endDate = endDateString ? new Date(endDateString) : undefined;
@@ -60,24 +63,7 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
             placeholder="Event Title"
           />
         </View>
-
-        {/* Toggle Tabs */}
-        <View className="mb-6">
-          <View className="flex-row rounded-full bg-background p-1.5">
-            <SelectableText
-              onPress={() => setActiveTab('Event')}
-              isSelected={activeTab === 'Event'}>
-              Event
-            </SelectableText>
-            <SelectableText onPress={() => setActiveTab('Todo')} isSelected={activeTab === 'Todo'}>
-              <AppText
-                className={`text-center font-medium ${activeTab === 'Todo' ? 'text-foreground' : 'text-foregroundMuted'
-                  }`}>
-                Todo
-              </AppText>
-            </SelectableText>
-          </View>
-        </View>
+        <TypeSelector activeTab={activeTab} setActiveTab={(a: TabType) => { setActiveTab(a) }}></TypeSelector>
         <DateTime
           startDate={startDate}
           endDate={endDate}
@@ -102,3 +88,4 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
     </Drawer>
   );
 });
+
