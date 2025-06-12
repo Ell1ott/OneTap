@@ -86,7 +86,7 @@ export default function Drawer({
         event.velocityY > 2000;
 
       if (shouldGoBack) {
-        closingAnimation(event.velocityY);
+        runOnJS(closingAnimation)(event.velocityY);
       } else {
         if (translateY.value > topMargin || !scrollEnabled) {
           translateY.value = withSpring(topMargin, {
