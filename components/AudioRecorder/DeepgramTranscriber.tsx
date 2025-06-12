@@ -183,11 +183,10 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
           value={textInput}
           onChangeText={setTextInput}
           placeholder="Go ahead, I'm listening..."
-          className={`text-lg placeholder:text-foreground/40 outline-none ${textClassName}`}
+          className={`text-lg outline-none placeholder:text-foreground/40 ${textClassName}`}
           onSubmitEditing={() => {
             finishCallback?.(textInput);
-          }}
-        ></TextInput>
+          }}></TextInput>
       }
     />
   );

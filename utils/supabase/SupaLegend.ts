@@ -15,10 +15,7 @@ const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
   {
     auth: {
-      
-        ...(Platform.OS !== 'web'
-          ? { storage: AsyncStorage }
-          : { }),
+      ...(Platform.OS !== 'web' ? { storage: AsyncStorage } : {}),
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: false,

@@ -36,7 +36,7 @@ const formatTime = (date: Date) => {
 
 const SelectableText = ({
   children,
-  onPress = () => { },
+  onPress = () => {},
   isSelected = false,
   pressable = true,
 }: {
@@ -48,11 +48,13 @@ const SelectableText = ({
   <Pressable
     disabled={!pressable}
     onPress={onPress}
-    className={`h-[2rem] flex-1 items-center justify-center rounded-full px-4 ${isSelected && pressable ? 'bg-card' : 'bg-transparent'
-      }`}>
+    className={`h-[2rem] flex-1 items-center justify-center rounded-full px-4 ${
+      isSelected && pressable ? 'bg-card' : 'bg-transparent'
+    }`}>
     <AppText
-      className={`text-center font-medium ${isSelected ? 'text-foreground' : 'text-foregroundMuted'
-        }`}>
+      className={`text-center font-medium ${
+        isSelected ? 'text-foreground' : 'text-foregroundMuted'
+      }`}>
       {children}
     </AppText>
   </Pressable>
@@ -94,8 +96,9 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
             </SelectableText>
             <SelectableText onPress={() => setActiveTab('Todo')} isSelected={activeTab === 'Todo'}>
               <AppText
-                className={`text-center font-medium ${activeTab === 'Todo' ? 'text-foreground' : 'text-foregroundMuted'
-                  }`}>
+                className={`text-center font-medium ${
+                  activeTab === 'Todo' ? 'text-foreground' : 'text-foregroundMuted'
+                }`}>
                 Todo
               </AppText>
             </SelectableText>
@@ -126,27 +129,68 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
   );
 });
 
-export function DateTime({ startDate, endDate, setStartDate, setEndDate }: { startDate: DateType; endDate: DateType | undefined; setStartDate: (date: Date) => void; setEndDate: (date: Date) => void }) {
-  const [currentView, setCurrentView] = useState<{ view: 'day' | 'month' | 'year' | 'time' | undefined, index: number | undefined }>({ view: undefined, index: undefined });
+export function DateTime({
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+}: {
+  startDate: DateType;
+  endDate: DateType | undefined;
+  setStartDate: (date: Date) => void;
+  setEndDate: (date: Date) => void;
+}) {
+  const [currentView, setCurrentView] = useState<{
+    view: 'day' | 'month' | 'year' | 'time' | undefined;
+    index: number | undefined;
+  }>({ view: undefined, index: undefined });
   return (
     <View className="mb-6">
       <View className="mb-4 flex-row items-center">
         <Icon icon={CalendarIcon} size={20} className="mr-2 text-foregroundMuted" />
         <AppText className="text-base font-medium text-foregroundMuted">Date & Time</AppText>
       </View>
-      <DateTimeInput date={startDate} setDate={setStartDate} showAddDateButton={endDate === undefined} currentView={currentView.index === 0 ? currentView.view : undefined} onAddDate={() => {
-        setEndDate(startDate as Date);
-      }} setCurrentView={(view) => {
-        setCurrentView({ view, index: 0 });
-      }} />
-      {endDate && <DateTimeInput date={endDate} setDate={setEndDate} currentView={currentView.index === 1 ? currentView.view : undefined} setCurrentView={(view) => {
-        setCurrentView({ view, index: 1 });
-      }} />}
+      <DateTimeInput
+        date={startDate}
+        setDate={setStartDate}
+        showAddDateButton={endDate === undefined}
+        currentView={currentView.index === 0 ? currentView.view : undefined}
+        onAddDate={() => {
+          setEndDate(startDate as Date);
+        }}
+        setCurrentView={(view) => {
+          setCurrentView({ view, index: 0 });
+        }}
+      />
+      {endDate && (
+        <DateTimeInput
+          date={endDate}
+          setDate={setEndDate}
+          currentView={currentView.index === 1 ? currentView.view : undefined}
+          setCurrentView={(view) => {
+            setCurrentView({ view, index: 1 });
+          }}
+        />
+      )}
     </View>
   );
 }
 
-const DateTimeInput = ({ date, setDate, currentView, setCurrentView, showAddDateButton = false, onAddDate = () => { } }: { date: DateType; setDate: (date: Date) => void, currentView?: 'day' | 'month' | 'year' | 'time', setCurrentView: (view: 'day' | 'month' | 'year' | 'time' | undefined) => void, showAddDateButton?: boolean, onAddDate?: () => void }) => {
+const DateTimeInput = ({
+  date,
+  setDate,
+  currentView,
+  setCurrentView,
+  showAddDateButton = false,
+  onAddDate = () => {},
+}: {
+  date: DateType;
+  setDate: (date: Date) => void;
+  currentView?: 'day' | 'month' | 'year' | 'time';
+  setCurrentView: (view: 'day' | 'month' | 'year' | 'time' | undefined) => void;
+  showAddDateButton?: boolean;
+  onAddDate?: () => void;
+}) => {
   return (
     <View>
       <View className="mb-2.5 flex-row space-x-2.5">
@@ -159,35 +203,52 @@ const DateTimeInput = ({ date, setDate, currentView, setCurrentView, showAddDate
               setCurrentView('day');
             }
           }}
-          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${currentView === 'day' ? 'bg-foreground/15' : ''
-            }`}>
+          className={`flex-[1.5] flex-row rounded-full bg-background p-1.5 ${
+            currentView === 'day' ? 'bg-foreground/15' : ''
+          }`}>
           <SelectableText pressable={false} isSelected={currentView === 'day'}>
             {formatDate(date as Date)}
           </SelectableText>
         </Pressable>
         {/* Time */}
-        <Pressable onPress={() => {
-          if (currentView === 'time') {
-            setCurrentView(undefined);
-          } else {
-            setCurrentView('time');
-          }
-        }} className="flex-[1] flex-row rounded-full bg-background p-1.5">
-          <SelectableText pressable={false} isSelected={currentView === 'time'}>{formatTime(date as Date)}</SelectableText>
+        <Pressable
+          onPress={() => {
+            if (currentView === 'time') {
+              setCurrentView(undefined);
+            } else {
+              setCurrentView('time');
+            }
+          }}
+          className="flex-[1] flex-row rounded-full bg-background p-1.5">
+          <SelectableText pressable={false} isSelected={currentView === 'time'}>
+            {formatTime(date as Date)}
+          </SelectableText>
         </Pressable>
-        {showAddDateButton && <TouchableOpacity className='aspect-square rounded-full bg-background items-center justify-center' onPress={() => {
-          onAddDate?.();
-        }}>
-          <Icon icon={CalendarPlus} className='h-5 color-foregroundMuted' />
-        </TouchableOpacity>}
+        {showAddDateButton && (
+          <TouchableOpacity
+            className="aspect-square items-center justify-center rounded-full bg-background"
+            onPress={() => {
+              onAddDate?.();
+            }}>
+            <Icon icon={CalendarPlus} className="h-5 color-foregroundMuted" />
+          </TouchableOpacity>
+        )}
       </View>
       {currentView === 'day' && <Calendar date={date} setDate={setDate} currentView={'day'} />}
       {currentView === 'time' && <Calendar date={date} setDate={setDate} currentView={'time'} />}
     </View>
   );
-}
+};
 
-export function Calendar({ date, setDate, currentView }: { date: DateType; setDate: (date: Date) => void, currentView: 'day' | 'month' | 'year' | 'time' }) {
+export function Calendar({
+  date,
+  setDate,
+  currentView,
+}: {
+  date: DateType;
+  setDate: (date: Date) => void;
+  currentView: 'day' | 'month' | 'year' | 'time';
+}) {
   const defaultClassNames = useDefaultClassNames();
   const [selected, setSelected] = useState<DateType>();
 
@@ -195,16 +256,9 @@ export function Calendar({ date, setDate, currentView }: { date: DateType; setDa
     <DateTimePicker
       timePicker={true}
       initialView={currentView}
-
       mode="single"
       date={date}
-      onChange={({ date: newDate }) =>
-        setDate(
-          new Date(
-            (newDate as Date)
-          )
-        )
-      }
+      onChange={({ date: newDate }) => setDate(new Date(newDate as Date))}
       classNames={{
         ...defaultClassNames,
         selected: 'bg-blue-500 border-blue-500',
@@ -220,17 +274,17 @@ export function Calendar({ date, setDate, currentView }: { date: DateType; setDa
         today_label: 'text-blue-500',
       }}
       containerHeight={250}
-    // styles={{
-    //   day: {
-    //     flex: 'none',
-    //     aspectRatio: 1,
-    //   },
-    //   day_cell: {
-    //     flex: 'none',
-    //     aspectRatio: 1,
-    //   },
+      // styles={{
+      //   day: {
+      //     flex: 'none',
+      //     aspectRatio: 1,
+      //   },
+      //   day_cell: {
+      //     flex: 'none',
+      //     aspectRatio: 1,
+      //   },
 
-    // }}
+      // }}
     />
   );
 }
