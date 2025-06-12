@@ -1,14 +1,11 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
-import AppText, { fontStyle } from 'components/base/AppText';
-import FadeInText from 'components/base/FadeInText';
-import { useApiKey } from '../../hooks/useApiKey';
+import { fontStyle } from 'components/base/AppText';
+import { FadeInText } from 'components/base/FadeInText';
 import { useApiKeyStore } from 'stores/apiKeyStore';
 import * as Haptics from 'expo-haptics';
 import { TextInput } from 'react-native-gesture-handler';
-import { View } from 'react-native';
-import { StyledInput } from 'components/base/StyledInput';
 interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
