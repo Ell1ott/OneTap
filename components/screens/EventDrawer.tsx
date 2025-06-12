@@ -1,8 +1,8 @@
 import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
-import { View, Pressable } from 'react-native';
+import { View, Pressable, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Calendar as CalendarIcon } from 'lucide-react-native';
+import { Calendar as CalendarIcon, CalendarPlus } from 'lucide-react-native';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
 import { TextInput } from 'react-native-gesture-handler';
@@ -64,6 +64,10 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
   const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
 
+  const startDate = new Date(event$.start[0].date.get() as string);
+  const endDateString = event$.end[0].date.get() as string | undefined;
+  const endDate = endDateString ? new Date(endDateString) : undefined;
+
   return (
     <Drawer isOpen={true} onClose={onClose} scrollEnabled={false} className="bg-card">
       <View className="flex-1">
@@ -98,11 +102,14 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
           </View>
         </View>
         <DateTime
-          date={new Date(event$.start[0].date.get() as string)}
-          setDate={(date) => {
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={(date) => {
             console.log('ddd', date);
-
             event$.start[0].date.set(new Date(date).toISOString());
+          }}
+          setEndDate={(date) => {
+            event$.end[0].date.set(new Date(date).toISOString());
           }}
         />
 
@@ -119,18 +126,30 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
   );
 });
 
-export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Date) => void }) {
-
-  const [currentView, setCurrentView] = useState<'day' | 'month' | 'year' | 'time' | undefined>('day');
-
+export function DateTime({ startDate, endDate, setStartDate, setEndDate }: { startDate: DateType; endDate: DateType | undefined; setStartDate: (date: Date) => void; setEndDate: (date: Date) => void }) {
+  const [currentView, setCurrentView] = useState<{ view: 'day' | 'month' | 'year' | 'time' | undefined, index: number | undefined }>({ view: undefined, index: undefined });
   return (
     <View className="mb-6">
       <View className="mb-4 flex-row items-center">
         <Icon icon={CalendarIcon} size={20} className="mr-2 text-foregroundMuted" />
         <AppText className="text-base font-medium text-foregroundMuted">Date & Time</AppText>
       </View>
+      <DateTimeInput date={startDate} setDate={setStartDate} showAddDateButton={endDate === undefined} currentView={currentView.index === 0 ? currentView.view : undefined} onAddDate={() => {
+        setEndDate(startDate as Date);
+      }} setCurrentView={(view) => {
+        setCurrentView({ view, index: 0 });
+      }} />
+      {endDate && <DateTimeInput date={endDate} setDate={setEndDate} currentView={currentView.index === 1 ? currentView.view : undefined} setCurrentView={(view) => {
+        setCurrentView({ view, index: 1 });
+      }} />}
+    </View>
+  );
+}
 
-      <View className="mb-2 flex-row space-x-3">
+const DateTimeInput = ({ date, setDate, currentView, setCurrentView, showAddDateButton = false, onAddDate = () => { } }: { date: DateType; setDate: (date: Date) => void, currentView?: 'day' | 'month' | 'year' | 'time', setCurrentView: (view: 'day' | 'month' | 'year' | 'time' | undefined) => void, showAddDateButton?: boolean, onAddDate?: () => void }) => {
+  return (
+    <View>
+      <View className="mb-2.5 flex-row space-x-2.5">
         {/* Date */}
         <Pressable
           onPress={() => {
@@ -146,7 +165,6 @@ export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Da
             {formatDate(date as Date)}
           </SelectableText>
         </Pressable>
-
         {/* Time */}
         <Pressable onPress={() => {
           if (currentView === 'time') {
@@ -157,8 +175,12 @@ export function DateTime({ date, setDate }: { date: DateType; setDate: (date: Da
         }} className="flex-[1] flex-row rounded-full bg-background p-1.5">
           <SelectableText pressable={false} isSelected={currentView === 'time'}>{formatTime(date as Date)}</SelectableText>
         </Pressable>
+        {showAddDateButton && <TouchableOpacity className='aspect-square rounded-full bg-background items-center justify-center' onPress={() => {
+          onAddDate?.();
+        }}>
+          <Icon icon={CalendarPlus} className='h-5 color-foregroundMuted' />
+        </TouchableOpacity>}
       </View>
-
       {currentView === 'day' && <Calendar date={date} setDate={setDate} currentView={'day'} />}
       {currentView === 'time' && <Calendar date={date} setDate={setDate} currentView={'time'} />}
     </View>
