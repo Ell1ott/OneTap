@@ -70,18 +70,18 @@ export const Response = ({ transcript }: { transcript: string }) => {
 
     const start = todo.start
       ? HumanDate.fromNaturalString(
-        Array.isArray(todo.start) ? todo.start[0] : todo.start
-      )?.toDictionary()
+          Array.isArray(todo.start) ? todo.start[0] : todo.start
+        )?.toDictionary()
       : undefined;
     const end = todo.due
       ? HumanDate.fromNaturalString(
-        Array.isArray(todo.due) ? todo.due[0] : todo.due
-      )?.toDictionary()
+          Array.isArray(todo.due) ? todo.due[0] : todo.due
+        )?.toDictionary()
       : undefined;
     const remind_at = todo.remindAt
       ? HumanDate.fromNaturalString(
-        Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt
-      )?.toDictionary()
+          Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt
+        )?.toDictionary()
       : undefined;
 
     const r: TablesInsert<'todos'> = {
@@ -135,13 +135,12 @@ export const Response = ({ transcript }: { transcript: string }) => {
   useEffect(() => {
     submit({
       input: transcript,
-      currentDate:
-        new Date().toLocaleString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
+      currentDate: new Date().toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
     });
   }, []);
 
@@ -151,11 +150,15 @@ export const Response = ({ transcript }: { transcript: string }) => {
 
   return (
     <View>
-      {Array.isArray(object) && object.map((o: TodoAIData & { msg: string }, index: number) => <>
-        {o.msg && index === 0 && <FadeInText className="text-lg leading-5" endOpacity={0.7} text={o.msg || ''} />}
-        {o.title && <TodoPreviewCard todo={o as any} />}
-      </>)}
-
+      {Array.isArray(object) &&
+        object.map((o: TodoAIData & { msg: string }, index: number) => (
+          <>
+            {o.msg && index === 0 && (
+              <FadeInText className="text-lg leading-5" endOpacity={0.7} text={o.msg || ''} />
+            )}
+            {o.title && <TodoPreviewCard todo={o as any} />}
+          </>
+        ))}
     </View>
   );
 };

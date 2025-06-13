@@ -6,7 +6,6 @@ export default function Event() {
   return (
     <CategoryDrawer
       category={category as string}
-
       onClose={() => {
         router.back();
       }}

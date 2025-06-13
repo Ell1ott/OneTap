@@ -91,9 +91,7 @@
       "image": "./assets/splash.png",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "dk.elliottf.onetap",
@@ -108,13 +106,7 @@
     },
     "android": {
       "icon": "./assets/icon.png",
-      "permissions": [
-        "android.permission.VIBRATE"
-      ],
-      "blockedPermissions": [
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_MICROPHONE"
-      ],
+      "permissions": ["android.permission.VIBRATE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/adaptive-icon-monochrome.png"

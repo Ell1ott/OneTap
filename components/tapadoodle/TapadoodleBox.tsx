@@ -20,8 +20,6 @@ const SPRING_CONFIG = {
 };
 
 export const TapadoodleBox = () => {
-
-
   const _screenWidth = Dimensions.get('window').width;
   const _screenHeight = Dimensions.get('window').height;
 
@@ -47,8 +45,6 @@ export const TapadoodleBox = () => {
   };
 
   const screenWidth = getActualWidth();
-
-
 
   const [isOpen, setIsOpen] = useState(false);
   // const [dynamicHeight, setDynamicHeight] = useState(false);

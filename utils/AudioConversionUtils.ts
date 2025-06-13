@@ -21,19 +21,19 @@ export function calculateRMSVolume(samples: Int16Array) {
   for (let i = 0; i < samples.length; i++) {
     sumOfSquares += samples[i] * samples[i];
   }
-  
+
   // Calculate the mean of the squares
   const meanSquare = sumOfSquares / samples.length;
-  
+
   // Take the square root to get the RMS value
   const rms = Math.sqrt(meanSquare);
-  
+
   return rms;
 }
 
 export function calculateNormalizedRMSVolume(samples: Int16Array) {
   const rms = calculateRMSVolume(samples);
-  
+
   // Normalize to 0-1 range
   // 32768 is the max absolute value for a 16-bit signed integer
   return rms / 32768;
