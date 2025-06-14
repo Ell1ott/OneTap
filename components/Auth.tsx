@@ -145,18 +145,18 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
             <AppText className="text-3xl font-bold mb-4">Log in or create an account</AppText>
 
             <AppText className="text-lg font-bold text-foregroundMuted ">First name</AppText>
-            <View className='flex-row gap-2 border-b mb-2' >
-                <Icon icon={User} size={20} className={firstName ? 'text-foreground' : 'text-foreground/30'} />
+            <View className='flex-row gap-2 border-b mb-2 items-center' >
+                <Icon icon={User} size={20} className={firstName ? 'h-5 text-foreground' : 'h-5 text-foreground/30'} />
                 <TextInput placeholder='First name' className="outline-none placeholder:text-foreground/40 text-xl py-2.5 -mt-1" onChangeText={(text) => setFirstName(text)} value={firstName} />
             </View>
             <AppText className="text-lg font-bold text-foregroundMuted ">Email</AppText>
-            <View className='flex-row gap-2 border-b mb-2' >
-                <Icon icon={Mail} size={20} className={email ? 'text-foreground' : 'text-foreground/30'} />
+            <View className='flex-row gap-2 border-b mb-2 items-center' >
+                <Icon icon={Mail} size={20} className={email ? 'h-5 text-foreground' : 'h-5 text-foreground/30'} />
                 <TextInput placeholder='Email' className="outline-none placeholder:text-foreground/40 text-xl py-2.5 -mt-1" onChangeText={(text) => setEmail(text)} value={email} />
             </View>
             <AppText className="text-lg font-bold text-foregroundMuted">Password</AppText>
-            <View className='flex-row gap-2 border-b mb-2' >
-                <Icon icon={Lock} size={20} className={password ? 'text-foreground' : 'text-foreground/30'} />
+            <View className='flex-row gap-2 border-b mb-2 items-center' >
+                <Icon icon={Lock} size={20} className={password ? 'h-5 text-foreground' : 'h-5 text-foreground/30'} />
                 <TextInput secureTextEntry={true} placeholder='Password' className="outline-none placeholder:text-foreground/40 text-xl py-2.5 -mt-1" onChangeText={(text) => setPassword(text)} value={password} />
             </View>
 
