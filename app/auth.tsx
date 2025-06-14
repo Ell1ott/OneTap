@@ -1,5 +1,5 @@
 import Drawer from "components/base/Drawer";
-import Auth from "utils/supabase/Auth";
+import Auth from "components/Auth"
 import { router } from "expo-router";
 import { useState } from "react";
 
