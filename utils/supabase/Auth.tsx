@@ -4,6 +4,7 @@ import { addDeafultTasks, categories$, events$, supabase, todos$, user$ } from '
 import { Button, Input } from '@rneui/themed';
 import { toast } from 'sonner-native';
 import { AuthTokenResponsePassword, User } from '@supabase/supabase-js';
+import AppText from 'components/base/AppText';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -139,6 +140,7 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
 
     return (
         <View>
+            <AppText className="text-3xl font-bold">Please log in or create an Account</AppText>
             <View style={[styles.verticallySpaced, styles.mt20]}>
                 <Input
                     label="First Name"

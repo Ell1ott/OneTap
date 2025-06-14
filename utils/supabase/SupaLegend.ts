@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Database, Tables, TablesInsert } from './database.types';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { Platform } from 'react-native';
+import { router } from 'expo-router';
 
 export const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -163,6 +164,10 @@ export const user$ = observable<Tables<'users'> | null>(null);
 
 supabase.auth.onAuthStateChange(async (event, session) => {
   console.log('sb auth change', event, session);
+  if (event === 'INITIAL_SESSION' && !session) {
+    console.log('pushing to auth');
+    router.push('/auth');
+  }
   setTimeout(async () => {
     if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
       const { data, error } = await supabase

@@ -80,7 +80,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
     <>
       <View className="mb-2 flex-row gap-4">
         <Animated.View style={animatedStyles} className="my-2 justify-center self-start">
-          <TapadoodleSvg width={35} height={33} opacity={currentRoute === '/' && transcriptionConnected ? 1 : 0.8} />
+          <TapadoodleSvg width={35} height={33} opacity={currentRoute === '/' && transcriptionConnected || !isOpen ? 1 : 0.8} />
         </Animated.View>
         <View className="min-h-10 flex-1 justify-center">
           <DeepgramTranscriber

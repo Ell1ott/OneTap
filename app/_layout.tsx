@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import 'react-native-gesture-handler';
@@ -10,7 +10,7 @@ import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
-import { signInAnonymously } from 'utils/supabase/SupaLegend';
+import { signInAnonymously, supabase } from 'utils/supabase/SupaLegend';
 import { v4 as uuidv4 } from 'uuid';
 export default function RootLayout() {
   console.log(uuidv4());
@@ -19,6 +19,17 @@ export default function RootLayout() {
     //   console.log(data);
     // });
   }, []);
+
+  supabase.auth.onAuthStateChange((e, s) => {
+    console.log("new sb event", e, s)
+    setTimeout(() => {
+
+      router.push("/auth")
+    }, 100);
+  })
+
+  console.log("auth", supabase.auth)
+
 
   return (
     <GestureHandlerRootView className="">
