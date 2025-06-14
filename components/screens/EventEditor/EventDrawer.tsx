@@ -19,8 +19,6 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
   const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
 
-  setActiveTab('Event')
-
   const startDate = new Date(event$.start[0].date.get() as string);
   const endDateString = event$.end[0].date.get() as string | undefined;
   const endDate = endDateString ? new Date(endDateString) : undefined;
