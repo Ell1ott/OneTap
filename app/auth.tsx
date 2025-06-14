@@ -19,7 +19,10 @@ export default function AuthScreen() {
                 router.push('/');
             }}
             isDismissable={isDismissable}
-            className="bg-card">
+            className="bg-card"
+            scrollEnabled={true}
+        >
+
             <Auth
                 closeAuthPage={() => {
                     setShouldClose(true);
