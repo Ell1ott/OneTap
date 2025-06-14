@@ -29,10 +29,11 @@ export default function RootLayout() {
     }
 
   })
-
-  if (openAuth) {
-    router.push("/auth")
-  }
+  useEffect(() => {
+    if (openAuth) {
+      router.push("/auth")
+    }
+  }, [openAuth])
 
 
   return (
