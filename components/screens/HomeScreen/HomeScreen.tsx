@@ -109,16 +109,16 @@ export const HomeScreen = observer(() => {
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>
+        <ThemeToggle />
         <TouchableOpacity
           onPress={() => {
             router.push('/auth')
           }}
-          className="mt-8 flex-row items-center justify-center rounded-lg bg-blue-500 px-6 py-3 shadow-sm"
+          className="flex-row items-center justify-center"
           activeOpacity={0.8}>
-          <Icon icon={User} size={20} color="white" />
-          <AppText className="ml-2 font-semibold text-white">Log in</AppText>
+          <Icon icon={User} size={20} className="text-foreground" />
+          <AppText className="ml-2 font-medium text-foreground">Change account</AppText>
         </TouchableOpacity>
-        <ThemeToggle />
       </ScrollView>
     </>
   );

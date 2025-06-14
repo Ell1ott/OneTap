@@ -142,7 +142,7 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
 
     return (
         <View className='flex-1'>
-            <AppText className="text-3xl font-bold mb-4">Please log in or create an Account</AppText>
+            <AppText className="text-3xl font-bold mb-4">Log in or create an account</AppText>
 
             <AppText className="text-lg font-bold text-foregroundMuted ">First name</AppText>
             <View className='flex-row gap-2 border-b mb-2' >
