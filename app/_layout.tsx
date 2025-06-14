@@ -15,9 +15,9 @@ import { v4 as uuidv4 } from 'uuid';
 export default function RootLayout() {
   console.log(uuidv4());
   useEffect(() => {
-    signInAnonymously().then((data) => {
-      console.log(data);
-    });
+    // signInAnonymously().then((data) => {
+    //   console.log(data);
+    // });
   }, []);
 
   return (
@@ -37,6 +37,7 @@ export default function RootLayout() {
             name="event"
             options={{ presentation: 'transparentModal', headerShown: false }}
           />
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

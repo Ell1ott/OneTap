@@ -10,7 +10,7 @@ import { Database, TablesInsert } from './database.types';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { Platform } from 'react-native';
 
-const supabase = createClient<Database>(
+export const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
   {

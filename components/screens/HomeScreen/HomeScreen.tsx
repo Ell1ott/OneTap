@@ -1,4 +1,4 @@
-import { View, Pressable } from 'react-native';
+import { View, Pressable, TouchableOpacity } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
@@ -24,6 +24,9 @@ import { observer } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
 import { HumanDateType } from 'components/Todos/types/HumanDate';
+import { router } from 'expo-router';
+import { User } from 'lucide-react-native';
+import { Icon } from 'components/base/LucideIcon';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -108,6 +111,15 @@ export const HomeScreen = observer(() => {
             onCategoryPress={(category) => setOpenCategory(category)}
           />
         </View>
+        <TouchableOpacity
+          onPress={() => {
+            router.push('/auth')
+          }}
+          className="mt-8 flex-row items-center justify-center rounded-lg bg-blue-500 px-6 py-3 shadow-sm"
+          activeOpacity={0.8}>
+          <Icon icon={User} size={20} color="white" />
+          <AppText className="ml-2 font-semibold text-white">Log in</AppText>
+        </TouchableOpacity>
         <ThemeToggle />
       </ScrollView>
     </>
