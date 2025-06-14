@@ -14,7 +14,7 @@ import { Gesture } from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height + 20;
-const topMargin = screenHeight * 0.13;
+const topMargin = screenHeight * 0.12;
 
 interface DrawerProps {
   isOpen: boolean;
