@@ -77,9 +77,7 @@ export const HomeScreen = observer(() => {
   console.log('tasks', todaysTasks);
   return (
     <>
-      {openCategory && (
-        <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
-      )}
+
       {/* <Todos todos$={_todos$} /> */}
 
       <ScrollView
