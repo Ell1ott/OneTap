@@ -53,19 +53,19 @@ const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
-const groceriesTasks$ = observable(() => {
+const subGreetingStats$ = observable(() => {
   const todos = todos$.get();
-  return Object.values(todos).filter(
-    (t) => t.category?.toLowerCase().includes('groceries') && t.completed?.[0] === false
-  ).length;
+  if (!todos) return { groceryCount: 0, homeworkCount: 0 };
+  return {
+    groceryCount: Object.values(todos).filter(
+      (t) => t.category?.toLowerCase().includes('groceries') && t.completed?.[0] === false
+    ).length,
+    homeworkCount: Object.values(todos).filter(
+      (t) => t.category?.toLowerCase().includes('homework') && t.completed?.[0] === false
+    ).length,
+  };
 });
 
-const homeworkTasks$ = observable(() => {
-  const todos = todos$.get();
-  return Object.values(todos).filter(
-    (t) => t.category?.toLowerCase().includes('homework') && t.completed?.[0] === false
-  ).length;
-});
 
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -85,13 +85,13 @@ export const HomeScreen = observer(() => {
   const otherTasks = otherTasks$.peek();
   const tasks: Task[] = tasks$.peek();
 
-  const homeworkTasks = tasks.filter(
-    (t: Task) => t instanceof Todo && t.r.category?.toLowerCase().includes('homework')
-  );
-
   console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
 
   if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
+
+
+  const { groceryCount, homeworkCount } = subGreetingStats$.get();
+
 
   console.log('tasks', todaysTasks);
   return (
@@ -105,10 +105,10 @@ export const HomeScreen = observer(() => {
         <View className="mb-10">
           <Greeting />
           <AppText f className="text-base leading-5 text-foregroundMuted">
-            You {homeworkTasks$.get() == 0 ? 'have no' : homeworkTasks$.get()} homework due.{' '}
-            {groceriesTasks$.get() > 1
-              ? "And it's probably time for a trip to the grocery store, as you have " + groceriesTasks$.get() + ' items on your shopping list.'
-              : groceriesTasks$.get() == 1
+            You have {homeworkCount == 0 ? 'no' : homeworkCount} assignments due.{' '}
+            {groceryCount > 1
+              ? "And it's probably time for a trip to the grocery store, as you have " + groceryCount + ' items on your shopping list.'
+              : groceryCount == 1
                 ? "Doesn't look like you need to go to the store, since you only have 1 item on your shopping list."
                 : "No need to go to the store, don't have anything on your shopping list."}
           </AppText>
