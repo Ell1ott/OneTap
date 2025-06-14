@@ -53,6 +53,20 @@ const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
+const groceriesTasks$ = observable(() => {
+  const todos = todos$.get();
+  return Object.values(todos).filter(
+    (t) => t.category?.toLowerCase().includes('groceries') && t.completed?.[0] === false
+  ).length;
+});
+
+const homeworkTasks$ = observable(() => {
+  const todos = todos$.get();
+  return Object.values(todos).filter(
+    (t) => t.category?.toLowerCase().includes('homework') && t.completed?.[0] === false
+  ).length;
+});
+
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openAddEvent, setOpenAddEvent] = useState(false);
@@ -69,6 +83,11 @@ export const HomeScreen = observer(() => {
   const todaysTasks = todayTasks$.peek();
   const priorityTasks = priorityTasks$.peek();
   const otherTasks = otherTasks$.peek();
+  const tasks: Task[] = tasks$.peek();
+
+  const homeworkTasks = tasks.filter(
+    (t: Task) => t instanceof Todo && t.r.category?.toLowerCase().includes('homework')
+  );
 
   console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
 
@@ -77,7 +96,6 @@ export const HomeScreen = observer(() => {
   console.log('tasks', todaysTasks);
   return (
     <>
-
       {/* <Todos todos$={_todos$} /> */}
 
       <ScrollView
@@ -87,8 +105,12 @@ export const HomeScreen = observer(() => {
         <View className="mb-10">
           <Greeting />
           <AppText f className="text-base leading-5 text-foregroundMuted">
-            You have 3 assignments due today. And it's probably time for a trip to the grocery
-            store, as you have 9 items on your shopping list.
+            You {homeworkTasks$.get() == 0 ? 'have no' : homeworkTasks$.get()} homework due.{' '}
+            {groceriesTasks$.get() > 1
+              ? "And it's probably time for a trip to the grocery store, as you have " + groceriesTasks$.get() + ' items on your shopping list.'
+              : groceriesTasks$.get() == 1
+                ? "Doesn't look like you need to go to the store, since you only have 1 item on your shopping list."
+                : "No need to go to the store, don't have anything on your shopping list."}
           </AppText>
         </View>
 
@@ -97,7 +119,6 @@ export const HomeScreen = observer(() => {
             title="Today"
             tasks={todaysTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
-
           />
           <TodoSection
             title="Priority"
@@ -114,7 +135,7 @@ export const HomeScreen = observer(() => {
         <ThemeToggle />
         <TouchableOpacity
           onPress={() => {
-            router.push('/auth')
+            router.push('/auth');
           }}
           className="flex-row items-center justify-center"
           activeOpacity={0.8}>
