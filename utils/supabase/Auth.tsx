@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState } from 'react-native'
-import { supabase } from './SupaLegend'
+import { StyleSheet, View, AppState } from 'react-native'
+import { categories$, events$, supabase, todos$ } from './SupaLegend'
 import { Button, Input } from '@rneui/themed'
 import { router } from 'expo-router'
+import { toast } from 'sonner-native'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -22,21 +23,53 @@ export default function Auth() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    supabase.auth.onAuthStateChange((event, session) => {
-        console.log(event, session)
-        if (event === 'INITIAL_SESSION' && session?.user.email) {
-            router.push('/')
-        }
-    })
+    // supabase.auth.onAuthStateChange((event, session) => {
+    //     console.log(event, session)
+    //     if (event === 'INITIAL_SESSION' && session?.user.email) {
+    //         router.push('/')
+    //     }
+    // })
 
     async function signInWithEmail() {
         setLoading(true)
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password,
         })
+        console.log(data)
 
-        if (error) Alert.alert(error.message)
+        console.log(error)
+
+        if (error) toast.error(error.message)
+        if (data?.user?.email && data?.user?.email !== "") {
+            router.push('/')
+            toast.info("Singed into " + data.user.email)
+            const { data: todoData, error: todoError } = await supabase.from('todos').select('*')
+            const { data: eventData, error: eventError } = await supabase.from('events').select('*')
+            const { data: categoryData, error: categoryError } = await supabase.from('categories').select('*')
+
+            const todoDict: Record<string, any> = {}
+            const eventDict: Record<string, any> = {}
+            const categoryDict: Record<string, any> = {}
+
+            todoData?.forEach((todo) => {
+                todoDict[todo.id] = todo
+            })
+            console.log(todoDict)
+            todos$.set(todoDict)
+
+            eventData?.forEach((event) => {
+                eventDict[event.id] = event
+            })
+            console.log(eventDict)
+            events$.set(eventDict)
+
+            categoryData?.forEach((category) => {
+                categoryDict[category.id] = category
+            })
+            console.log(categoryDict)
+            categories$.set(categoryDict)
+        }
         setLoading(false)
     }
 
@@ -50,8 +83,8 @@ export default function Auth() {
             password: password,
         })
 
-        if (error) Alert.alert(error.message)
-        if (!session) Alert.alert('Please check your inbox for email verification!')
+        if (error) toast.error(error.message)
+        if (!session) toast.info('Please check your inbox for email verification!')
         setLoading(false)
     }
 

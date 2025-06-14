@@ -16,7 +16,6 @@ export type TabType = 'Event' | 'Todo';
 
 export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id: string }) => {
   const event$ = events$[id];
-  const [title, setTitle] = useState(event$.title);
   const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
 
