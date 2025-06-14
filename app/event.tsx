@@ -10,7 +10,8 @@ export default function EventRoute() {
     <EventDrawer
       id={id as string}
       onClose={() => {
-        router.back();
+        if (router.canGoBack()) router.back();
+        else router.push('/');
       }}
     />
   );
