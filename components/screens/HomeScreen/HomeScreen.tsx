@@ -97,6 +97,7 @@ export const HomeScreen = observer(() => {
             title="Today"
             tasks={todaysTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
+
           />
           <TodoSection
             title="Priority"
@@ -107,6 +108,7 @@ export const HomeScreen = observer(() => {
             title="Other"
             tasks={otherTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
+            addButton
           />
         </View>
         <ThemeToggle />

@@ -13,11 +13,13 @@ interface TodoSectionProps {
   tasks: Task[];
 
   onCategoryPress: (category: string) => void;
+  addButton?: boolean;
 }
 
 export const TodoSection: React.FC<TodoSectionProps> = ({
   title,
   tasks,
+  addButton,
 
   onCategoryPress,
 }) => {
@@ -40,9 +42,11 @@ export const TodoSection: React.FC<TodoSectionProps> = ({
         <AppText f className="mb-1 text-lg font-extrabold text-foreground/60">
           {title}
         </AppText>
-        <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
-          <Plus size={20} className="text-foreground/60" />
-        </HapticTab>
+        {addButton && (
+          <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
+            <Plus size={20} className="text-foreground/60" />
+          </HapticTab>
+        )}
       </View>
       <TodoList tasks={tasks} lastAddedTodoId={lastAddedTodoId} onCategoryPress={onCategoryPress} />
     </View>
