@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, AppState, TextInput } from 'react-native';
+import { StyleSheet, View, AppState, TextInput, TouchableOpacity } from 'react-native';
 import { addDeafultTasks, categories$, events$, supabase, todos$, user$ } from '../utils/supabase/SupaLegend';
 import { Button, Input } from '@rneui/themed';
 import { toast } from 'sonner-native';
 import { AuthTokenResponsePassword } from '@supabase/supabase-js';
 import AppText from 'components/base/AppText';
 import { Icon } from 'components/base/LucideIcon';
-import { User } from 'lucide-react-native';
+import { Lock, LogIn, Mail, User, UserPlus } from 'lucide-react-native';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -141,55 +141,43 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
     }
 
     return (
-        <View>
-            <AppText className="text-3xl font-bold">Please log in or create an Account</AppText>
+        <View className='flex-1'>
+            <AppText className="text-3xl font-bold mb-4">Please log in or create an Account</AppText>
 
-            <AppText className="text-lg font-medium text-foregroundMuted">First name</AppText>
-            <View className='flex-row gap-2 py-3 border-b' >
-                <Icon icon={User} size={20} className='text-foreground/30' />
-                <TextInput placeholder='First name' className="placeholder:text-foreground/40 text-xl" onChangeText={(text) => setFirstName(text)} value={firstName} />
+            <AppText className="text-lg font-bold text-foregroundMuted ">First name</AppText>
+            <View className='flex-row gap-2 border-b mb-2' >
+                <Icon icon={User} size={20} className={firstName ? 'text-foreground' : 'text-foreground/30'} />
+                <TextInput placeholder='First name' className="outline-none placeholder:text-foreground/40 text-xl py-2.5 -mt-1" onChangeText={(text) => setFirstName(text)} value={firstName} />
+            </View>
+            <AppText className="text-lg font-bold text-foregroundMuted ">Email</AppText>
+            <View className='flex-row gap-2 border-b mb-2' >
+                <Icon icon={Mail} size={20} className={email ? 'text-foreground' : 'text-foreground/30'} />
+                <TextInput placeholder='Email' className="outline-none placeholder:text-foreground/40 text-xl py-2.5 -mt-1" onChangeText={(text) => setEmail(text)} value={email} />
+            </View>
+            <AppText className="text-lg font-bold text-foregroundMuted">Password</AppText>
+            <View className='flex-row gap-2 border-b mb-2' >
+                <Icon icon={Lock} size={20} className={password ? 'text-foreground' : 'text-foreground/30'} />
+                <TextInput secureTextEntry={true} placeholder='Password' className="outline-none placeholder:text-foreground/40 text-xl py-2.5 -mt-1" onChangeText={(text) => setPassword(text)} value={password} />
             </View>
 
-            <AppText className="text-base font-medium text-foregroundMuted">Email</AppText>
-            <AppText className="text-base font-medium text-foregroundMuted">Password</AppText>
-
-
-            <Input
-                label="First Name"
-                leftIcon={{ type: 'font-awesome', name: 'user' }}
-                onChangeText={(text) => setFirstName(text)}
-                value={firstName}
-                placeholder="First Name"
-                autoCapitalize={'none'}
-            />
-
-
-            <Input
-                label="Email"
-                leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-                placeholder="email@address.com"
-                autoCapitalize={'none'}
-            />
-
-
-            <Input
-                label="Password"
-                leftIcon={{ type: 'font-awesome', name: 'lock' }}
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-                placeholder="Password"
-                autoCapitalize={'none'}
-            />
-
-            <View style={[styles.verticallySpaced, styles.mt20]}>
-                <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
-            </View>
-            <View style={styles.verticallySpaced}>
-                <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
-            </View>
+            <TouchableOpacity
+                onPress={() => {
+                    signInWithEmail()
+                }}
+                className="mt-8 flex-row items-center justify-center rounded-lg bg-blue-500 px-6 py-3 shadow-sm"
+                activeOpacity={0.8}>
+                <Icon icon={LogIn} size={20} color="white" />
+                <AppText className="ml-2 font-semibold text-white">Log in</AppText>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    signUpWithEmail()
+                }}
+                className="mt-2 flex-row items-center justify-center rounded-lg bg-blue-500 px-6 py-3 shadow-sm"
+                activeOpacity={0.8}>
+                <Icon icon={UserPlus} size={20} color="white" />
+                <AppText className="ml-2 font-semibold text-white">Create account</AppText>
+            </TouchableOpacity>
         </View >
     );
 }

@@ -5,7 +5,7 @@ import 'react-native-gesture-handler';
 import '../global.css';
 import '../utils/polyfills';
 import 'react-native-get-random-values';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -20,15 +20,19 @@ export default function RootLayout() {
     // });
   }, []);
 
+  const [openAuth, setOpenAuth] = useState(false);
+
   supabase.auth.onAuthStateChange((e, s) => {
     console.log("new sb event", e, s)
-    setTimeout(() => {
+    if (e === "INITIAL_SESSION" && !s) {
+      setOpenAuth(true)
+    }
 
-      router.push("/auth")
-    }, 100);
   })
 
-  console.log("auth", supabase.auth)
+  if (openAuth) {
+    router.push("/auth")
+  }
 
 
   return (
