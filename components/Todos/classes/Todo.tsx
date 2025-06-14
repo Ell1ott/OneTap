@@ -32,12 +32,13 @@ export class Todo extends Task {
       this.r.done_times?.length &&
       this.r.done_times.length > 0 &&
       new Time(this.r.soft_repeat).toDays() - this.daysSinceLastDone < 2
+
     );
 
     // Check softDue priority (due within 2 days or overdue)
     const duePriority = !!(this.r.soft_due && this.daysTillSoftDue <= 2);
 
-    return repeatPriority || duePriority;
+    return (repeatPriority || duePriority) && !this.isToday();
   };
 
   get daysSinceLastDone() {
@@ -115,9 +116,8 @@ export class Todo extends Task {
         <CheckBox
           key={index}
           checked={completed}
-          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${
-            index === (this.r.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
-          }`}
+          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${index === (this.r.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
+            }`}
           onToggle={() => {
             const newCompleted = [...(this.r.completed || [])];
             newCompleted[index] = !newCompleted[index];

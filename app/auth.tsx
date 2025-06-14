@@ -18,7 +18,7 @@ export default function AuthScreen() {
             onClose={() => {
                 router.push('/');
             }}
-            isDismissable={() => isDismissable}
+            isDismissable={isDismissable}
             className="bg-card">
             <Auth
                 closeAuthPage={() => {
