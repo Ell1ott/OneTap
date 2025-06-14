@@ -6,7 +6,7 @@ import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { Database, TablesInsert } from './database.types';
+import { Database, Tables, TablesInsert } from './database.types';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { Platform } from 'react-native';
 
@@ -146,6 +146,24 @@ export const categories$ = observable(
     },
   })
 );
+
+export const user$ = observable<Tables<'users'> | null>(null);
+
+supabase.auth.onAuthStateChange(async (event, session) => {
+  console.log('sb auth change', event, session);
+  setTimeout(async () => {
+    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('user_id', session.user.id);
+      if (error) {
+        console.error(error);
+      }
+      console.log('user', data);
+    }
+  }, 10);
+});
 
 export function addTodo(todo: TablesInsert<'todos'>) {
   const id = generateId();

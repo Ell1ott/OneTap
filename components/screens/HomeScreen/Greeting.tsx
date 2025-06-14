@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Text } from 'react-native';
 import AppText from '../../base/AppText';
+import { user$ } from 'utils/supabase/SupaLegend';
+import { observer } from '@legendapp/state/react';
 interface GreetingProps {
   name?: string;
   className?: string;
@@ -18,13 +20,11 @@ const getTimeBasedGreeting = (): string => {
   }
 };
 
-export const Greeting: React.FC<GreetingProps> = ({
-  name = 'Elliott',
-  className = 'mb-3 text-[25px] font-bold text-foreground',
-}) => {
+export const Greeting: React.FC<GreetingProps> = observer(({ className = 'mb-3 text-[25px] font-bold text-foreground' }) => {
+  const name = user$.get()?.first_name;
   return (
     <AppText f className={className}>
       {getTimeBasedGreeting()}, {name}!
     </AppText>
   );
-};
+});
