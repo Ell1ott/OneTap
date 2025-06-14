@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, AppState } from 'react-native';
-import { addDeafultTasks, categories$, events$, supabase, todos$, user$ } from './SupaLegend';
+import { StyleSheet, View, AppState, TextInput } from 'react-native';
+import { addDeafultTasks, categories$, events$, supabase, todos$, user$ } from '../utils/supabase/SupaLegend';
 import { Button, Input } from '@rneui/themed';
 import { toast } from 'sonner-native';
-import { AuthTokenResponsePassword, User } from '@supabase/supabase-js';
+import { AuthTokenResponsePassword } from '@supabase/supabase-js';
 import AppText from 'components/base/AppText';
+import { Icon } from 'components/base/LucideIcon';
+import { User } from 'lucide-react-native';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -141,44 +143,54 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
     return (
         <View>
             <AppText className="text-3xl font-bold">Please log in or create an Account</AppText>
-            <View style={[styles.verticallySpaced, styles.mt20]}>
-                <Input
-                    label="First Name"
-                    leftIcon={{ type: 'font-awesome', name: 'user' }}
-                    onChangeText={(text) => setFirstName(text)}
-                    value={firstName}
-                    placeholder="First Name"
-                    autoCapitalize={'none'}
-                />
+
+            <AppText className="text-lg font-medium text-foregroundMuted">First name</AppText>
+            <View className='flex-row gap-2 py-3 border-b' >
+                <Icon icon={User} size={20} className='text-foreground/30' />
+                <TextInput placeholder='First name' className="placeholder:text-foreground/40 text-xl" onChangeText={(text) => setFirstName(text)} value={firstName} />
             </View>
-            <View style={styles.verticallySpaced}>
-                <Input
-                    label="Email"
-                    leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    placeholder="email@address.com"
-                    autoCapitalize={'none'}
-                />
-            </View>
-            <View style={styles.verticallySpaced}>
-                <Input
-                    label="Password"
-                    leftIcon={{ type: 'font-awesome', name: 'lock' }}
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    secureTextEntry={true}
-                    placeholder="Password"
-                    autoCapitalize={'none'}
-                />
-            </View>
+
+            <AppText className="text-base font-medium text-foregroundMuted">Email</AppText>
+            <AppText className="text-base font-medium text-foregroundMuted">Password</AppText>
+
+
+            <Input
+                label="First Name"
+                leftIcon={{ type: 'font-awesome', name: 'user' }}
+                onChangeText={(text) => setFirstName(text)}
+                value={firstName}
+                placeholder="First Name"
+                autoCapitalize={'none'}
+            />
+
+
+            <Input
+                label="Email"
+                leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+                placeholder="email@address.com"
+                autoCapitalize={'none'}
+            />
+
+
+            <Input
+                label="Password"
+                leftIcon={{ type: 'font-awesome', name: 'lock' }}
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                secureTextEntry={true}
+                placeholder="Password"
+                autoCapitalize={'none'}
+            />
+
             <View style={[styles.verticallySpaced, styles.mt20]}>
                 <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
             </View>
             <View style={styles.verticallySpaced}>
                 <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
             </View>
-        </View>
+        </View >
     );
 }
 
