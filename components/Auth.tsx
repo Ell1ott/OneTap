@@ -66,8 +66,8 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
         // }
         closeAuthPage();
         toast.info('Singed into ' + user.email);
-        const { data: todoData, error: todoError } = await supabase.from('todos').select('*');
-        const { data: eventData, error: eventError } = await supabase.from('events').select('*');
+        const { data: todoData, error: todoError } = await supabase.from('todos').select('*').eq('deleted', false);
+        const { data: eventData, error: eventError } = await supabase.from('events').select('*').eq('deleted', false);
         const { data: categoryData, error: categoryError } = await supabase
             .from('categories')
             .select('*');
@@ -134,8 +134,6 @@ export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
                 addDeafultTasks();
             }, 100);
         }
-
-        if (!session) toast.info('Please check your inbox for email verification!');
         setLoading(false);
 
     }
