@@ -6,11 +6,20 @@ import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import AppText from '../base/AppText';
 import { Response } from './Response';
+import { usePathname } from 'expo-router';
 
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   const [active, setActive] = useState<boolean>(false);
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
   const [transcript, setTranscript] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isOpen)
+      scale.value = withSpring(1, { damping: 100, stiffness: 400 });
+    else
+      scale.value = withSpring(0.8, { damping: 100, stiffness: 400 });
+  }, [isOpen]);
+
 
   const { transcriptionData, isRecording, requestPermissions, beginRecording, endRecording } =
     useAudioRecording();
@@ -32,7 +41,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   });
 
   useEffect(() => {
-    if (isOpen && volumeScale !== undefined) {
+    if (isOpen && volumeScale !== undefined && transcriptionConnected) {
       scale.value = withSpring(volumeScale, { damping: 100, stiffness: 400 });
     }
   }, [volumeScale, isOpen]);
@@ -63,11 +72,15 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
 
   const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
 
+  const currentRoute = usePathname();
+
+  const [transcriptionConnected, setTranscriptionConnected] = useState<boolean>(false);
+
   return (
     <>
       <View className="mb-2 flex-row gap-4">
         <Animated.View style={animatedStyles} className="my-2 justify-center self-start">
-          <TapadoodleSvg width={35} height={33} />
+          <TapadoodleSvg width={35} height={33} opacity={currentRoute === '/' && transcriptionConnected ? 1 : 0.8} />
         </Animated.View>
         <View className="min-h-10 flex-1 justify-center">
           <DeepgramTranscriber
@@ -78,6 +91,9 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
               console.log('finished transcribing', transcript);
               stopRecording();
               setTranscript(transcript);
+            }}
+            setIsConnected={(isConnected) => {
+              setTranscriptionConnected(isConnected);
             }}
           />
         </View>

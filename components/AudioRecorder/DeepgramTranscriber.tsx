@@ -11,6 +11,7 @@ interface DeepgramTranscriberProps {
   audioData?: Uint16Array | null; // Audio data from the recorder
   textClassName?: string;
   finishCallback?: (transcript: string) => void;
+  setIsConnected?: (isConnected: boolean) => void;
 }
 
 export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
@@ -18,12 +19,18 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   audioData,
   textClassName,
   finishCallback,
+  setIsConnected: setIsConnectedProp,
 }) => {
   const { apiKey, isLoading, error, clearError } = useApiKeyStore();
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsConnectedProp?.(isConnected);
+  }, [isConnected]);
+
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
 
   const [isFinished, setIsFinished] = useState<boolean>(false);

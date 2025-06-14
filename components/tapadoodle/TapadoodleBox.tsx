@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Dimensions, LayoutChangeEvent, Platform, Pressable, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -14,6 +14,7 @@ import TapadoodleSvg from '../assets/tapadoodle.svg';
 import AppText from '../base/AppText';
 import DeepgramTranscriber from '../AudioRecorder/DeepgramTranscriber';
 import { Tapadoodle } from './Tapadoodle';
+import { router, usePathname } from 'expo-router';
 const SPRING_CONFIG = {
   damping: 30,
   stiffness: 200,
@@ -104,7 +105,13 @@ export const TapadoodleBox = () => {
     paddingX.value = withSpring(isOpen ? 20 : 9, SPRING_CONFIG);
     paddingY.value = withSpring(isOpen ? 20 : 0, SPRING_CONFIG);
   }
+  const currentRoute = usePathname();
   function Open() {
+    // Get current route
+    if (currentRoute !== '/') {
+      router.push('/');
+      return;
+    }
     if (isOpen) return;
     setIsOpen(true);
     AnimateSprings(true);
@@ -131,12 +138,15 @@ export const TapadoodleBox = () => {
     }, 300);
   }
   function handlePressIn() {
+    if (currentRoute !== '/') return;
     shadowOpacity.value = withSpring(0.2, {
       damping: 10,
       stiffness: 200,
       velocity: 0.5,
     });
   }
+
+
 
   const handleLayout = (event: LayoutChangeEvent) => {
     if (width.value === openWidth) {
