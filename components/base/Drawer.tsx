@@ -22,7 +22,7 @@ interface DrawerProps {
   children: React.ReactNode;
   scrollEnabled?: boolean;
   className?: string;
-  isDismissable?: boolean;
+  isDismissable?: () => boolean;
   startClose?: boolean;
 }
 
@@ -31,7 +31,7 @@ export default function Drawer({
   startClose = false,
   onClose,
   scrollEnabled = true,
-  isDismissable = true,
+  isDismissable = () => true,
   className,
   children,
 }: DrawerProps) {
@@ -78,12 +78,12 @@ export default function Drawer({
 
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
-      if (!isDismissable) return;
+      if (!isDismissable()) return;
       startY.value = translateY.value;
       console.log('startY', startY.value);
     })
     .onUpdate((event) => {
-      if (!isDismissable) return;
+      if (!isDismissable()) return;
       if (scrollEnabled) {
         translateY.value = startY.value + event.translationY;
       } else {
@@ -94,7 +94,7 @@ export default function Drawer({
       // console.log('translateY', translateY.value);
     })
     .onEnd((event) => {
-      if (!isDismissable) return;
+      if (!isDismissable()) return;
       const shouldGoBack =
         (event.translationY + startY.value > topMargin + 10 && event.velocityY > 100) ||
         event.velocityY > 2000;
@@ -126,6 +126,7 @@ export default function Drawer({
   });
 
   function closingAnimation(velocityY: number) {
+    if (!isDismissable()) return;
     shouldClose.value = true;
     translateY.value = withSpring(screenHeight, {
       stiffness: 200,
