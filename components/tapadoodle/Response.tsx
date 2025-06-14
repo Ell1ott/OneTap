@@ -21,7 +21,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
   } = experimental_useObject({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
     // api: 'https://onetap.expo.app/api/stream',
-    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/gemini-flash',
+    api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/openai-completion',
     headers: supabaseAnonAuthHeaders,
     schema: z.unknown(),
     onFinish: ({ object }) => {
@@ -70,18 +70,18 @@ export const Response = ({ transcript }: { transcript: string }) => {
 
     const start = todo.start
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.start) ? todo.start[0] : todo.start
-        )?.toDictionary()
+        Array.isArray(todo.start) ? todo.start[0] : todo.start
+      )?.toDictionary()
       : undefined;
     const end = todo.due
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.due) ? todo.due[0] : todo.due
-        )?.toDictionary()
+        Array.isArray(todo.due) ? todo.due[0] : todo.due
+      )?.toDictionary()
       : undefined;
     const remind_at = todo.remindAt
       ? HumanDate.fromNaturalString(
-          Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt
-        )?.toDictionary()
+        Array.isArray(todo.remindAt) ? todo.remindAt[0] : todo.remindAt
+      )?.toDictionary()
       : undefined;
 
     const r: TablesInsert<'todos'> = {
