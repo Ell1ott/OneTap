@@ -78,12 +78,10 @@ export default function Drawer({
 
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
-      if (!isDismissable) return;
       startY.value = translateY.value;
       console.log('startY', startY.value);
     })
     .onUpdate((event) => {
-      if (!isDismissable) return;
       if (scrollEnabled) {
         translateY.value = startY.value + event.translationY;
       } else {
@@ -94,10 +92,10 @@ export default function Drawer({
       // console.log('translateY', translateY.value);
     })
     .onEnd((event) => {
-      if (!isDismissable) return;
-      const shouldGoBack =
+
+      const shouldGoBack = isDismissable && (
         (event.translationY + startY.value > topMargin + 10 && event.velocityY > 100) ||
-        event.velocityY > 2000;
+        event.velocityY > 2000);
 
       if (shouldGoBack) {
         runOnJS(closingAnimation)(event.velocityY);
@@ -126,7 +124,9 @@ export default function Drawer({
   });
 
   function closingAnimation(velocityY: number) {
-    if (!isDismissable) return;
+    if (!isDismissable) {
+      return;
+    };
     shouldClose.value = true;
     translateY.value = withSpring(screenHeight, {
       stiffness: 200,
