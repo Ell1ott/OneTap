@@ -32,48 +32,52 @@ export async function signInAnonymously() {
 
     setTimeout(() => {
       console.log('adding initial tasks');
-      addTodo({
-        title: 'Walk the dog',
-        note: 'Twice every day',
-        completed: [true, false],
-      });
-      addEvent({
-        title: 'Volleyball practice',
-        start: [
-          {
-            date: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
-            isTimeKnown: true,
-          },
-        ],
-      });
-      addCategory({
-        title: 'Groceries',
-      });
-      addCategory({
-        title: 'Homework',
-      });
-      addTodo({
-        title: 'Clean Room',
-        note: 'Done 4 days ago',
-        completed: [false],
-        soft_repeat: { days: 7 },
-      });
-      addTodo({
-        title: 'Milk',
-        completed: [false],
-        category: 'Groceries',
-      });
-      addTodo({
-        title: 'Bread',
-        completed: [false],
-        category: 'Groceries',
-      });
+      addDeafultTasks();
     }, 1000);
 
     return data;
   } else {
     console.log('fej', await supabase.auth.getSession());
   }
+}
+
+export async function addDeafultTasks() {
+  addTodo({
+    title: 'Walk the dog',
+    note: 'Twice every day',
+    completed: [true, false],
+  });
+  addEvent({
+    title: 'Volleyball practice',
+    start: [
+      {
+        date: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
+        isTimeKnown: true,
+      },
+    ],
+  });
+  addCategory({
+    title: 'Groceries',
+  });
+  addCategory({
+    title: 'Homework',
+  });
+  addTodo({
+    title: 'Clean Room',
+    note: 'Done 4 days ago',
+    completed: [false],
+    soft_repeat: { days: 7 },
+  });
+  addTodo({
+    title: 'Milk',
+    completed: [false],
+    category: 'Groceries',
+  });
+  addTodo({
+    title: 'Bread',
+    completed: [false],
+    category: 'Groceries',
+  });
 }
 
 export const generateId = () => uuidv4();
@@ -156,11 +160,13 @@ supabase.auth.onAuthStateChange(async (event, session) => {
       const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('user_id', session.user.id);
+        .eq('user_id', session.user.id)
+        .single();
       if (error) {
         console.error(error);
       }
       console.log('user', data);
+      if (data) user$.set(data);
     }
   }, 10);
 });

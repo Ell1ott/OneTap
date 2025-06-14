@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, AppState } from 'react-native';
-import { categories$, events$, supabase, todos$, user$ } from './SupaLegend';
+import { addDeafultTasks, categories$, events$, supabase, todos$, user$ } from './SupaLegend';
 import { Button, Input } from '@rneui/themed';
 import { router } from 'expo-router';
 import { toast } from 'sonner-native';
@@ -107,6 +107,8 @@ export default function Auth() {
         });
         console.log(categoryDict);
         categories$.set(categoryDict);
+
+        addDeafultTasks();
     }
     async function signUpWithEmail() {
         if (!firstName || firstName === '') {
