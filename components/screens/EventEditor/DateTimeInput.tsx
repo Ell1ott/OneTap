@@ -32,7 +32,7 @@ export function DateTime({ startDate, endDate, setStartDate, setEndDate }: { sta
     const [currentView, setCurrentView] = useState<{ view: 'day' | 'month' | 'year' | 'time' | undefined, index: number | undefined }>({ view: undefined, index: undefined });
     return (
         <View className="mb-6">
-            <View className="mb-4 flex-row items-center">
+            <View className="mb-2 flex-row items-center">
                 <Icon icon={CalendarIcon} size={20} className="mr-2 text-foregroundMuted" />
                 <AppText className="text-base font-medium text-foregroundMuted">Date & Time</AppText>
             </View>
@@ -52,7 +52,7 @@ const DateTimeInput = ({ date, setDate, currentView, setCurrentView, showAddDate
     return (
         <View>
             <View className="mb-2.5 flex-row space-x-2.5">
-                {/* Date */}p
+                {/* Date */}
                 <Pressable
                     onPress={() => {
                         if (currentView === 'day') {

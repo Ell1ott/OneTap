@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View, AppState } from 'react-native';
 import { addDeafultTasks, categories$, events$, supabase, todos$, user$ } from './SupaLegend';
 import { Button, Input } from '@rneui/themed';
-import { router } from 'expo-router';
 import { toast } from 'sonner-native';
 import { AuthTokenResponsePassword, User } from '@supabase/supabase-js';
 
@@ -19,7 +18,7 @@ AppState.addEventListener('change', (state) => {
     }
 });
 
-export default function Auth() {
+export default function Auth({ closeAuthPage }: { closeAuthPage: () => void }) {
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -62,7 +61,7 @@ export default function Auth() {
         //     toast.error('Weak password');
         //     return;
         // }
-        router.push('/');
+        closeAuthPage();
         toast.info('Singed into ' + user.email);
         const { data: todoData, error: todoError } = await supabase.from('todos').select('*');
         const { data: eventData, error: eventError } = await supabase.from('events').select('*');
@@ -108,7 +107,6 @@ export default function Auth() {
         console.log(categoryDict);
         categories$.set(categoryDict);
 
-        addDeafultTasks();
     }
     async function signUpWithEmail() {
         if (!firstName || firstName === '') {
@@ -128,15 +126,19 @@ export default function Auth() {
         if (error) toast.error(error.message);
 
         if (user?.email && user?.email !== '') {
-            onSignIn(user);
+            await onSignIn(user);
+            setTimeout(() => {
+                addDeafultTasks();
+            }, 100);
         }
 
         if (!session) toast.info('Please check your inbox for email verification!');
         setLoading(false);
+
     }
 
     return (
-        <View style={styles.container}>
+        <View>
             <View style={[styles.verticallySpaced, styles.mt20]}>
                 <Input
                     label="First Name"
@@ -179,10 +181,6 @@ export default function Auth() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 40,
-        padding: 12,
-    },
     verticallySpaced: {
         paddingTop: 4,
         paddingBottom: 4,

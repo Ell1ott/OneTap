@@ -42,10 +42,12 @@ export async function signInAnonymously() {
 }
 
 export async function addDeafultTasks() {
+  const date = new Date(+new Date() + 1000).toISOString();
   addTodo({
     title: 'Walk the dog',
     note: 'Twice every day',
     completed: [true, false],
+    updated_at: date,
   });
   addEvent({
     title: 'Volleyball practice',
@@ -55,28 +57,34 @@ export async function addDeafultTasks() {
         isTimeKnown: true,
       },
     ],
+    updated_at: date,
   });
   addCategory({
     title: 'Groceries',
+    updated_at: date,
   });
   addCategory({
     title: 'Homework',
+    updated_at: date,
   });
   addTodo({
     title: 'Clean Room',
     note: 'Done 4 days ago',
     completed: [false],
     soft_repeat: { days: 7 },
+    updated_at: date,
   });
   addTodo({
     title: 'Milk',
     completed: [false],
     category: 'Groceries',
+    updated_at: date,
   });
   addTodo({
     title: 'Bread',
     completed: [false],
     category: 'Groceries',
+    updated_at: date,
   });
 }
 

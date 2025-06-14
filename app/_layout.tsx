@@ -37,7 +37,7 @@ export default function RootLayout() {
             name="event"
             options={{ presentation: 'transparentModal', headerShown: false }}
           />
-          <Stack.Screen name="auth" options={{ headerShown: false }} />
+          <Stack.Screen name="auth" options={{ headerShown: false, presentation: 'transparentModal' }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

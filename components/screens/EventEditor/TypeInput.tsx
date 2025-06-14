@@ -5,7 +5,7 @@ import { TabType } from './EventDrawer';
 
 export const TypeSelector = ({ activeTab, setActiveTab }: { activeTab: TabType, setActiveTab: (activeTab: TabType) => void }) => {
     return (
-        <View className="flex-row rounded-full bg-background p-1.5">
+        <View className="flex-row rounded-full bg-background p-1.5 mb-6">
             <SelectableText
                 onPress={() => setActiveTab('Event')}
                 isSelected={activeTab === 'Event'}>

@@ -22,16 +22,27 @@ interface DrawerProps {
   children: React.ReactNode;
   scrollEnabled?: boolean;
   className?: string;
+  isDismissable?: boolean;
+  startClose?: boolean;
 }
 
 export default function Drawer({
   isOpen,
+  startClose = false,
   onClose,
   scrollEnabled = true,
+  isDismissable = true,
   className,
   children,
 }: DrawerProps) {
   const shouldClose = useSharedValue(false);
+
+  useEffect(() => {
+    if (startClose) {
+      closingAnimation(0);
+      console.log('startClose', startClose);
+    }
+  }, [startClose]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -67,10 +78,12 @@ export default function Drawer({
 
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
+      if (!isDismissable) return;
       startY.value = translateY.value;
       console.log('startY', startY.value);
     })
     .onUpdate((event) => {
+      if (!isDismissable) return;
       if (scrollEnabled) {
         translateY.value = startY.value + event.translationY;
       } else {
@@ -81,6 +94,7 @@ export default function Drawer({
       // console.log('translateY', translateY.value);
     })
     .onEnd((event) => {
+      if (!isDismissable) return;
       const shouldGoBack =
         (event.translationY + startY.value > topMargin + 10 && event.velocityY > 100) ||
         event.velocityY > 2000;
