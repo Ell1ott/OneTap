@@ -5,7 +5,6 @@ import {
   useAudioRecorder,
   ExpoAudioStreamModule,
   RecordingConfig,
-  useAudioDevices,
   AudioDevice,
 } from '@siteed/expo-audio-studio';
 import { base64ToInt16Array, calculateRMSVolume } from './AudioConversionUtils';

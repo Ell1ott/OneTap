@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import DeepgramTranscriber from './DeepgramTranscriber';
+import { DeepgramTranscriber } from './DeepgramTranscriber';
 import { useAudioRecording } from '../../utils/useAudioRecording';
 import { AnimatedRecordButton } from './AnimatedRecordButton';
 

@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Database, Tables, TablesInsert } from './database.types';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { Platform } from 'react-native';
-import { router } from 'expo-router';
 
 export const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -176,7 +175,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
         .eq('user_id', session.user.id)
         .single();
       if (error) {
-        
+
         console.error(error);
       }
       console.log('user', data);

@@ -149,7 +149,7 @@ export function Calendar({
   currentView: 'day' | 'month' | 'year' | 'time';
 }) {
   const defaultClassNames = useDefaultClassNames();
-  const [selected, setSelected] = useState<DateType>();
+  // const [selected, setSelected] = useState<DateType>();
 
   return (
     <DateTimePicker

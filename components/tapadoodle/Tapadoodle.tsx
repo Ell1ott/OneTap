@@ -1,12 +1,12 @@
 import { View } from 'react-native';
 import TapadoodleSvg from '../../assets/tapadoodle.svg';
 import { DeepgramTranscriber } from '../AudioRecorder/DeepgramTranscriber';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Response } from './Response';
 import { usePathname } from 'expo-router';
-import { AudioDevice, useAudioDevices } from '@siteed/expo-audio-studio';
+import { AudioDevice } from '@siteed/expo-audio-studio';
 
 export const Tapadoodle = ({
   isOpen,
@@ -19,6 +19,10 @@ export const Tapadoodle = ({
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
   const [transcript, setTranscript] = useState<string | null>(null);
   const scale = useSharedValue(1);
+
+  const currentRoute = usePathname();
+
+  const [transcriptionConnected, setTranscriptionConnected] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isOpen) scale.value = withSpring(1, { damping: 100, stiffness: 400 });
@@ -53,7 +57,7 @@ export const Tapadoodle = ({
     if (isOpen && volumeScale !== undefined && transcriptionConnected) {
       scale.value = withSpring(volumeScale, { damping: 100, stiffness: 400 });
     }
-  }, [volumeScale, isOpen, scale]);
+  }, [volumeScale, isOpen, scale, transcriptionConnected]);
 
   useEffect(() => {
     console.log(isOpen);
@@ -69,17 +73,13 @@ export const Tapadoodle = ({
       stopRecording();
       console.log('unmounting tapadoodle, so stopping recording');
     };
-  }, [isOpen]);
+  }, [beginRecording, currentDevice, isOpen, stopRecording]);
 
-  const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
+  // const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
 
-  const currentRoute = usePathname();
+  // const audioDevices = useAudioDevices();
 
-  const [transcriptionConnected, setTranscriptionConnected] = useState<boolean>(false);
-
-  const audioDevices = useAudioDevices();
-
-  const [deviceModalVisible, setDeviceModalVisible] = useState<boolean>(false);
+  // const [deviceModalVisible, setDeviceModalVisible] = useState<boolean>(false);
 
   return (
     <>

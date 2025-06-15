@@ -66,7 +66,7 @@ export const HomeScreen = observer(() => {
   const todaysTasks = todayTasks$.peek();
   const priorityTasks = priorityTasks$.peek();
   const otherTasks = otherTasks$.peek();
-  const tasks: Task[] = tasks$.peek();
+  // const tasks: Task[] = tasks$.peek();
 
   console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
 

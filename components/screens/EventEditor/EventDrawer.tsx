@@ -1,14 +1,9 @@
-import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
-import { View, Pressable, TouchableOpacity } from 'react-native';
-import { act, useEffect, useState } from 'react';
-import { Calendar as CalendarIcon, CalendarPlus } from 'lucide-react-native';
-import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
-import { Icon } from 'components/base/LucideIcon';
+import { View } from 'react-native';
+import { useState } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
 import { observer } from '@legendapp/state/react';
 import { events$ } from 'utils/supabase/SupaLegend';
-import { SelectableText } from './SelectableText';
 import { DateTime } from './DateTimeInput';
 import { TypeSelector } from './TypeInput';
 
@@ -16,7 +11,7 @@ export type TabType = 'Event' | 'Todo';
 
 export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id: string }) => {
   const event$ = events$[id];
-  const [date, setDate] = useState();
+  // const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
 
   const startDate = new Date(event$.start[0].date.get() as string);

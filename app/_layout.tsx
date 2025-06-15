@@ -12,8 +12,8 @@ import { Toaster } from 'sonner-native';
 // eslint-disable-next-line import/no-duplicates
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
-import { signInAnonymously, supabase } from 'utils/supabase/SupaLegend';
 import { v4 as uuidv4 } from 'uuid';
+import { supabase } from 'utils/supabase/SupaLegend';
 export default function RootLayout() {
   console.log(uuidv4());
   useEffect(() => {
