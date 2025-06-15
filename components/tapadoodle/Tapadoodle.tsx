@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Modal, TouchableOpacity, View } from 'react-native';
 import TapadoodleSvg from '../../assets/tapadoodle.svg';
 import { DeepgramTranscriber } from '../AudioRecorder/DeepgramTranscriber';
 import { useEffect, useRef, useState } from 'react';
@@ -7,8 +7,9 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import AppText from '../base/AppText';
 import { Response } from './Response';
 import { usePathname } from 'expo-router';
+import { AudioDevice, useAudioDevices } from '@siteed/expo-audio-studio';
 
-export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
+export const Tapadoodle = ({ isOpen, currentDevice }: { isOpen: boolean, currentDevice: AudioDevice }) => {
   const [active, setActive] = useState<boolean>(false);
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
   const [transcript, setTranscript] = useState<string | null>(null);
@@ -49,7 +50,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   useEffect(() => {
     console.log(isOpen);
     if (isOpen) {
-      beginRecording((newScale) => {
+      beginRecording(currentDevice, (newScale) => {
         setVolumeScale(newScale);
       });
     } else {
@@ -76,11 +77,15 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
 
   const [transcriptionConnected, setTranscriptionConnected] = useState<boolean>(false);
 
+  const audioDevices = useAudioDevices();
+
+  const [deviceModalVisible, setDeviceModalVisible] = useState<boolean>(false);
+
   return (
     <>
       <View className="mb-2 flex-row gap-4">
         <Animated.View style={animatedStyles} className="my-2 justify-center self-start">
-          <TapadoodleSvg width={35} height={33} opacity={currentRoute === '/' && transcriptionConnected || !isOpen ? 1 : 0.8} />
+          <TapadoodleSvg width={35} height={33} opacity={currentRoute === '/' && (transcriptionConnected || !isOpen) ? 1 : 0.8} />
         </Animated.View>
         <View className="min-h-10 flex-1 justify-center">
           <DeepgramTranscriber
@@ -97,6 +102,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
             }}
           />
         </View>
+
       </View>
       {transcript && <Response transcript={transcript} />}
     </>

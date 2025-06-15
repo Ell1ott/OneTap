@@ -6,6 +6,7 @@ import { FadeInText } from 'components/base/FadeInText';
 import { useApiKeyStore } from 'stores/apiKeyStore';
 import * as Haptics from 'expo-haptics';
 import { TextInput } from 'react-native-gesture-handler';
+import { useAudioDevices } from '@siteed/expo-audio-studio';
 interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
@@ -26,6 +27,8 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
   const [transcripts, setTranscripts] = useState<string[]>(['']);
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
+
+
 
   useEffect(() => {
     setIsConnectedProp?.(isConnected);
@@ -189,7 +192,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
           style={fontStyle}
           value={textInput}
           onChangeText={setTextInput}
-          placeholder="Go ahead, I'm listening..."
+          placeholder={isConnected ? 'Go ahead, I\'m listening...' : 'Loading speech recognition...'}
           className={`text-lg outline-none placeholder:text-foreground/40 ${textClassName}`}
           onSubmitEditing={() => {
             finishCallback?.(textInput);

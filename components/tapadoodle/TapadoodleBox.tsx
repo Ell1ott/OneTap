@@ -1,5 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Dimensions, LayoutChangeEvent, Platform, Pressable, View } from 'react-native';
+import {
+  Dimensions,
+  LayoutChangeEvent,
+  Modal,
+  Platform,
+  Pressable,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -15,6 +23,9 @@ import AppText from '../base/AppText';
 import DeepgramTranscriber from '../AudioRecorder/DeepgramTranscriber';
 import { Tapadoodle } from './Tapadoodle';
 import { router, usePathname } from 'expo-router';
+import { AnimatedView } from 'react-native-reanimated/lib/typescript/component/View';
+import { useAudioDevices } from '@siteed/expo-audio-studio';
+
 const SPRING_CONFIG = {
   damping: 30,
   stiffness: 200,
@@ -146,8 +157,6 @@ export const TapadoodleBox = () => {
     });
   }
 
-
-
   const handleLayout = (event: LayoutChangeEvent) => {
     if (width.value === openWidth) {
       height.value = withSpring(
@@ -157,9 +166,31 @@ export const TapadoodleBox = () => {
     }
   };
 
+  const [deviceModalVisible, setDeviceModalVisible] = useState<boolean>(false);
+
+  const audioDevices = useAudioDevices();
+
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
   return (
     <>
+      <Modal visible={deviceModalVisible} transparent={true} animationType="fade">
+        <View className="flex-1 items-center justify-center bg-black/50">
+          <View className="w-[20rem] gap-2 rounded-lg bg-card p-3">
+            <AppText className="text-lg font-bold">Select an audio device</AppText>
+            {audioDevices.devices.map((device) => (
+              <TouchableOpacity
+                className="rounded-lg bg-background p-3 "
+                key={device.id}
+                onPress={() => {
+                  audioDevices.selectDevice(device.id);
+                  setDeviceModalVisible(false);
+                }}>
+                <AppText>{device.name}</AppText>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Modal>
       <Animated.View
         className="absolute top-10 h-10 w-10 items-center self-center"
         style={testAnimatedStyle}></Animated.View>
@@ -169,8 +200,19 @@ export const TapadoodleBox = () => {
           animatedBackgroundStyle,
           { height: isOpen ? '100%' : 70, width: isOpen ? '100%' : 128 },
         ]}>
+        <AnimatedPressable
+          className="absolute z-20 flex-1 items-center justify-center self-center pb-8"
+          onPress={() => {
+            setDeviceModalVisible(true);
+            Close();
+          }}
+          style={{ bottom: height, opacity: backgroundOpacity }}>
+          <View className="rounded-full bg-card px-4 py-2">
+            <AppText>Switch Microphone</AppText>
+          </View>
+        </AnimatedPressable>
         <Pressable
-          className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center"
+          className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center "
           onPressIn={handlePressIn}
           onPress={() => (isOpen ? Close() : Open())}>
           <AnimatedPressable
@@ -180,7 +222,7 @@ export const TapadoodleBox = () => {
             onPressIn={handlePressIn}>
             <View className="h-[20rem] w-full" style={{ width: openWidth - 17 * 2 }}>
               <View ref={childrenRef} className="gap-2" onLayout={handleLayout}>
-                <Tapadoodle isOpen={isOpen} />
+                <Tapadoodle isOpen={isOpen} currentDevice={audioDevices.currentDevice!} />
               </View>
             </View>
           </AnimatedPressable>

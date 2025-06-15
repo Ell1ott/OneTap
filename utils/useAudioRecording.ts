@@ -5,6 +5,8 @@ import {
   useAudioRecorder,
   ExpoAudioStreamModule,
   RecordingConfig,
+  useAudioDevices,
+  AudioDevice,
 } from '@siteed/expo-audio-studio';
 import { base64ToInt16Array, calculateRMSVolume } from './AudioConversionUtils';
 
@@ -27,9 +29,13 @@ export const useAudioRecording = () => {
   const interval = 100;
 
   // Start recording and monitoring volume
-  const beginRecording = async (onVolumeChange: (newScale: number) => void) => {
+  const beginRecording = async (
+    currentDevice: AudioDevice,
+    onVolumeChange: (newScale: number) => void
+  ) => {
     try {
       console.log('starting recording');
+      console.log('currentDevice', currentDevice);
       // Configure recording options
       const config: RecordingConfig = {
         interval: interval,
@@ -37,6 +43,7 @@ export const useAudioRecording = () => {
         sampleRate: 16000,
         channels: 1,
         encoding: 'pcm_16bit',
+        deviceId: currentDevice?.id,
 
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {
