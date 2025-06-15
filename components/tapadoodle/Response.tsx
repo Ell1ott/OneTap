@@ -141,7 +141,7 @@ export const Response = ({ transcript }: { transcript: string }) => {
         day: 'numeric',
       }),
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
 
   useEffect(() => {
@@ -152,12 +152,12 @@ export const Response = ({ transcript }: { transcript: string }) => {
     <View>
       {Array.isArray(object) &&
         object.map((o: TodoAIData & { msg: string }, index: number) => (
-          <>
+          <View key={index}>
             {o.msg && index === 0 && (
               <FadeInText className="text-lg leading-5" endOpacity={0.7} text={o.msg || ''} />
             )}
             {o.title && <TodoPreviewCard todo={o as any} />}
-          </>
+          </View>
         ))}
     </View>
   );

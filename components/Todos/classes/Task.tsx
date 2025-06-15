@@ -17,6 +17,7 @@ export class Task {
   }
 
   $ = () => tasks$[this.r.id as string];
+  // TODO IDK?
 
   getSubtextClasses = () => '';
   renderSubtext = () =>

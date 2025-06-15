@@ -1,14 +1,16 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
 import { Todo, Task } from 'components/Todos/classes';
 import { useState } from 'react';
-import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { tasks$ } from 'utils/supabase/SupaLegend';
+import { tasks$, todos$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { observable } from '@legendapp/state';
+import { router } from 'expo-router';
+import { User } from 'lucide-react-native';
+import { Icon } from 'components/base/LucideIcon';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -35,7 +37,21 @@ const todayTasksLength$ = observable(() => todayTasks$.get().length);
 const priorityTasksLength$ = observable(() => priorityTasks$.get().length);
 const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
+const subGreetingStats$ = observable(() => {
+  const todos = todos$.get();
+  if (!todos) return { groceryCount: 0, homeworkCount: 0 };
+  return {
+    groceryCount: Object.values(todos).filter(
+      (t) => t.category?.toLowerCase().includes('groceries') && t.completed?.[0] === false
+    ).length,
+    homeworkCount: Object.values(todos).filter(
+      (t) => t.category?.toLowerCase().includes('homework') && t.completed?.[0] === false
+    ).length,
+  };
+});
+
 export const HomeScreen = observer(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   // Use length observables to trigger rerenders only when lengths change
@@ -50,17 +66,17 @@ export const HomeScreen = observer(() => {
   const todaysTasks = todayTasks$.peek();
   const priorityTasks = priorityTasks$.peek();
   const otherTasks = otherTasks$.peek();
+  const tasks: Task[] = tasks$.peek();
 
   console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
 
   if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
 
+  const { groceryCount, homeworkCount } = subGreetingStats$.get();
+
   console.log('tasks', todaysTasks);
   return (
     <>
-      {openCategory && (
-        <CategoryDrawer category={openCategory} onClose={() => setOpenCategory(null)} />
-      )}
       {/* <Todos todos$={_todos$} /> */}
 
       <ScrollView
@@ -70,8 +86,14 @@ export const HomeScreen = observer(() => {
         <View className="mb-10">
           <Greeting />
           <AppText f className="text-base leading-5 text-foregroundMuted">
-            You have 3 assignments due today. And it&apos;s probably time for a trip to the grocery
-            store, as you have 9 items on your shopping list.
+            You have {homeworkCount === 0 ? 'no' : homeworkCount} assignments due.{' '}
+            {groceryCount > 1
+              ? "And it's probably time for a trip to the grocery store, as you have " +
+                groceryCount +
+                ' items on your shopping list.'
+              : groceryCount === 1
+                ? "Doesn't look like you need to go to the store, since you only have 1 item on your shopping list."
+                : "No need to go to the store, don't have anything on your shopping list."}
           </AppText>
         </View>
 
@@ -90,9 +112,19 @@ export const HomeScreen = observer(() => {
             title="Other"
             tasks={otherTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
+            addButton
           />
         </View>
         <ThemeToggle />
+        <TouchableOpacity
+          onPress={() => {
+            router.push('/auth');
+          }}
+          className="flex-row items-center justify-center"
+          activeOpacity={0.8}>
+          <Icon icon={User} size={20} className="text-foreground" />
+          <AppText className="ml-2 font-medium text-foreground">Change account</AppText>
+        </TouchableOpacity>
       </ScrollView>
     </>
   );

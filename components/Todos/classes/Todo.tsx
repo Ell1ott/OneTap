@@ -35,7 +35,7 @@ export class Todo extends Task {
     // Check softDue priority (due within 2 days or overdue)
     const duePriority = !!(this.r.soft_due && this.daysTillSoftDue <= 2);
 
-    return repeatPriority || duePriority;
+    return (repeatPriority || duePriority) && !this.isToday();
   };
 
   get daysSinceLastDone() {
@@ -45,7 +45,7 @@ export class Todo extends Task {
 
   get daysTillSoftDue() {
     if (!this.r.soft_due) return Infinity;
-    return timeBetween(new Date(this.r.soft_due.date as string), new Date()).toDays();
+    return timeBetween(new Date(), new Date(this.r.soft_due.date as string)).toDays();
   }
 
   get isOverdue() {
@@ -92,6 +92,13 @@ export class Todo extends Task {
       if (rounded === 0) return 'Done today';
       if (rounded === 1) return 'Done yesterday';
       return `Done ${rounded} days ago`;
+    }
+    if (this.r.end) {
+      return `Due on ${new Date(this.r.end.date as string).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })}`;
     }
 
     return this.r.note;

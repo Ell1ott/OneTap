@@ -5,11 +5,13 @@ import { FadeInText } from 'components/base/FadeInText';
 import { useApiKeyStore } from 'stores/apiKeyStore';
 import * as Haptics from 'expo-haptics';
 import { TextInput } from 'react-native-gesture-handler';
+
 interface DeepgramTranscriberProps {
   isRecording: boolean;
   audioData?: Uint16Array | null; // Audio data from the recorder
   textClassName?: string;
   finishCallback?: (transcript: string) => void;
+  setIsConnected?: (isConnected: boolean) => void;
 }
 
 export default function DeepgramTranscriber({
@@ -17,6 +19,7 @@ export default function DeepgramTranscriber({
   audioData,
   textClassName,
   finishCallback,
+  setIsConnected: setIsConnectedProp,
 }: DeepgramTranscriberProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { apiKey, isLoading, error, clearError } = useApiKeyStore();
@@ -25,7 +28,11 @@ export default function DeepgramTranscriber({
   const [transcripts, setTranscripts] = useState<string[]>(['']);
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  useEffect(() => {
+    setIsConnectedProp?.(isConnected);
+  }, [isConnected]);
+
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
 
   const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -181,7 +188,7 @@ export default function DeepgramTranscriber({
           style={fontStyle}
           value={textInput}
           onChangeText={setTextInput}
-          placeholder="Go ahead, I'm listening..."
+          placeholder={isConnected ? "Go ahead, I'm listening..." : 'Loading speech recognition...'}
           className={`text-lg outline-none placeholder:text-foreground/40 ${textClassName}`}
           onSubmitEditing={() => {
             finishCallback?.(textInput);
@@ -190,3 +197,5 @@ export default function DeepgramTranscriber({
     />
   );
 }
+
+export { DeepgramTranscriber };

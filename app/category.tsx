@@ -7,7 +7,11 @@ export default function Event() {
     <CategoryDrawer
       category={category as string}
       onClose={() => {
-        router.back();
+        if (router.canGoBack()) {
+          router.back();
+        } else {
+          router.push('/');
+        }
       }}
     />
   );

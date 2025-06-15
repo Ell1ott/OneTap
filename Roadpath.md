@@ -75,7 +75,7 @@ _Not to be confused with differend collections of todos - also a important featu
 
 ### Fun, funky streak notifications
 
-Track any repeating task, and if we notice a streak make AI generate a fun streak message, like: "🎉 Trash Master Extraordinaire! 🗑️ You've taken out the trash 10 weeks in a row! Keep up the stinky work! 💪"
+Track any repeating task, and if we notice a streak make AI generate a fun streak message, like: "🎉 Trash Master Extraordinaire! 🗑️ You've consistently taken out the trash 10 weeks in a row! Keep up the stinky work! 💪"
 
 Just to add some fun into it all (:
 
@@ -238,4 +238,3 @@ Options:
 - Deepseek - cheap, but privacy concerns
 
 All of the above do support tool use / function calling
-
