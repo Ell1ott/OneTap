@@ -207,9 +207,9 @@ export const TapadoodleBox = () => {
             Close();
           }}
           style={{ bottom: height, opacity: backgroundOpacity }}>
-          <View className="rounded-full bg-card px-4 py-2">
+          {isOpen && (<View className="rounded-full bg-card px-4 py-2">
             <AppText>Switch Microphone</AppText>
-          </View>
+          </View>)}
         </AnimatedPressable>
         <Pressable
           className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center "
