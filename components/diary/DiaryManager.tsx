@@ -17,7 +17,7 @@ export const DiaryManager: React.FC<DiaryManagerProps> = ({
   const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
   const [showEntriesList, setShowEntriesList] = useState(false);
 
-  const { currentEntry, hasEntries, createEntry, getTodaysEntry } = useDiaryEntries();
+  const { hasEntries, getTodaysEntry } = useDiaryEntries();
 
   const handleEntrySelect = (entryId: string) => {
     setSelectedEntryId(entryId);
@@ -67,7 +67,7 @@ export const DiaryManager: React.FC<DiaryManagerProps> = ({
               styles.toggleButtonText,
               currentMode === 'editor' && styles.toggleButtonTextActive,
             ]}>
-            Today's Entry
+            Today&apos;s Entry
           </Text>
         </TouchableOpacity>
 

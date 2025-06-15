@@ -4,19 +4,15 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   interpolate,
-  Layout,
-  LinearTransition,
 } from 'react-native-reanimated';
 import AppText, { fontStyle } from '../../base/AppText';
 import { useRef, useEffect, useState } from 'react';
-import { Task, TaskCategory, Todo, Event } from '../classes';
+import { TaskCategory, Todo, Event } from '../classes';
 import { useRouter } from 'expo-router';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
 import { toast } from 'sonner-native';
 import { useTheme } from 'components/ThemeProvider';
-import { $View, $Text, $TextInput } from '@legendapp/state/react-native';
-import { useObservable } from '@legendapp/state/react';
 import { observer } from '@legendapp/state/react';
 
 export const TodoItem = observer(
@@ -40,7 +36,7 @@ export const TodoItem = observer(
     if (!row$.get) return <AppText>Loading...</AppText>;
     const row = row$.get();
     console.log('rerendered item', row.title);
-    const item = new _item.constructor(row);
+    const item = _item.constructor(row);
     const { theme } = useTheme();
     const router = useRouter();
     const inputRef = useRef<TextInput>(null);
@@ -50,8 +46,8 @@ export const TodoItem = observer(
     const isCompleted = item instanceof Todo && item.r.completed?.every(Boolean);
     const isEditable = !(item instanceof TaskCategory) && !isCompleted;
     const strikethroughProgress = useSharedValue(isCompleted ? 1 : 0);
-    const scaleHeight = useSharedValue(0);
 
+    const completed = item instanceof Todo ? item.r.completed : null;
     useEffect(() => {
       if (item instanceof Todo) {
         const allCompleted = item.r.completed?.every(Boolean) || false;
@@ -59,7 +55,7 @@ export const TodoItem = observer(
           duration: 300,
         });
       }
-    }, [item instanceof Todo ? item.r.completed : null]);
+    }, [completed, item, strikethroughProgress]);
 
     useEffect(() => {
       if (isCompleted) {
@@ -142,8 +138,6 @@ export const TodoItem = observer(
     }
 
     console.log('rerender');
-
-    const [isInFocus, setIsInFocus] = useState(false);
 
     console.log('item', item.$().title);
 

@@ -1,29 +1,14 @@
-import { View, Pressable } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Event, TaskCategory, Todo, Task } from 'components/Todos/classes';
-import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { Todo, Task } from 'components/Todos/classes';
+import { useState } from 'react';
 import CategoryDrawer from 'components/screens/CategoryDrawer';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { Tables } from 'utils/supabase/database.types';
-import {
-  todos$ as _todos$,
-  addTodo,
-  events$ as _events$,
-  addEvent,
-  events$,
-  todos$,
-  categories$,
-  tasks$,
-  addCategory,
-  generateId,
-} from 'utils/supabase/SupaLegend';
+import { tasks$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
-import { FlatList } from 'react-native';
 import { observable } from '@legendapp/state';
-import { HumanDateType } from 'components/Todos/types/HumanDate';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -52,7 +37,6 @@ const otherTasksLength$ = observable(() => otherTasks$.get().length);
 
 export const HomeScreen = observer(() => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
-  const [openAddEvent, setOpenAddEvent] = useState(false);
 
   // Use length observables to trigger rerenders only when lengths change
   const todayTasksLength = todayTasksLength$.get();
@@ -86,7 +70,7 @@ export const HomeScreen = observer(() => {
         <View className="mb-10">
           <Greeting />
           <AppText f className="text-base leading-5 text-foregroundMuted">
-            You have 3 assignments due today. And it's probably time for a trip to the grocery
+            You have 3 assignments due today. And it&apos;s probably time for a trip to the grocery
             store, as you have 9 items on your shopping list.
           </AppText>
         </View>

@@ -2,7 +2,6 @@ import AppText from 'components/base/AppText';
 import { View } from 'react-native';
 import { isToday, isTomorrow, timeBetween } from 'utils/dateUtils';
 import { Task } from './Task';
-import { HumanDate } from '../types';
 import { Tables } from 'utils/supabase/database.types';
 import { events$ } from 'utils/supabase/SupaLegend';
 
@@ -18,7 +17,6 @@ export class Event extends Task {
   $ = () => events$[this.r.id as string];
 
   getNextStart = () => {
-    const now = new Date();
     console.log('this.r.start', this.r.start);
 
     const nextStart = this.r.start.sort(

@@ -11,7 +11,6 @@ import { AppState, KeyboardAvoidingView, SafeAreaView, AppStateStatus } from 're
 import { useEffect, useRef, useState } from 'react';
 import { InterFontBase64 } from './InterFontBase64';
 import { DiaryStorage } from '../../utils/diaryStorage';
-import { useDiaryEntries } from '../../utils/useDiaryEntries';
 
 interface RichTextEditorProps {
   entryId?: string; // If provided, edit specific entry. If not, use today's entry
@@ -31,7 +30,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   const appStateRef = useRef(AppState.currentState);
 
   // Use multi-entry hook if in multi-entry mode
-  const multiEntryHook = useDiaryEntries();
+  // const multiEntryHook = useDiaryEntries();
 
   const customFont = `
 ${InterFontBase64}
@@ -187,31 +186,31 @@ ${InterFontBase64}
   }, [content, isLoading, multiEntryMode, currentEntryId]);
 
   // Method to switch to a different entry (for multi-entry mode)
-  const switchToEntry = async (entryId: string) => {
-    if (!multiEntryMode) return;
+  // const switchToEntry = async (entryId: string) => {
+  //   if (!multiEntryMode) return;
 
-    setIsLoading(true);
-    try {
-      const entry = await DiaryStorage.loadEntry(entryId);
-      if (entry) {
-        // Save current content before switching
-        if (content && content.trim() !== '' && currentEntryId) {
-          await DiaryStorage.updateEntryContent(currentEntryId, content);
-        }
+  //   setIsLoading(true);
+  //   try {
+  //     const entry = await DiaryStorage.loadEntry(entryId);
+  //     if (entry) {
+  //       // Save current content before switching
+  //       if (content && content.trim() !== '' && currentEntryId) {
+  //         await DiaryStorage.updateEntryContent(currentEntryId, content);
+  //       }
 
-        setCurrentEntryId(entry.id);
-        setInitialContent(entry.content);
+  //       setCurrentEntryId(entry.id);
+  //       setInitialContent(entry.content);
 
-        // Reset the editor with new content
-        // Note: You might need to implement editor.setContent() method
-        // or recreate the editor with new initial content
-      }
-    } catch (error) {
-      console.error('Failed to switch entry:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //       // Reset the editor with new content
+  //       // Note: You might need to implement editor.setContent() method
+  //       // or recreate the editor with new initial content
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to switch entry:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // Don't render the editor until we've loaded the initial content
   if (isLoading) {

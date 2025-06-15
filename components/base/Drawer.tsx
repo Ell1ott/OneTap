@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { View, Dimensions, BackHandler, ScrollView, Pressable } from 'react-native';
-import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -10,9 +10,8 @@ import Animated, {
   useAnimatedReaction,
   withDecay,
 } from 'react-native-reanimated';
-import { Gesture } from 'react-native-gesture-handler';
 
-const screenWidth = Dimensions.get('window').width;
+// const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height + 20;
 const topMargin = screenHeight * 0.13;
 
@@ -48,7 +47,7 @@ export default function Drawer({
     if (isOpen) {
       translateY.value = withSpring(topMargin, { damping: 20, velocity: 0 });
     }
-  }, [isOpen]);
+  }, [isOpen, translateY]);
 
   // Monitor translateY value and close when threshold is reached
   useAnimatedReaction(

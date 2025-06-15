@@ -1,19 +1,23 @@
 import { View } from 'react-native';
 import TapadoodleSvg from '../../assets/tapadoodle.svg';
 import { DeepgramTranscriber } from '../AudioRecorder/DeepgramTranscriber';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import AppText from '../base/AppText';
 import { Response } from './Response';
 
 export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
-  const [active, setActive] = useState<boolean>(false);
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
   const [transcript, setTranscript] = useState<string | null>(null);
 
   const { transcriptionData, isRecording, requestPermissions, beginRecording, endRecording } =
     useAudioRecording();
+
+  const stopRecording = useCallback(() => {
+    console.log('ending recording');
+    endRecording();
+    setVolumeScale(1);
+  }, [endRecording]);
 
   useEffect(() => {
     console.log('isRecording', isRecording);
@@ -22,7 +26,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
   // Request audio recording permissions
   useEffect(() => {
     requestPermissions();
-  }, []);
+  }, [requestPermissions]);
 
   const scale = useSharedValue(1);
   const animatedStyles = useAnimatedStyle(() => {
@@ -35,7 +39,7 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
     if (isOpen && volumeScale !== undefined) {
       scale.value = withSpring(volumeScale, { damping: 100, stiffness: 400 });
     }
-  }, [volumeScale, isOpen]);
+  }, [volumeScale, isOpen, scale]);
 
   useEffect(() => {
     console.log(isOpen);
@@ -49,19 +53,9 @@ export const Tapadoodle = ({ isOpen }: { isOpen: boolean }) => {
     }
     return () => {
       stopRecording();
-
       console.log('unmounting tapadoodle, so stopping recording');
     };
-  }, [isOpen]);
-
-  async function stopRecording() {
-    console.log('ending recording');
-
-    endRecording();
-    setVolumeScale(1);
-  }
-
-  const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
+  }, [isOpen, beginRecording, stopRecording, setTranscript]);
 
   return (
     <>

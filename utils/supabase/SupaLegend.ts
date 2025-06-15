@@ -181,8 +181,11 @@ export const tasks$ = observable(() => {
   const categories = categories$.get();
   if (!todos || !events || !categories) return [];
   return [
-    ...Object.values(todos).map((t) => new Todo(t)),
-    ...Object.values(events).map((e) => new Event(e)),
-    ...Object.values(categories).map((c) => new TaskCategory(c)),
+    // ...Object.values(todos).map((t) => new Todo(t)),
+    // ...Object.values(events).map((e) => new Event(e)),
+    // ...Object.values(categories).map((c) => new TaskCategory(c)),
+    todos,
+    events,
+    categories
   ];
 });

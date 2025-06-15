@@ -171,7 +171,7 @@ export const DiaryEntriesList: React.FC<DiaryEntriesListProps> = ({
       />
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.actionButton} onPress={handleTodaysEntry}>
-          <Text style={styles.actionButtonText}>Today's Entry</Text>
+          <Text style={styles.actionButtonText}>Today&apos;s Entry</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={handleCreateNew}>
           <Text style={styles.actionButtonText}>New Entry</Text>

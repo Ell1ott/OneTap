@@ -1,11 +1,7 @@
 import AppText from 'components/base/AppText';
-import { Time } from '../types/Time';
 import { JSX } from 'react';
-import { TaskCategory } from './TaskCategory';
-import { Todo } from './Todo';
-import { Event } from './Event';
 import { Tables } from 'utils/supabase/database.types';
-import { categories$ } from 'utils/supabase/SupaLegend';
+import { tasks$ } from 'utils/supabase/SupaLegend';
 
 export class Task {
   r: Tables<'todos'> | Tables<'events'> | Tables<'categories'>;
@@ -14,9 +10,13 @@ export class Task {
     this.r = data;
   }
 
-  get subtext() {
-    return this.r.note;
+  get subtext(): string | null {
+    // return this.r.note;
+    return 'hh';
+    // TODO: Add subtext (Elliott)
   }
+
+  $ = () => tasks$[this.r.id as string];
 
   getSubtextClasses = () => '';
   renderSubtext = () =>

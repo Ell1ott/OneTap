@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Text } from 'react-native';
 import AppText from '../../base/AppText';
 interface GreetingProps {
   name?: string;

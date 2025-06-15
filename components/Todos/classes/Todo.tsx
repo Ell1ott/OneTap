@@ -1,10 +1,8 @@
 import { Task } from './Task';
-import { PartialDate } from '../types/PartialDate';
 import { Time } from '../types/Time';
 import { View } from 'react-native';
 import CheckBox from 'components/base/CheckBox';
-import { HumanDate } from '../types/HumanDate';
-import { JSX } from 'react';
+import type { JSX } from 'react';
 import { Tables } from 'utils/supabase/database.types';
 import { todos$ } from 'utils/supabase/SupaLegend';
 import { isToday, timeBetween } from 'utils/dateUtils';

@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+// eslint-disable-next-line import/no-duplicates
 import 'react-native-gesture-handler';
 import '../global.css';
 import '../utils/polyfills';
@@ -8,6 +9,7 @@ import 'react-native-get-random-values';
 import { useEffect } from 'react';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { Toaster } from 'sonner-native';
+// eslint-disable-next-line import/no-duplicates
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
 import { signInAnonymously } from 'utils/supabase/SupaLegend';

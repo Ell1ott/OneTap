@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import AppText from '../../base/AppText';
 import { TodoList } from '../../Todos/components/TodoList';
-import { Todo, Event, TaskCategory, Task } from 'components/Todos/classes';
+import { Task } from 'components/Todos/classes';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';

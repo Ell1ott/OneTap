@@ -1,7 +1,7 @@
 import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
 import { View, Pressable, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Calendar as CalendarIcon, CalendarPlus } from 'lucide-react-native';
 import DateTimePicker, { useDefaultClassNames, DateType } from 'react-native-ui-datepicker';
 import { Icon } from 'components/base/LucideIcon';
@@ -62,8 +62,6 @@ const SelectableText = ({
 
 export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id: string }) => {
   const event$ = events$[id];
-  const [title, setTitle] = useState(event$.title);
-  const [date, setDate] = useState();
   const [activeTab, setActiveTab] = useState<TabType>('Event');
 
   const startDate = new Date(event$.start[0].date.get() as string);
@@ -76,7 +74,7 @@ export const EventDrawer = observer(({ onClose, id }: { onClose: () => void; id:
         {/* Title */}
         <View className="mb-6">
           <TextInput
-            className="text-3xl font-bold leading-none text-foreground outline-none placeholder:text-foreground/40"
+            className="text-3xl font-bold leading-none outline-none placeholder:text-foreground/40"
             value={event$.title.get() || ''}
             onChangeText={(text) => {
               event$.updated_at.set(new Date().toISOString());
@@ -250,7 +248,6 @@ export function Calendar({
   currentView: 'day' | 'month' | 'year' | 'time';
 }) {
   const defaultClassNames = useDefaultClassNames();
-  const [selected, setSelected] = useState<DateType>();
 
   return (
     <DateTimePicker

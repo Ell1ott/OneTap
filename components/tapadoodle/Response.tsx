@@ -1,26 +1,25 @@
-import { useState } from 'react';
-import { experimental_useObject } from '@ai-sdk/react';
-import FadeInText from 'components/base/FadeInText';
 import { useEffect } from 'react';
+import { experimental_useObject } from '@ai-sdk/react';
+import { FadeInText } from 'components/base/FadeInText';
 import { View } from 'react-native';
 import { z } from 'zod';
 import { TodoAIData, TodoPreviewCard } from './TodoPreviewCard';
-import { Event, Todo } from 'components/Todos/classes';
-import { HumanDate, Time } from 'components/Todos/types';
+import { HumanDate } from 'components/Todos/types';
 import { fetch as expoFetch } from 'expo/fetch';
 import { supabaseAnonAuthHeaders } from 'utils/supabase/supabaseAuth';
 import { TablesInsert } from 'utils/supabase/database.types';
 import { addEvent, addTodo } from 'utils/supabase/SupaLegend';
 import { CustomJson } from 'utils/supabase/customJsonType';
+
 export const Response = ({ transcript }: { transcript: string }) => {
-  const [responseMessage, setResponseMessage] = useState<string>('');
+  // const [responseMessage, setResponseMessage] = useState<string>('');
   const {
     object: _object,
     submit,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isLoading,
   } = experimental_useObject({
     fetch: expoFetch as unknown as typeof globalThis.fetch,
-    // api: 'https://onetap.expo.app/api/stream',
     api: 'https://pobfzmtkkaybunlhhmny.supabase.co/functions/v1/gemini-flash',
     headers: supabaseAnonAuthHeaders,
     schema: z.unknown(),
@@ -142,7 +141,8 @@ export const Response = ({ transcript }: { transcript: string }) => {
         day: 'numeric',
       }),
     });
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transcript]);
 
   useEffect(() => {
     console.log(object);

@@ -1,6 +1,6 @@
 import AppText from 'components/base/AppText';
 import Drawer from 'components/base/Drawer';
-import { View, ScrollView, Pressable } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useState } from 'react';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';

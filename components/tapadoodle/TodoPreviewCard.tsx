@@ -1,7 +1,6 @@
 import { View } from 'react-native';
 import AppText from 'components/base/AppText';
 import { Calendar, Clock, Repeat, AlertCircle } from 'lucide-react-native';
-import { Todo } from 'components/Todos/classes';
 import { HumanDate } from 'components/Todos/types';
 
 export interface TodoAIData {

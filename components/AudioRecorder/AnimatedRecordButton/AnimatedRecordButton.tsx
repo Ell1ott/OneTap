@@ -41,7 +41,7 @@ export const AnimatedRecordButton: React.FC<AnimatedRecordButtonProps> = ({
     if (active && volumeScale !== undefined) {
       scale.value = withSpring(volumeScale, { damping: 100, stiffness: 350 });
     }
-  }, [volumeScale, active]);
+  }, [volumeScale, active, scale]);
 
   const handlePressIn = () => {
     console.log('pressed in');

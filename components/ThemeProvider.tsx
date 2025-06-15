@@ -1,7 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { useColorScheme as useNativeColorScheme } from 'react-native';
-import { useColorScheme } from 'nativewind';
+import React, { createContext, useContext, useState } from 'react';
+import { View, useColorScheme as useNativeColorScheme } from 'react-native';
 import { themes, type ThemeMode, type ColorScheme } from '../utils/theme';
 
 interface ThemeContextType {
@@ -20,7 +18,6 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProviderProps) {
   const deviceTheme = useNativeColorScheme();
-  const { colorScheme, setColorScheme } = useColorScheme();
   const [themeMode, setThemeMode] = useState<ThemeMode>(defaultTheme);
 
   // Determine the actual theme based on mode
@@ -29,31 +26,7 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
 
   const setTheme = (mode: ThemeMode) => {
     setThemeMode(mode);
-
-    if (mode === 'system') {
-      // Let system handle it - don't set explicit colorScheme
-      setColorScheme(deviceTheme === 'dark' ? 'dark' : 'light');
-    } else {
-      // Manual override
-      setColorScheme(mode);
-    }
   };
-
-  // Listen for system theme changes when in system mode
-  useEffect(() => {
-    if (themeMode === 'system') {
-      setColorScheme(deviceTheme === 'dark' ? 'dark' : 'light');
-    }
-  }, [deviceTheme, themeMode, setColorScheme]);
-
-  // Initial setup
-  useEffect(() => {
-    if (themeMode === 'system') {
-      setColorScheme(deviceTheme === 'dark' ? 'dark' : 'light');
-    } else {
-      setColorScheme(themeMode);
-    }
-  }, []);
 
   const contextValue: ThemeContextType = {
     theme: resolvedTheme,

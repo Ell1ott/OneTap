@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Platform } from 'react-native';
 import {
   AudioRecording,
@@ -11,7 +11,6 @@ import { base64ToInt16Array, calculateRMSVolume } from './AudioConversionUtils';
 export const useAudioRecording = () => {
   const [audioResult, setAudioResult] = useState<AudioRecording | null>(null);
   const [transcriptionData, setTranscriptionData] = useState<any | null>(null);
-  const prevTime = useRef<number>(0);
 
   const { startRecording, stopRecording, isRecording, durationMs, size, analysisData } =
     useAudioRecorder();

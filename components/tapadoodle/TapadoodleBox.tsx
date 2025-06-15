@@ -1,18 +1,12 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Dimensions, LayoutChangeEvent, Platform, Pressable, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withSpring,
   useSharedValue,
   interpolateColor,
-  withDelay,
-  useAnimatedReaction,
   runOnJS,
 } from 'react-native-reanimated';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import TapadoodleSvg from '../assets/tapadoodle.svg';
-import AppText from '../base/AppText';
-import DeepgramTranscriber from '../AudioRecorder/DeepgramTranscriber';
 import { Tapadoodle } from './Tapadoodle';
 const SPRING_CONFIG = {
   damping: 30,

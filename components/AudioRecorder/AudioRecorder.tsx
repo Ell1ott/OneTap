@@ -15,7 +15,9 @@ export const AudioRecorder: React.FC = () => {
   // Request audio recording permissions
   useEffect(() => {
     requestPermissions();
-  }, []);
+    // We know requestPermission is stable
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const handlePressOut = () => {
     const newActiveState = !active;

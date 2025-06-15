@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createClient, LiveTranscriptionEvents } from '@deepgram/sdk';
 import { fontStyle } from 'components/base/AppText';
 import { FadeInText } from 'components/base/FadeInText';
@@ -13,17 +12,20 @@ interface DeepgramTranscriberProps {
   finishCallback?: (transcript: string) => void;
 }
 
-export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
+export default function DeepgramTranscriber({
   isRecording,
   audioData,
   textClassName,
   finishCallback,
-}) => {
+}: DeepgramTranscriberProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { apiKey, isLoading, error, clearError } = useApiKeyStore();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [transcript, setTranscript] = useState<string>('');
   const [transcripts, setTranscripts] = useState<string[]>(['']);
   const [socket, setSocket] = useState<any>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [connectionStatus, setConnectionStatus] = useState<string>('Idle');
 
   const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -120,7 +122,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
         setConnectionStatus('Cleanup: Disconnected');
       }
     };
-  }, [isRecording, apiKey, socket]);
+  }, [isRecording, apiKey, socket, textInput]);
 
   // Send audio data to Deepgram when recording
   useEffect(() => {
@@ -134,23 +136,20 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
     }
   }, [isRecording, audioData, socket, isConnected]);
 
-  const [t, setT] = useState<string>('');
-
   // Get the complete transcript text
-  const getCompleteTranscript = () => {
+  const getCompleteTranscript = useCallback(() => {
     return transcripts
       .filter((t) => t.trim() !== '')
       .join(' ')
       .trim();
-    // return t;
-  };
+  }, [transcripts]);
 
   useEffect(() => {
     if (isFinished) {
       finishCallback?.(getCompleteTranscript());
       setIsFinished(false);
     }
-  }, [isFinished]);
+  }, [finishCallback, getCompleteTranscript, isFinished]);
 
   useEffect(() => {
     if (textInput && textInput !== '') {
@@ -159,7 +158,7 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       setIsConnected(false);
       setConnectionStatus('Idle');
     }
-  }, [textInput]);
+  }, [socket, textInput]);
 
   // const exampleTexts = "Hey, I really wanna talk more with Tim. I would optimally call him every 5 days".split(' ');
   // const i = useRef<number>(0);
@@ -190,6 +189,4 @@ export const DeepgramTranscriber: React.FC<DeepgramTranscriberProps> = ({
       }
     />
   );
-};
-
-export default DeepgramTranscriber;
+}
