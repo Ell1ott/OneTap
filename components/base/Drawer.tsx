@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { View, Dimensions, BackHandler, ScrollView, Pressable } from 'react-native';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, {
@@ -35,13 +35,29 @@ export default function Drawer({
   children,
 }: DrawerProps) {
   const shouldClose = useSharedValue(false);
+  const translateY = useSharedValue(screenHeight);
+
+  const closingAnimation = useCallback(
+    (velocityY: number) => {
+      if (!isDismissable) {
+        return;
+      }
+      shouldClose.value = true;
+      translateY.value = withSpring(screenHeight, {
+        stiffness: 200,
+        damping: 20,
+        velocity: velocityY,
+      });
+    },
+    [isDismissable, shouldClose, translateY]
+  );
 
   useEffect(() => {
     if (startClose) {
       closingAnimation(0);
       console.log('startClose', startClose);
     }
-  }, [startClose]);
+  }, [closingAnimation, startClose]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -52,7 +68,7 @@ export default function Drawer({
   }, [onClose]);
 
   // Gesture handler values
-  const translateY = useSharedValue(screenHeight);
+  const startY = useSharedValue(0);
 
   useEffect(() => {
     if (isOpen) {
@@ -72,8 +88,6 @@ export default function Drawer({
       }
     }
   );
-
-  const startY = useSharedValue(0);
 
   const gestureHandler = Gesture.Pan()
     .onStart(() => {
@@ -121,18 +135,6 @@ export default function Drawer({
       transform: [{ translateY: translateY.value }],
     };
   });
-
-  function closingAnimation(velocityY: number) {
-    if (!isDismissable) {
-      return;
-    }
-    shouldClose.value = true;
-    translateY.value = withSpring(screenHeight, {
-      stiffness: 200,
-      damping: 20,
-      velocity: velocityY,
-    });
-  }
 
   // Background overlay style that becomes more transparent as we swipe
   const backgroundStyle = useAnimatedStyle(() => {
