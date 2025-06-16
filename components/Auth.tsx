@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, AppState, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, AppState, TextInput, TouchableOpacity } from 'react-native';
 import {
   addDeafultTasks,
   categories$,
