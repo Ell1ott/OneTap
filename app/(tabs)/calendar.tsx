@@ -1,5 +1,4 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet, TextInput, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Home } from 'lucide-react-native';
 
@@ -24,7 +23,7 @@ export default function TabTwoScreen() {
 
       {/* Subtitle */}
       <AppText className="text-muted-foreground mb-6 text-center text-lg leading-6">
-        I'm working hard to bring you an amazing calendar experience
+        I&apos;m working hard to bring you an amazing calendar experience
       </AppText>
 
       {/* Description */}
