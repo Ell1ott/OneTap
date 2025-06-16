@@ -1,4 +1,4 @@
-import { EventDrawer } from 'components/screens/EventEditor/EventDrawer';
+import { EventDrawer } from 'components/screens/EventDrawer';
 import { router, useLocalSearchParams } from 'expo-router';
 
 export default function EventRoute() {
@@ -8,8 +8,7 @@ export default function EventRoute() {
     <EventDrawer
       id={id as string}
       onClose={() => {
-        if (router.canGoBack()) router.back();
-        else router.push('/');
+        router.back();
       }}
     />
   );

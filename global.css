@@ -78,7 +78,7 @@ body,
     background-color: hsl(var(--color-foreground));
   }
 
-  #root > div:first-child {
+  #root > div {
     max-width: clamp(350px, 43vh, 430px);
     max-height: 93vh;
     aspect-ratio: 9 / 19.5;

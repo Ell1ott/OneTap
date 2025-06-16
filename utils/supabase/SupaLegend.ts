@@ -6,12 +6,11 @@ import { observablePersistAsyncStorage } from '@legendapp/state/persist-plugins/
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { Database, Tables, TablesInsert } from './database.types';
+import { Database, TablesInsert } from './database.types';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { Platform } from 'react-native';
-import { router } from 'expo-router';
 
-export const supabase = createClient<Database>(
+const supabase = createClient<Database>(
   process.env.EXPO_PUBLIC_SUPABASE_URL!,
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
   {
@@ -33,60 +32,48 @@ export async function signInAnonymously() {
 
     setTimeout(() => {
       console.log('adding initial tasks');
-      addDeafultTasks();
+      addTodo({
+        title: 'Walk the dog',
+        note: 'Twice every day',
+        completed: [true, false],
+      });
+      addEvent({
+        title: 'Volleyball practice',
+        start: [
+          {
+            date: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
+            isTimeKnown: true,
+          },
+        ],
+      });
+      addCategory({
+        title: 'Groceries',
+      });
+      addCategory({
+        title: 'Homework',
+      });
+      addTodo({
+        title: 'Clean Room',
+        note: 'Done 4 days ago',
+        completed: [false],
+        soft_repeat: { days: 7 },
+      });
+      addTodo({
+        title: 'Milk',
+        completed: [false],
+        category: 'Groceries',
+      });
+      addTodo({
+        title: 'Bread',
+        completed: [false],
+        category: 'Groceries',
+      });
     }, 1000);
 
     return data;
   } else {
     console.log('fej', await supabase.auth.getSession());
   }
-}
-
-export async function addDeafultTasks() {
-  const date = new Date(+new Date() + 1000).toISOString();
-  addTodo({
-    title: 'Walk the dog',
-    note: 'Twice every day',
-    completed: [true, false],
-    updated_at: date,
-  });
-  addEvent({
-    title: 'Volleyball practice',
-    start: [
-      {
-        date: new Date(new Date().setHours(17, 0, 0, 0)).toISOString(),
-        isTimeKnown: true,
-      },
-    ],
-    updated_at: date,
-  });
-  addCategory({
-    title: 'Groceries',
-    updated_at: date,
-  });
-  addCategory({
-    title: 'Homework',
-    updated_at: date,
-  });
-  addTodo({
-    title: 'Clean Room',
-    note: 'Done 4 days ago',
-    completed: [false],
-    soft_repeat: { days: 7 },
-    updated_at: date,
-  });
-  addTodo({
-    title: 'Milk',
-    completed: [false],
-    category: 'Groceries',
-    updated_at: date,
-  });
-  addTodo({
-    title: 'Bread',
-    completed: [false],
-    category: 'Groceries',
-    updated_at: date,
-  });
 }
 
 export const generateId = () => uuidv4();
@@ -160,31 +147,6 @@ export const categories$ = observable(
   })
 );
 
-export const user$ = observable<Tables<'users'> | null>(null);
-
-supabase.auth.onAuthStateChange(async (event, session) => {
-  console.log('sb auth change', event, session);
-  if (event === 'INITIAL_SESSION' && !session) {
-    console.log('pushing to auth');
-    // router.push('/auth'); TODO
-  }
-  setTimeout(async () => {
-    if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('user_id', session.user.id)
-        .single();
-      if (error) {
-        
-        console.error(error);
-      }
-      console.log('user', data);
-      if (data) user$.set(data);
-    }
-  }, 10);
-});
-
 export function addTodo(todo: TablesInsert<'todos'>) {
   const id = generateId();
   // Add keyed by id to the todos$ observable to trigger a create in Supabase
@@ -219,8 +181,11 @@ export const tasks$ = observable(() => {
   const categories = categories$.get();
   if (!todos || !events || !categories) return [];
   return [
-    ...Object.values(todos).map((t) => new Todo(t)),
-    ...Object.values(events).map((e) => new Event(e)),
-    ...Object.values(categories).map((c) => new TaskCategory(c)),
+    // ...Object.values(todos).map((t) => new Todo(t)),
+    // ...Object.values(events).map((e) => new Event(e)),
+    // ...Object.values(categories).map((c) => new TaskCategory(c)),
+    todos,
+    events,
+    categories
   ];
 });

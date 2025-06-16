@@ -13,7 +13,7 @@ import Animated, {
 
 // const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height + 20;
-const topMargin = screenHeight * 0.12;
+const topMargin = screenHeight * 0.13;
 
 interface DrawerProps {
   isOpen: boolean;
@@ -21,27 +21,16 @@ interface DrawerProps {
   children: React.ReactNode;
   scrollEnabled?: boolean;
   className?: string;
-  isDismissable?: boolean;
-  startClose?: boolean;
 }
 
 export default function Drawer({
   isOpen,
-  startClose = false,
   onClose,
   scrollEnabled = true,
-  isDismissable = true,
   className,
   children,
 }: DrawerProps) {
   const shouldClose = useSharedValue(false);
-
-  useEffect(() => {
-    if (startClose) {
-      closingAnimation(0);
-      console.log('startClose', startClose);
-    }
-  }, [startClose]);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -92,9 +81,8 @@ export default function Drawer({
     })
     .onEnd((event) => {
       const shouldGoBack =
-        isDismissable &&
-        ((event.translationY + startY.value > topMargin + 10 && event.velocityY > 100) ||
-          event.velocityY > 2000);
+        (event.translationY + startY.value > topMargin + 10 && event.velocityY > 100) ||
+        event.velocityY > 2000;
 
       if (shouldGoBack) {
         runOnJS(closingAnimation)(event.velocityY);
@@ -123,9 +111,6 @@ export default function Drawer({
   });
 
   function closingAnimation(velocityY: number) {
-    if (!isDismissable) {
-      return;
-    }
     shouldClose.value = true;
     translateY.value = withSpring(screenHeight, {
       stiffness: 200,
