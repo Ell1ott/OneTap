@@ -35,6 +35,7 @@ export const TodoItem = observer(
 
     if (!row$.get) return <AppText>Loading...</AppText>;
     const row = row$.get();
+    if (!row) return <AppText>Loading...</AppText>;
     console.log('rerendered item', row.title);
     const item = _item.constructor(row);
     const { theme } = useTheme();
