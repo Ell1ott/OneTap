@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import AppText, { fontStyle } from '../../base/AppText';
 import { useRef, useEffect, useState } from 'react';
-import { TaskCategory, Todo, Event } from '../classes';
+import { TaskCategory, Todo, Event, Task } from '../classes';
 import { useRouter } from 'expo-router';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TodoActions } from './TodoActions';
@@ -24,7 +24,7 @@ export const TodoItem = observer(
     classname,
     onCategoryPress,
   }: {
-    item: Todo | Event | TaskCategory;
+    item: Task;
     editing?: boolean;
     onnoteChange?: (note: string) => void;
     shouldFocus?: boolean;
