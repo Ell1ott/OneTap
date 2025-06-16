@@ -46,6 +46,7 @@ export default function RootLayout() {
             options={{
               headerShown: false,
               presentation: 'transparentModal',
+              animation: 'slide_from_right',
             }}
           />
           <Stack.Screen
