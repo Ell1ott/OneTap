@@ -37,6 +37,7 @@ export type Database = {
           deleted: boolean | null;
           emoji: string | null;
           id: string;
+          note: string | null;
           title: string;
           updated_at: string | null;
           user_id: string | null;
@@ -47,6 +48,7 @@ export type Database = {
           deleted?: boolean | null;
           emoji?: string | null;
           id?: string;
+          note?: string | null;
           title: string;
           updated_at?: string | null;
           user_id?: string | null;
@@ -57,6 +59,7 @@ export type Database = {
           deleted?: boolean | null;
           emoji?: string | null;
           id?: string;
+          note?: string | null;
           title?: string;
           updated_at?: string | null;
           user_id?: string | null;
@@ -115,6 +118,35 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: 'events_category_fkey';
+            columns: ['category'];
+            isOneToOne: false;
+            referencedRelation: 'categories';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      permissions: {
+        Row: {
+          category: string;
+          created_at: string;
+          id: number;
+          user_id: string;
+        };
+        Insert: {
+          category: string;
+          created_at?: string;
+          id?: number;
+          user_id?: string;
+        };
+        Update: {
+          category?: string;
+          created_at?: string;
+          id?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'permissions_category_fkey';
             columns: ['category'];
             isOneToOne: false;
             referencedRelation: 'categories';

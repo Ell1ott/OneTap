@@ -38,7 +38,7 @@ export const TodoItem = observer(
     if (!row$.get) return <AppText>Loading...</AppText>;
     const row = row$.get();
     console.log('rerendered item', row.title);
-    const item = _item.constructor(row);
+    const item = new (_item.constructor as new (row: any) => Todo | Event | TaskCategory)(row);
     const { theme } = useTheme();
     const router = useRouter();
     const inputRef = useRef<TextInput>(null);
@@ -107,7 +107,7 @@ export const TodoItem = observer(
       } else if (item instanceof TaskCategory) {
         router.push({
           pathname: '/category',
-          params: { category: item.r.title },
+          params: { id: item.r.id },
         });
       } else if (item instanceof Event) {
         router.push({

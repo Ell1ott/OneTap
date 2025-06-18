@@ -11,6 +11,7 @@ import { observer } from '@legendapp/state/react';
 const CategoryDrawer = observer(
   ({ id, onClose }: { id: string; onClose: () => void }) => {
     const tasks = tasks$.get();
+
     const category$ = categories$[id];
     const category = category$.get();
     if (!category) {

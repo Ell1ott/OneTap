@@ -11,13 +11,12 @@ export class Task {
   }
 
   get subtext(): string | null {
-    // return this.r.note;
-    return 'hh';
+    return this.r.note;
+    // return 'hh';
     // TODO: Add subtext (Elliott)
   }
 
-  $ = () => tasks$[this.r.id as string];
-  // TODO IDK?
+  // TODO: figure out if we even should extend all the classes from Task
 
   getSubtextClasses = () => '';
   renderSubtext = () =>

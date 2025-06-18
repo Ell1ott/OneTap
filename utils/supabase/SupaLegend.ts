@@ -75,18 +75,18 @@ export async function addDeafultTasks() {
     soft_repeat: { days: 7 },
     updated_at: date,
   });
-  addTodo({
-    title: 'Milk',
-    completed: [false],
-    category: 'Groceries',
-    updated_at: date,
-  });
-  addTodo({
-    title: 'Bread',
-    completed: [false],
-    category: 'Groceries',
-    updated_at: date,
-  });
+  // addTodo({
+  //   title: 'Milk',
+  //   completed: [false],
+  //   category: 'Groceries',
+  //   updated_at: date,
+  // });
+  // addTodo({
+  //   title: 'Bread',
+  //   completed: [false],
+  //   category: 'Groceries',
+  //   updated_at: date,
+  // });
 }
 
 export const generateId = () => uuidv4();
