@@ -15,7 +15,6 @@ export const Tapadoodle = ({
   isOpen: boolean;
   currentDevice: AudioDevice;
 }) => {
-  // const [active, setActive] = useState<boolean>(false);
   const [volumeScale, setVolumeScale] = useState<number | undefined>(1);
   const [transcript, setTranscript] = useState<string | null>(null);
   const scale = useSharedValue(1);
