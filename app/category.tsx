@@ -5,7 +5,7 @@ export default function Event() {
   const { id } = useLocalSearchParams();
   return (
     <CategoryDrawer
-      category={id as string}
+      id={id as string}
       onClose={() => {
         if (router.canGoBack()) {
           router.back();
