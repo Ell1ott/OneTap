@@ -1,12 +1,12 @@
 import { View } from 'react-native';
 import TapadoodleSvg from '../../assets/tapadoodle.svg';
 import { DeepgramTranscriber } from '../AudioRecorder/DeepgramTranscriber';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAudioRecording } from 'utils/useAudioRecording';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Response } from './Response';
 import { usePathname } from 'expo-router';
-import { AudioDevice, useAudioDevices } from '@siteed/expo-audio-studio';
+import { AudioDevice } from '@siteed/expo-audio-studio';
 
 export const Tapadoodle = ({
   isOpen,
@@ -71,15 +71,9 @@ export const Tapadoodle = ({
     };
   }, [isOpen]);
 
-  const transcriberRef = useRef<typeof DeepgramTranscriber>(null);
-
   const currentRoute = usePathname();
 
   const [transcriptionConnected, setTranscriptionConnected] = useState<boolean>(false);
-
-  const audioDevices = useAudioDevices();
-
-  const [deviceModalVisible, setDeviceModalVisible] = useState<boolean>(false);
 
   return (
     <>
