@@ -89,8 +89,8 @@ export const HomeScreen = observer(() => {
             You have {homeworkCount === 0 ? 'no' : homeworkCount} assignments due.{' '}
             {groceryCount > 1
               ? "And it's probably time for a trip to the grocery store, as you have " +
-                groceryCount +
-                ' items on your shopping list.'
+              groceryCount +
+              ' items on your shopping list.'
               : groceryCount === 1
                 ? "Doesn't look like you need to go to the store, since you only have 1 item on your shopping list."
                 : "No need to go to the store, don't have anything on your shopping list."}

@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { TodoItem } from './TodoItem';
-import { Task, Event } from '../classes';
+import { Task, Event, Todo, TaskCategory } from '../classes';
 import { useEffect, useState } from 'react';
 
 export const TodoList = ({
@@ -8,7 +8,7 @@ export const TodoList = ({
   lastAddedTodoId,
   onCategoryPress,
 }: {
-  tasks: Task[];
+  tasks: (Todo | Event | TaskCategory)[];
   lastAddedTodoId?: string;
   onCategoryPress: (category: string) => void;
 }) => {
@@ -40,7 +40,7 @@ export const TodoList = ({
         .map((task, i) => (
           <TodoItem
             key={task.r.id}
-            item={task.$()}
+            item={task}
             shouldFocus={task.r.id === focusedTodoId}
             classname={i !== 0 ? 'border-t-[1.5px] border-t-foregroundMuted/15' : ''}
             onCategoryPress={onCategoryPress}

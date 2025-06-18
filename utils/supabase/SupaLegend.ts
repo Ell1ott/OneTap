@@ -176,7 +176,6 @@ supabase.auth.onAuthStateChange(async (event, session) => {
         .eq('user_id', session.user.id)
         .single();
       if (error) {
-        
         console.error(error);
       }
       console.log('user', data);
