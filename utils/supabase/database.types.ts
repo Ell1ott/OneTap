@@ -37,7 +37,7 @@ export type Database = {
           deleted: boolean | null;
           emoji: string | null;
           id: string;
-          title: string | null;
+          title: string;
           updated_at: string | null;
           user_id: string | null;
         };
@@ -47,7 +47,7 @@ export type Database = {
           deleted?: boolean | null;
           emoji?: string | null;
           id?: string;
-          title?: string | null;
+          title: string;
           updated_at?: string | null;
           user_id?: string | null;
         };
@@ -57,7 +57,7 @@ export type Database = {
           deleted?: boolean | null;
           emoji?: string | null;
           id?: string;
-          title?: string | null;
+          title?: string;
           updated_at?: string | null;
           user_id?: string | null;
         };
@@ -112,7 +112,15 @@ export type Database = {
           updated_at?: string | null;
           user_id?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'events_category_fkey';
+            columns: ['category'];
+            isOneToOne: false;
+            referencedRelation: 'categories';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       todos: {
         Row: {
@@ -175,7 +183,15 @@ export type Database = {
           updated_at?: string | null;
           user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'todos_category_fkey';
+            columns: ['category'];
+            isOneToOne: false;
+            referencedRelation: 'categories';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       users: {
         Row: {

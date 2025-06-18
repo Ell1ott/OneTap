@@ -5,33 +5,38 @@ import { useState } from 'react';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus } from 'lucide-react-native';
-import { addTodo, tasks$ } from 'utils/supabase/SupaLegend';
+import { addTodo, categories$, tasks$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 
 const CategoryDrawer = observer(
-  ({ category, onClose }: { category: string; onClose: () => void }) => {
+  ({ id, onClose }: { id: string; onClose: () => void }) => {
     const tasks = tasks$.get();
+    const category$ = categories$[id];
+    const category = category$.get();
+    if (!category) {
+      return <View className="flex-1 items-center justify-center">
+        <AppText className="text-center text-foregroundMuted">Category not found</AppText>
+      </View>;
+    }
     console.log('tasks', tasks);
     const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
 
     // Filter tasks by category
     const categoryTasks = tasks.filter((task: Todo | Event | TaskCategory) => {
       if (task instanceof Todo) {
-        return task.r.category?.toLowerCase() === category.toLowerCase();
+        return task.r.category?.toLowerCase() === category?.title?.toLowerCase();
       }
-      // For TaskCategory items, you might want to include them based on some logic
-      // For now, let's exclude them from category filtering
       return false;
     });
 
     console.log(categoryTasks);
 
-    const categoryName = category?.charAt(0).toUpperCase() + category?.slice(1) || 'Category';
+    const categoryName = category.title.charAt(0).toUpperCase() + category.title.slice(1) || 'Category';
 
     const handleAddTask = () => {
       const newId = addTodo({
         title: '',
-        category: category || '',
+        category: category.id,
       });
       setLastAddedTodoId(newId);
     };
