@@ -61,10 +61,6 @@ export async function addDeafultTasks() {
     updated_at: date,
   });
   addCategory({
-    title: 'Groceries',
-    updated_at: date,
-  });
-  addCategory({
     title: 'Homework',
     updated_at: date,
   });
@@ -75,6 +71,33 @@ export async function addDeafultTasks() {
     soft_repeat: { days: 7 },
     updated_at: date,
   });
+
+  const { data, error } = await supabase
+    .from('categories')
+    .insert({
+      title: 'Groceries',
+      updated_at: date,
+    })
+    .select()
+    .single();
+
+  if (data) {
+    const groceriesCategoryId = data.id;
+    categories$[groceriesCategoryId].set(data);
+    addTodo({
+      title: 'Milk',
+      completed: [false],
+      category: groceriesCategoryId,
+      updated_at: date,
+    });
+    addTodo({
+      title: 'Bread',
+      completed: [false],
+      category: groceriesCategoryId,
+      updated_at: date,
+    });
+  }
+  console.log('groceries', data);
   // addTodo({
   //   title: 'Milk',
   //   completed: [false],

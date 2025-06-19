@@ -6,35 +6,23 @@ import { Task } from 'components/Todos/classes';
 import { Plus } from 'lucide-react-native';
 import { useState } from 'react';
 import { HapticTab } from 'components/HapticTab';
-import { addTodo, generateId } from 'utils/supabase/SupaLegend';
 
 interface TodoSectionProps {
   title: string;
   tasks: Task[];
 
   onCategoryPress: (category: string) => void;
-  addButton?: boolean;
+  addAction?: () => void;
 }
 
 export const TodoSection: React.FC<TodoSectionProps> = ({
   title,
   tasks,
-  addButton,
+  addAction,
 
   onCategoryPress,
 }) => {
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string | undefined>();
-
-  const handleAddTodo = () => {
-    const newId = generateId();
-    addTodo({
-      id: generateId(),
-      title: '',
-      completed: [false],
-      note: '',
-    });
-    setLastAddedTodoId(newId);
-  };
 
   return (
     <View>
@@ -42,8 +30,8 @@ export const TodoSection: React.FC<TodoSectionProps> = ({
         <AppText f className="mb-1 text-lg font-extrabold text-foreground/60">
           {title}
         </AppText>
-        {addButton && (
-          <HapticTab className="rounded-full text-foreground/60" onPress={handleAddTodo}>
+        {addAction && (
+          <HapticTab className="rounded-full text-foreground/60" onPress={addAction}>
             <Plus size={20} className="text-foreground/60" />
           </HapticTab>
         )}

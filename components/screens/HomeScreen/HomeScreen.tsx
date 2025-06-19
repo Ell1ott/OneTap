@@ -5,7 +5,7 @@ import { Greeting } from 'components/screens/HomeScreen/Greeting';
 import { Todo, Task } from 'components/Todos/classes';
 import { useState } from 'react';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { tasks$, todos$ } from 'utils/supabase/SupaLegend';
+import { addCategory, addTodo, generateId, tasks$, todos$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { observable } from '@legendapp/state';
 import { router } from 'expo-router';
@@ -50,6 +50,16 @@ const subGreetingStats$ = observable(() => {
   };
 });
 
+const handleAddTodo = () => {
+  const newId = generateId();
+  addTodo({
+    id: generateId(),
+    title: '',
+    completed: [false],
+    note: '',
+  });
+};
+
 export const HomeScreen = observer(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -89,8 +99,8 @@ export const HomeScreen = observer(() => {
             You have {homeworkCount === 0 ? 'no' : homeworkCount} assignments due.{' '}
             {groceryCount > 1
               ? "And it's probably time for a trip to the grocery store, as you have " +
-              groceryCount +
-              ' items on your shopping list.'
+                groceryCount +
+                ' items on your shopping list.'
               : groceryCount === 1
                 ? "Doesn't look like you need to go to the store, since you only have 1 item on your shopping list."
                 : "No need to go to the store, don't have anything on your shopping list."}
@@ -107,12 +117,15 @@ export const HomeScreen = observer(() => {
             title="Priority"
             tasks={priorityTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
+            addAction={() =>
+              addCategory({ title: 'Priority', emoji: '🔥', note: 'Priority tasks' })
+            }
           />
           <TodoSection
             title="Other"
             tasks={otherTasks}
             onCategoryPress={(category) => setOpenCategory(category)}
-            addButton
+            addAction={handleAddTodo}
           />
         </View>
         <ThemeToggle />
