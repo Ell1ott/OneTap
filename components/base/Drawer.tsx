@@ -178,15 +178,13 @@ export default function Drawer({
       <GestureDetector gesture={gestureHandler}>
         <Animated.View
           style={[{ flex: 1, width: '100%', maxWidth: 480, alignSelf: 'center' }, animatedStyle]}>
-          <ScrollView
-            className={`flex-none rounded-t-[45px] ${className}`}
+          <View
+            className={`flex-none rounded-t-[45px] ${className} flex-1 px-9 pb-6 pt-12 `}
             style={{
               height: 2000,
-            }}
-            contentContainerClassName="px-9 pt-12 pb-6 flex-1 h-[100rem]"
-            keyboardDismissMode="on-drag">
+            }}>
             {children}
-          </ScrollView>
+          </View>
         </Animated.View>
       </GestureDetector>
     </View>

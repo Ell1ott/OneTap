@@ -87,13 +87,6 @@ const CategoryList = observer(
   }) => {
     const tasks = tasks$.get();
     const category = category$.get();
-    if (!category) {
-      return (
-        <View className="flex-1 items-center justify-center">
-          <AppText className="text-center text-foregroundMuted">Category not found</AppText>
-        </View>
-      );
-    }
     console.log('tasks', tasks);
     const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
 
