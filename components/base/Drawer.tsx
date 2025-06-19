@@ -10,9 +10,13 @@ import Animated, {
   useAnimatedReaction,
   withDecay,
 } from 'react-native-reanimated';
+import { getActualHeight } from 'utils/screenSizeUtils';
 
 // const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height + 20;
+const screenHeight = getActualHeight(
+  Dimensions.get('window').width,
+  Dimensions.get('window').height
+);
 const topMargin = screenHeight * 0.12;
 
 interface DrawerProps {
@@ -183,7 +187,7 @@ export default function Drawer({
             style={{
               height: 2000,
             }}>
-            {children}
+            <View style={{ minHeight: screenHeight - 48 - topMargin - 24 }}>{children}</View>
           </View>
         </Animated.View>
       </GestureDetector>

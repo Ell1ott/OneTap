@@ -19,6 +19,7 @@ import { Tapadoodle } from './Tapadoodle';
 import { router, usePathname } from 'expo-router';
 import { useAudioDevices } from '@siteed/expo-audio-studio';
 import AppText from 'components/base/AppText';
+import { getActualWidth } from 'utils/screenSizeUtils';
 
 const SPRING_CONFIG = {
   damping: 30,
@@ -29,28 +30,7 @@ export const TapadoodleBox = () => {
   const _screenWidth = Dimensions.get('window').width;
   const _screenHeight = Dimensions.get('window').height;
 
-  // Get screen width - for web, calculate based on CSS media query rules
-  const getActualWidth = () => {
-    if (Platform.OS === 'web') {
-      const aspectRatio = _screenWidth / _screenHeight;
-
-      // Check if we're in the desktop layout (min-aspect-ratio: 3/4)
-      if (aspectRatio >= 3 / 4) {
-        // Calculate the clamp(350px, 43vh, 430px) value
-        const viewportHeight = _screenHeight;
-        const clampedWidth = Math.max(350, Math.min(0.43 * viewportHeight, 430));
-        return clampedWidth;
-      }
-
-      // Mobile web layout - use full width
-      return _screenWidth;
-    }
-
-    // Native mobile - subtract 10px as before
-    return _screenWidth - 10;
-  };
-
-  const screenWidth = getActualWidth();
+  const screenWidth = getActualWidth(_screenWidth, _screenHeight);
 
   const [isOpen, setIsOpen] = useState(false);
   // const [dynamicHeight, setDynamicHeight] = useState(false);
@@ -201,9 +181,11 @@ export const TapadoodleBox = () => {
             Close();
           }}
           style={{ bottom: height, opacity: backgroundOpacity }}>
-          {isOpen && (<View className="rounded-full bg-card px-4 py-2">
-            <AppText>Switch Microphone</AppText>
-          </View>)}
+          {isOpen && (
+            <View className="rounded-full bg-card px-4 py-2">
+              <AppText>Switch Microphone</AppText>
+            </View>
+          )}
         </AnimatedPressable>
         <Pressable
           className="absolute bottom-0 z-10 h-full w-full items-center justify-end self-center "

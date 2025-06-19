@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import { Event, TaskCategory, Todo } from 'components/Todos/classes';
 import { TodoList } from 'components/Todos/components/TodoList';
 import { ChevronLeft, Plus, Users } from 'lucide-react-native';
-import { addTodo, categories$, supabase, tasks$ } from 'utils/supabase/SupaLegend';
+import { addTodo, categories$, supabase, tasks$, todos$ } from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { Tables } from 'utils/supabase/database.types';
 import { TextInput } from 'react-native';
-import { Observable } from '@legendapp/state';
+import { observable, Observable } from '@legendapp/state';
+import { toast } from 'sonner-native';
 
 const CategoryDrawer = ({
   id,
@@ -35,12 +36,36 @@ const CategoryContent = observer(
     if (action === 'share') {
       useEffect(() => {
         const addPermission = async () => {
-          const { data, error } = await supabase.from('permissions').insert({
-            category: id,
-          });
+          const { data, error } = await supabase
+            .from('permissions')
+            .insert({
+              category: id,
+            })
+            .select()
+            .single();
           if (error) {
             console.error(error);
           }
+
+          const newCategoryId = data?.category;
+
+          if (!newCategoryId) {
+            toast.error('Failed to add you to the category');
+            return;
+          }
+
+          const { data: newCategory, error: newCategoryError } = await supabase
+            .from('categories')
+            .select('*')
+            .eq('id', newCategoryId)
+            .single();
+
+          if (newCategoryError) {
+            toast.error('Failed to add you to the category');
+            return;
+          }
+
+          categories$[id].set(newCategory);
         };
         addPermission();
       }, []);
@@ -95,7 +120,7 @@ const CategoryList = observer(
       if (task instanceof Todo) {
         return (
           task.r.category?.toLowerCase() === category?.title?.toLowerCase() ||
-          task.r.category?.toLowerCase() === category?.id
+          task.r.category?.toLowerCase() === category?.id?.toLowerCase()
         );
       }
       return false;
@@ -109,18 +134,25 @@ const CategoryList = observer(
       const newId = addTodo({
         title: '',
         category: category.id,
+        completed: [false],
       });
       setLastAddedTodoId(newId);
     };
 
-    const completedCount = categoryTasks.filter(
-      (task: Todo | Event | TaskCategory) =>
-        task instanceof Todo && task.r.completed?.every(Boolean)
-    ).length;
+    const completedCount$ = observable(() => {
+      return Object.values(todos$.get())
+        .filter(
+          (todo: Tables<'todos'>) =>
+            todo.category?.toLowerCase() === category?.title?.toLowerCase() ||
+            todo.category?.toLowerCase() === category?.id?.toLowerCase()
+        )
+        .filter((todo: Tables<'todos'>) => todo.completed?.every(Boolean)).length;
+    });
 
     const totalTodos = categoryTasks.filter(
       (task: Todo | Event | TaskCategory) => task instanceof Todo
     ).length;
+    const completedCount = completedCount$.get();
     const pendingCount = totalTodos - completedCount;
 
     return (
@@ -173,7 +205,7 @@ const CategoryList = observer(
         {/* Add Task Button */}
         <Pressable
           onPress={handleAddTask}
-          className="mt-auto flex-row items-center justify-center rounded-xl bg-card p-4">
+          className=" mt-auto flex-row items-center justify-center rounded-xl bg-card p-4">
           <Plus size={20} className="mr-2 text-foregroundMuted" />
           <AppText className="text-foregroundMuted">Add new task</AppText>
         </Pressable>
