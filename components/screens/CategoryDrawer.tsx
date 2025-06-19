@@ -11,6 +11,7 @@ import { Tables } from 'utils/supabase/database.types';
 import { TextInput } from 'react-native';
 import { observable, Observable } from '@legendapp/state';
 import { toast } from 'sonner-native';
+import { router } from 'expo-router';
 
 const CategoryDrawer = ({
   id,
@@ -33,185 +34,179 @@ const CategoryContent = observer(
     const category$ = categories$[id];
     const category = category$.get();
 
-    if (action === 'share') {
-      useEffect(() => {
-        const addPermission = async () => {
-          const { data, error } = await supabase
-            .from('permissions')
-            .insert({
-              category: id,
-            })
-            .select()
-            .single();
-          if (error) {
-            console.error(error);
-          }
-
-          const newCategoryId = data?.category;
-
-          if (!newCategoryId) {
-            toast.error('Failed to add you to the category');
-            return;
-          }
-
-          const { data: newCategory, error: newCategoryError } = await supabase
-            .from('categories')
-            .select('*')
-            .eq('id', newCategoryId)
-            .single();
-
-          if (newCategoryError) {
-            toast.error('Failed to add you to the category');
-            return;
-          }
-
-          categories$[id].set(newCategory);
-        };
-        addPermission();
-      }, []);
-      return (
-        <View className="h-[30%] items-center justify-center px-8">
-          {/* Loading Animation Container */}
-
-          {/* Icon and Spinner */}
-
-          <View className="mb-2">
-            <ActivityIndicator size={40} color="#007AFF" />
-          </View>
-
-          {/* Main Text */}
-          <AppText className="mb-2 text-center text-xl font-semibold text-foreground">
-            Joining Category
-          </AppText>
-
-          {/* Subtitle */}
-          <AppText className="text-center text-base leading-6 text-foregroundMuted">
-            Adding you to the shared category...{'\n'}
-          </AppText>
-        </View>
-      );
+    if (action === 'share' && !category) {
+      return <CategoryShare id={id} />;
     }
-    if (!category) {
-      return (
-        <View className="flex-1 items-center justify-center">
-          <AppText className="text-center text-foregroundMuted">Category not found</AppText>
-        </View>
-      );
-    }
-    return <CategoryList category$={category$} onClose={onClose} />;
+
+    return <CategoryList id={id} onClose={onClose} />;
   }
 );
 
-const CategoryList = observer(
-  ({
-    category$,
-    onClose,
-  }: {
-    category$: Observable<Tables<'categories'>>;
-    onClose: () => void;
-  }) => {
-    const tasks = tasks$.get();
-    const category = category$.get();
-    console.log('tasks', tasks);
-    const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
-
-    // Filter tasks by category
-    const categoryTasks = tasks.filter((task: Todo | Event | TaskCategory) => {
-      if (task instanceof Todo) {
-        return (
-          task.r.category?.toLowerCase() === category?.title?.toLowerCase() ||
-          task.r.category?.toLowerCase() === category?.id?.toLowerCase()
-        );
+const CategoryShare = ({ id }: { id: string }) => {
+  useEffect(() => {
+    const addPermission = async () => {
+      const { data, error } = await supabase
+        .from('permissions')
+        .insert({
+          category: id,
+        })
+        .select()
+        .single();
+      if (error) {
+        console.error(error);
       }
-      return false;
-    });
 
-    console.log(categoryTasks);
+      const newCategoryId = data?.category;
 
-    const categoryName = category.title;
+      if (!newCategoryId) {
+        toast.error('Failed to add you to the category');
+        return;
+      }
 
-    const handleAddTask = () => {
-      const newId = addTodo({
-        title: '',
-        category: category.id,
-        completed: [false],
-      });
-      setLastAddedTodoId(newId);
+      const { data: newCategory, error: newCategoryError } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('id', newCategoryId)
+        .single();
+
+      if (newCategoryError) {
+        toast.error('Failed to add you to the category');
+        return;
+      }
+
+      categories$[id].set(newCategory);
     };
+    addPermission();
+  }, []);
+  return (
+    <View className="h-[30%] items-center justify-center px-8">
+      {/* Loading Animation Container */}
 
-    const completedCount$ = observable(() => {
-      return Object.values(todos$.get())
-        .filter(
-          (todo: Tables<'todos'>) =>
-            todo.category?.toLowerCase() === category?.title?.toLowerCase() ||
-            todo.category?.toLowerCase() === category?.id?.toLowerCase()
-        )
-        .filter((todo: Tables<'todos'>) => todo.completed?.every(Boolean)).length;
+      {/* Icon and Spinner */}
+
+      <View className="mb-2">
+        <ActivityIndicator size={40} color="#007AFF" />
+      </View>
+
+      {/* Main Text */}
+      <AppText className="mb-2 text-center text-xl font-semibold text-foreground">
+        Joining Category
+      </AppText>
+
+      {/* Subtitle */}
+      <AppText className="text-center text-base leading-6 text-foregroundMuted">
+        Adding you to the shared category...{'\n'}
+      </AppText>
+    </View>
+  );
+};
+
+const CategoryList = observer(({ id, onClose }: { id: string; onClose: () => void }) => {
+  const tasks = tasks$.get();
+  const category$ = categories$[id];
+  const category = category$.get();
+
+  console.log('tasks', tasks);
+  const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
+
+  // Filter tasks by category
+  const categoryTasks = tasks.filter((task: Todo | Event | TaskCategory) => {
+    if (task instanceof Todo) {
+      return (
+        task.r.category?.toLowerCase() === category?.title?.toLowerCase() ||
+        task.r.category?.toLowerCase() === category?.id?.toLowerCase()
+      );
+    }
+    return false;
+  });
+
+  console.log(categoryTasks);
+
+  const categoryName = category.title;
+
+  const handleAddTask = () => {
+    const newId = addTodo({
+      title: '',
+      category: category.id,
+      completed: [false],
     });
+    setLastAddedTodoId(newId);
+  };
 
-    const totalTodos = categoryTasks.filter(
-      (task: Todo | Event | TaskCategory) => task instanceof Todo
-    ).length;
-    const completedCount = completedCount$.get();
-    const pendingCount = totalTodos - completedCount;
+  const completedCount$ = observable(() => {
+    const todos = todos$.get();
+    if (!todos$.get()) return 0;
+    return Object.values(todos$.get())
+      .filter(
+        (todo: Tables<'todos'>) =>
+          todo.category?.toLowerCase() === category?.title?.toLowerCase() ||
+          todo.category?.toLowerCase() === category?.id?.toLowerCase()
+      )
+      .filter((todo: Tables<'todos'>) => todo.completed?.every(Boolean)).length;
+  });
 
-    return (
-      <>
-        {/* Header */}
-        <View className="mb-6">
-          <View className="mb-4 flex-row items-center">
-            <Pressable onPress={onClose} className="-ml-2 mr-4 p-2">
-              <ChevronLeft size={24} className="text-foregroundMuted" />
-            </Pressable>
-            <TextInput
-              placeholder="Category name"
-              style={fontStyle}
-              className="text-3xl font-bold outline-none placeholder:text-foreground/40"
-              value={category.title}
-              onChangeText={(text) => {
-                category$.updated_at.set(new Date().toISOString());
-                category$.title.set(text);
-              }}
-            />
-          </View>
+  const totalTodos = categoryTasks.filter(
+    (task: Todo | Event | TaskCategory) => task instanceof Todo
+  ).length;
+  const completedCount = completedCount$.get();
+  const pendingCount = totalTodos - completedCount;
 
-          <AppText className="text-base leading-5 text-foregroundMuted">
-            {pendingCount > 0
-              ? `${pendingCount} task${pendingCount !== 1 ? 's' : ''} remaining${completedCount > 0 ? `, ${completedCount} completed` : ''}`
-              : totalTodos > 0
-                ? 'All tasks completed! 🎉'
-                : 'No tasks yet'}
-          </AppText>
+  return (
+    <>
+      {/* Header */}
+      <View className="mb-6">
+        <View className="mb-4 flex-row items-center">
+          <Pressable onPress={onClose} className="-ml-2 mr-4 p-2">
+            <ChevronLeft size={24} className="text-foregroundMuted" />
+          </Pressable>
+          <TextInput
+            placeholder="Category name"
+            style={fontStyle}
+            className="text-3xl font-bold outline-none placeholder:text-foreground/40"
+            value={category.title}
+            onChangeText={(text) => {
+              category$.updated_at.set(new Date().toISOString());
+              category$.title.set(text);
+            }}
+          />
         </View>
 
-        {/* Tasks List */}
-        {categoryTasks.length > 0 && (
-          <TodoList
-            tasks={categoryTasks}
-            lastAddedTodoId={lastAddedTodoId}
-            onCategoryPress={onClose}
-          />
-        )}
+        <AppText className="text-base leading-5 text-foregroundMuted">
+          {pendingCount > 0
+            ? `${pendingCount} task${pendingCount !== 1 ? 's' : ''} remaining${completedCount > 0 ? `, ${completedCount} completed` : ''}`
+            : totalTodos > 0
+              ? 'All tasks completed! 🎉'
+              : 'No tasks yet'}
+        </AppText>
+      </View>
 
-        {/* Empty state when no tasks */}
-        {categoryTasks.length === 0 && (
-          <View className="flex-1 items-center justify-center">
-            <AppText className="mb-4 text-center text-foregroundMuted">
-              No tasks in this category yet.{'\n'}Add your first task below!
-            </AppText>
-          </View>
-        )}
+      {/* Tasks List */}
+      {categoryTasks.length > 0 && (
+        <TodoList
+          tasks={categoryTasks}
+          lastAddedTodoId={lastAddedTodoId}
+          onCategoryPress={onClose}
+        />
+      )}
 
-        {/* Add Task Button */}
-        <Pressable
-          onPress={handleAddTask}
-          className=" mt-auto flex-row items-center justify-center rounded-xl bg-card p-4">
-          <Plus size={20} className="mr-2 text-foregroundMuted" />
-          <AppText className="text-foregroundMuted">Add new task</AppText>
-        </Pressable>
-      </>
-    );
-  }
-);
+      {/* Empty state when no tasks */}
+      {categoryTasks.length === 0 && (
+        <View className="flex-1 items-center justify-center">
+          <AppText className="mb-4 text-center text-foregroundMuted">
+            No tasks in this category yet.{'\n'}Add your first task below!
+          </AppText>
+        </View>
+      )}
+
+      {/* Add Task Button */}
+      <Pressable
+        onPress={handleAddTask}
+        className=" mt-auto flex-row items-center justify-center rounded-xl bg-card p-4">
+        <Plus size={20} className="mr-2 text-foregroundMuted" />
+        <AppText className="text-foregroundMuted">Add new task</AppText>
+      </Pressable>
+    </>
+  );
+});
 
 export default CategoryDrawer;
