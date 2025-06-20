@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function RootLayout() {
   const pathname = usePathname();
+  const params = useLocalSearchParams();
   console.log(uuidv4());
   useEffect(() => {
     // signInAnonymously().then((data) => {
@@ -41,8 +42,12 @@ export default function RootLayout() {
   useEffect(() => {
     if (openAuth) {
       const redirectToAuth = async () => {
-        console.log('pushing to auth', pathname);
-        await AsyncStorage.setItem('redirectUrl', pathname);
+        const fullPathname =
+          pathname +
+          (Object.keys(params).length > 0
+            ? '?' + new URLSearchParams(params as any).toString()
+            : '');
+        await AsyncStorage.setItem('redirectUrl', fullPathname);
         router.push('/auth');
       };
       redirectToAuth();
