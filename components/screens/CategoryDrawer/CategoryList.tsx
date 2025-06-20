@@ -77,7 +77,7 @@ const CategoryList = observer(({ id, onClose }: { id: string; onClose: () => voi
   const pendingCount = totalTodos - completedCount;
 
   // Generate share URL and content
-  const shareUrl = `https://onetap.app/category?id=${id}&action=share`;
+  const shareUrl = `https://onetap.elliottf.dk/category?id=${id}&action=share`;
   const shareText = `Check out my "${categoryName}" category with ${totalTodos} task${totalTodos !== 1 ? 's' : ''}!`;
 
   const handleCopyLink = async () => {
