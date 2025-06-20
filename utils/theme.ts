@@ -12,7 +12,7 @@ export const themes = {
     '--color-background': '216 25% 96%',
     '--color-card': '0 0% 100%',
     '--color-foreground': '221 39% 11%',
-    '--color-foreground-muted': '215 14% 34%',
+    '--color-foreground-muted': '215 14% 50%',
     '--color-accent': '208 88% 61%',
     '--color-accent-muted': '214 71% 74%',
     '--color-border': '214 32% 91%',

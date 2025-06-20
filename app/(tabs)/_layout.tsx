@@ -3,9 +3,10 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 import { HapticTab } from 'components/HapticTab';
 import TabBarBackground from 'components/ui/TabBarBackground';
-import { Calendar, Feather, Plane } from 'lucide-react-native';
+import { Calendar, Feather, Plane, Home } from 'lucide-react-native';
 import { TapadoodleBox } from 'components/tapadoodle/TapadoodleBox';
 import { useTheme } from '../../components/ThemeProvider';
+import { Icon } from 'components/base/LucideIcon';
 
 // import * as ExpoCalendar from 'expo-calendar';
 export default function TabLayout() {
@@ -75,14 +76,26 @@ export default function TabLayout() {
           name="diary"
           options={{
             title: 'Diary',
-            tabBarIcon: ({ color }) => <Feather size={30} color={color} />,
+            tabBarIcon: ({ color, focused }) => (
+              <Icon
+                size={25}
+                icon={Feather}
+                className={focused ? 'text-foreground/90' : 'text-foregroundMuted/70'}
+              />
+            ),
           }}
         />
         <Tabs.Screen
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ color }) => <Plane size={30} color={color} />,
+            tabBarIcon: ({ color, focused }) => (
+              <Icon
+                size={25}
+                icon={Home}
+                className={focused ? 'text-foreground/90' : 'text-foregroundMuted/70'}
+              />
+            ),
             tabBarButton: (props) => (
               <View className="-m-100" style={[StyleSheet.absoluteFillObject]} />
             ),
@@ -92,7 +105,13 @@ export default function TabLayout() {
           name="calendar"
           options={{
             title: 'Calendar',
-            tabBarIcon: ({ color }) => <Calendar size={30} color={color} />,
+            tabBarIcon: ({ color, focused }) => (
+              <Icon
+                size={25}
+                icon={Calendar}
+                className={focused ? 'text-foreground/90' : 'text-foregroundMuted/70'}
+              />
+            ),
           }}
         />
       </Tabs>

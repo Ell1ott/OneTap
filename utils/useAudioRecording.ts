@@ -42,7 +42,7 @@ export const useAudioRecording = () => {
         sampleRate: 16000,
         channels: 1,
         encoding: 'pcm_16bit',
-        deviceId: currentDevice?.id,
+        deviceId: currentDevice.id !== 'default' ? currentDevice.id : undefined,
 
         onAudioStream: async (audioStreamEvent) => {
           if (audioStreamEvent && audioStreamEvent.data) {

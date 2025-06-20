@@ -20,8 +20,8 @@ export const Tapadoodle = ({
   const scale = useSharedValue(1);
 
   useEffect(() => {
-    if (!isOpen) scale.value = withSpring(1, { damping: 100, stiffness: 400 });
-    else scale.value = withSpring(0.8, { damping: 100, stiffness: 400 });
+    if (!isOpen) scale.value = withSpring(0.8, { damping: 100, stiffness: 400 });
+    else scale.value = withSpring(1, { damping: 100, stiffness: 400 });
   }, [isOpen, scale]);
 
   const { transcriptionData, isRecording, requestPermissions, beginRecording, endRecording } =
@@ -36,7 +36,6 @@ export const Tapadoodle = ({
   useEffect(() => {
     console.log('isRecording', isRecording);
   }, [isRecording]);
-
   // Request audio recording permissions
   useEffect(() => {
     requestPermissions();
@@ -57,6 +56,7 @@ export const Tapadoodle = ({
   useEffect(() => {
     console.log(isOpen);
     if (isOpen) {
+      console.log('beginning recording', currentDevice);
       beginRecording(currentDevice, (newScale) => {
         setVolumeScale(newScale);
       });
