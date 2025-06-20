@@ -238,3 +238,16 @@ Options:
 - Deepseek - cheap, but privacy concerns
 
 All of the above do support tool use / function calling
+
+### Next steps
+
+A very rought and simpel implementation of OneTap has now been implemented. It has been tested and works on Web and Android. You can create events, todos and categories. You can share categories with people.
+
+But what now? what is missing to make the app actually usefull? Why couldnt it be fully used atm? What is missing to make it magicl?
+
+Things needed to make it usable:
+
+- Fully manuel control over calender events
+  - Repetetion
+- Calender view
+- Notifications and reminders
