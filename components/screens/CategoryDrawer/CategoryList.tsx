@@ -24,6 +24,14 @@ const CategoryList = observer(({ id, onClose }: { id: string; onClose: () => voi
   const category$ = categories$[id];
   const category = category$.get();
 
+  if (!category) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <AppText>Category not found</AppText>
+      </View>
+    );
+  }
+
   console.log('tasks', tasks);
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
   const [shareModalVisible, setShareModalVisible] = useState(false);
@@ -38,8 +46,6 @@ const CategoryList = observer(({ id, onClose }: { id: string; onClose: () => voi
     }
     return false;
   });
-
-  console.log(categoryTasks);
 
   const categoryName = category.title;
 
@@ -196,6 +202,7 @@ const CategoryList = observer(({ id, onClose }: { id: string; onClose: () => voi
           tasks={categoryTasks}
           lastAddedTodoId={lastAddedTodoId}
           onCategoryPress={onClose}
+          className="mb-4"
         />
       )}
 

@@ -1,4 +1,10 @@
-import { router, Stack } from 'expo-router';
+import {
+  router,
+  Stack,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+  usePathname,
+} from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 // eslint-disable-next-line import/no-duplicates
@@ -14,7 +20,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import '../assets/font.css';
 import { signInAnonymously, supabase } from 'utils/supabase/SupaLegend';
 import { v4 as uuidv4 } from 'uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function RootLayout() {
+  const pathname = usePathname();
   console.log(uuidv4());
   useEffect(() => {
     // signInAnonymously().then((data) => {
@@ -32,7 +40,12 @@ export default function RootLayout() {
   });
   useEffect(() => {
     if (openAuth) {
-      router.push('/auth');
+      const redirectToAuth = async () => {
+        console.log('pushing to auth', pathname);
+        await AsyncStorage.setItem('redirectUrl', pathname);
+        router.push('/auth');
+      };
+      redirectToAuth();
     }
   }, [openAuth]);
 

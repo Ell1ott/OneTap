@@ -7,10 +7,12 @@ export const TodoList = ({
   tasks,
   lastAddedTodoId,
   onCategoryPress,
+  className,
 }: {
   tasks: (Todo | Event | TaskCategory)[];
   lastAddedTodoId?: string;
   onCategoryPress: (category: string) => void;
+  className?: string;
 }) => {
   const [focusedTodoId, setFocusedTodoId] = useState<string | null>(null);
 
@@ -24,7 +26,7 @@ export const TodoList = ({
   }, [lastAddedTodoId]);
 
   return (
-    <View className="overflow-hidden rounded-xl bg-card">
+    <View className={`overflow-hidden rounded-xl bg-card ${className}`}>
       {tasks
         .sort((a, b) => {
           const av =

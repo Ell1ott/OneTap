@@ -3,6 +3,7 @@ import Auth from 'components/Auth';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { supabase } from 'utils/supabase/SupaLegend';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AuthScreen() {
   const [shouldClose, setShouldClose] = useState(false);
@@ -16,7 +17,13 @@ export default function AuthScreen() {
       isOpen={true}
       startClose={shouldClose}
       onClose={() => {
-        router.push('/');
+        AsyncStorage.getItem('redirectUrl').then((redirectUrl) => {
+          if (redirectUrl && redirectUrl !== '/auth') {
+            router.push(redirectUrl as any);
+          } else {
+            router.push('/');
+          }
+        });
       }}
       isDismissable={isDismissable}
       className="bg-card"
