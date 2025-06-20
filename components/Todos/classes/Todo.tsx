@@ -120,8 +120,9 @@ export class Todo extends Task {
         <CheckBox
           key={index}
           checked={completed}
-          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${index === (this.r.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
-            }`}
+          classname={` ${index === 0 ? 'pl-24 -ml-24' : ''} ${
+            index === (this.r.completed?.length || 0) - 1 ? 'pr-6 -mr-6' : ''
+          }`}
           onToggle={() => {
             const newCompleted = [...(this.r.completed || [])];
             newCompleted[index] = !newCompleted[index];

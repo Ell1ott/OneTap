@@ -5,7 +5,14 @@ import { Greeting } from 'components/screens/HomeScreen/Greeting';
 import { Todo, Task } from 'components/Todos/classes';
 import { useState } from 'react';
 import { ThemeToggle } from 'components/ThemeToggle';
-import { addCategory, addTodo, generateId, tasks$, todos$ } from 'utils/supabase/SupaLegend';
+import {
+  addCategory,
+  addTodo,
+  events$,
+  generateId,
+  tasks$,
+  todos$,
+} from 'utils/supabase/SupaLegend';
 import { observer } from '@legendapp/state/react';
 import { observable } from '@legendapp/state';
 import { router } from 'expo-router';
@@ -14,6 +21,8 @@ import { Icon } from 'components/base/LucideIcon';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
+  const todos = todos$.get();
+  const events = events$.get();
   return tasks
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => t.isToday());
@@ -21,6 +30,8 @@ const todayTasks$ = observable(() => {
 
 const priorityTasks$ = observable(() => {
   const tasks = tasks$.get();
+  const todos = todos$.get();
+  const events = events$.get();
   return tasks
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => t.isPriority());
@@ -28,6 +39,8 @@ const priorityTasks$ = observable(() => {
 
 const otherTasks$ = observable(() => {
   const tasks = tasks$.get();
+  const todos = todos$.get();
+  const events = events$.get();
   return tasks
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
     .filter((t: Task) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category));
