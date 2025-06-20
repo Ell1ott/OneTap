@@ -32,7 +32,8 @@ export const TodoItem = observer(
     onCategoryPress: (category: string) => void;
   }) => {
     if (!_item) return <AppText>Loading...</AppText>;
-    if (!(_item instanceof Todo || _item instanceof Event || _item instanceof TaskCategory)) return <AppText>Wrong type: {JSON.stringify(_item)}</AppText>;
+    if (!(_item instanceof Todo || _item instanceof Event || _item instanceof TaskCategory))
+      return <AppText>Wrong type: {JSON.stringify(_item)}</AppText>;
     const row$ = _item.$();
 
     if (!row$.get) return <AppText>Loading...</AppText>;
@@ -163,7 +164,7 @@ export const TodoItem = observer(
                       <AppText className="text-xl font-medium leading-7">{item.r.emoji}</AppText>
                     )}
                     <Animated.View style={animatedTextStyle}>
-                      <Pressable onPress={() => { }}>
+                      <Pressable onPress={() => {}}>
                         <TextInput
                           className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
                           placeholder="New task..."

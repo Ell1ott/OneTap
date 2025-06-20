@@ -133,9 +133,15 @@ export const HomeScreen = observer(() => {
               title="Priority"
               tasks={priorityTasks}
               onCategoryPress={(category) => setOpenCategory(category)}
-              addAction={() =>
-                addCategory({ title: 'Priority', emoji: '🔥', note: 'Priority tasks' })
-              }
+              addAction={() => {
+                const newCategoryId = addCategory({ title: '', note: '' });
+                router.push({
+                  pathname: '/category',
+                  params: {
+                    id: newCategoryId,
+                  },
+                });
+              }}
             />
           )}
           {otherTasksLength > 0 && (

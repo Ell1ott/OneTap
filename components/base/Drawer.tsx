@@ -183,9 +183,9 @@ export default function Drawer({
         <Animated.View
           style={[{ flex: 1, width: '100%', maxWidth: 480, alignSelf: 'center' }, animatedStyle]}>
           <View
-            className={`flex-none rounded-t-[45px] ${className} flex-1 px-9 pb-6 pt-12 `}
+            className={`flex-1 rounded-t-[45px] ${className} flex-1 px-9 pb-6 pt-12 `}
             style={{
-              height: 2000,
+              height: 5000,
             }}>
             <View style={{ minHeight: screenHeight - 48 - topMargin - 24 }}>{children}</View>
           </View>
