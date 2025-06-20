@@ -121,25 +121,31 @@ export const HomeScreen = observer(() => {
         </View>
 
         <View className="flex-1 gap-6">
-          <TodoSection
-            title="Today"
-            tasks={todaysTasks}
-            onCategoryPress={(category) => setOpenCategory(category)}
-          />
-          <TodoSection
-            title="Priority"
-            tasks={priorityTasks}
-            onCategoryPress={(category) => setOpenCategory(category)}
-            addAction={() =>
-              addCategory({ title: 'Priority', emoji: '🔥', note: 'Priority tasks' })
-            }
-          />
-          <TodoSection
-            title="Other"
-            tasks={otherTasks}
-            onCategoryPress={(category) => setOpenCategory(category)}
-            addAction={handleAddTodo}
-          />
+          {todayTasksLength > 0 && (
+            <TodoSection
+              title="Today"
+              tasks={todaysTasks}
+              onCategoryPress={(category) => setOpenCategory(category)}
+            />
+          )}
+          {priorityTasksLength > 0 && (
+            <TodoSection
+              title="Priority"
+              tasks={priorityTasks}
+              onCategoryPress={(category) => setOpenCategory(category)}
+              addAction={() =>
+                addCategory({ title: 'Priority', emoji: '🔥', note: 'Priority tasks' })
+              }
+            />
+          )}
+          {otherTasksLength > 0 && (
+            <TodoSection
+              title="Other"
+              tasks={otherTasks}
+              onCategoryPress={(category) => setOpenCategory(category)}
+              addAction={handleAddTodo}
+            />
+          )}
         </View>
         <ThemeToggle />
         <TouchableOpacity
