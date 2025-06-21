@@ -27,7 +27,7 @@ export const TodoSection: React.FC<TodoSectionProps> = ({
   return (
     <View>
       <View className="flex-row items-center justify-between">
-        <AppText f className="mb-1 text-lg font-extrabold text-foreground/60">
+        <AppText f className="mb-1 text-lg font-thin text-foreground/60">
           {title}
         </AppText>
         {addAction && (

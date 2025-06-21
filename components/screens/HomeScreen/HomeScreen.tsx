@@ -18,6 +18,7 @@ import { observable } from '@legendapp/state';
 import { router } from 'expo-router';
 import { User } from 'lucide-react-native';
 import { Icon } from 'components/base/LucideIcon';
+import { TitleSection } from './TitleSection';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -104,8 +105,9 @@ export const HomeScreen = observer(() => {
 
       <ScrollView
         className="flex-1 bg-background"
-        contentContainerClassName="px-6 pt-16 pb-6"
+        contentContainerClassName="px-4 pt-16 pb-6"
         keyboardDismissMode="on-drag">
+        <TitleSection />
         <View className="mb-10"></View>
 
         <View className="flex-1 gap-6">
