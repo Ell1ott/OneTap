@@ -106,19 +106,7 @@ export const HomeScreen = observer(() => {
         className="flex-1 bg-background"
         contentContainerClassName="px-6 pt-16 pb-6"
         keyboardDismissMode="on-drag">
-        <View className="mb-10">
-          <Greeting />
-          <AppText f className="text-base leading-5 text-foregroundMuted">
-            You have {homeworkCount === 0 ? 'no' : homeworkCount} assignments due.{' '}
-            {groceryCount > 1
-              ? "And it's probably time for a trip to the grocery store, as you have " +
-                groceryCount +
-                ' items on your shopping list.'
-              : groceryCount === 1
-                ? "Doesn't look like you need to go to the store, since you only have 1 item on your shopping list."
-                : "No need to go to the store, don't have anything on your shopping list."}
-          </AppText>
-        </View>
+        <View className="mb-10"></View>
 
         <View className="flex-1 gap-6">
           {todayTasksLength > 0 && (
