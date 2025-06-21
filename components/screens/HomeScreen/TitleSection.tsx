@@ -9,11 +9,11 @@ export const TitleSection = () => {
   const dateString = `${day} ${month}`;
 
   return (
-    <View className="flex-row gap-2">
-      <AppText f className="mb-1 text-[2rem] font-extrabold text-foreground">
+    <View className="mb-2 flex-row gap-2 p-1">
+      <AppText f className="mb-1 text-3xl font-extrabold text-foreground">
         Overview
       </AppText>
-      <AppText f className="text-[2rem] font-extrabold text-foreground/50">
+      <AppText f className="text-3xl font-extrabold text-foreground/50">
         {dateString}
       </AppText>
     </View>

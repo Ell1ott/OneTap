@@ -106,10 +106,8 @@ export const HomeScreen = observer(() => {
 
       <ScrollView
         className="flex-1 bg-background"
-        contentContainerClassName="px-4 pt-16 pb-6"
+        contentContainerClassName="px-4 pt-10 pb-6"
         keyboardDismissMode="on-drag">
-        <View className="mb-10"></View>
-
         <TitleSection />
         <CategorySection />
         <View className="flex-1 gap-6">
