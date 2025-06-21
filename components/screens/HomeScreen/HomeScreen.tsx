@@ -2,7 +2,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import AppText from 'components/base/AppText';
 import { TodoSection } from 'components/screens/HomeScreen/TodoSection';
 import { Greeting } from 'components/screens/HomeScreen/Greeting';
-import { Todo, Task } from 'components/Todos/classes';
+import { Todo, Task, TaskCategory } from 'components/Todos/classes';
 import { useState } from 'react';
 import { ThemeToggle } from 'components/ThemeToggle';
 import {
@@ -45,7 +45,13 @@ const otherTasks$ = observable(() => {
   const events = events$.get();
   return tasks
     .filter((t: Task) => t.r.title !== undefined && t.r.title !== null)
-    .filter((t: Task) => !t.isToday() && !t.isPriority() && !(t instanceof Todo && t.r.category));
+    .filter(
+      (t: Task) =>
+        !t.isToday() &&
+        !t.isPriority() &&
+        !(t instanceof Todo && t.r.category) &&
+        !(t instanceof TaskCategory)
+    );
 });
 // Length-based observables for performance optimization
 const todayTasksLength$ = observable(() => todayTasks$.get().length);

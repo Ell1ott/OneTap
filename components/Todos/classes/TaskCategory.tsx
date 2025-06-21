@@ -14,7 +14,7 @@ export class TaskCategory extends Task {
 
   $ = () => categories$[this.r.id as string];
 
-  isPriority = () => true;
+  isPriority = () => false;
 
   EndContent = () => (
     <View className="items-center justify-center self-center">
