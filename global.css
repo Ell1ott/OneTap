@@ -20,6 +20,7 @@
     --color-muted-foreground: 215 20% 35%;
     --color-destructive: 0 84% 60%;
     --color-destructive-foreground: 210 40% 98%;
+    --color-sim-bg: 215, 14%, 34%;
   }
 
   /* Dark theme */
@@ -40,6 +41,7 @@
       --color-muted-foreground: 215 20% 65%;
       --color-destructive: 0 84% 60%;
       --color-destructive-foreground: 210 40% 98%;
+      --color-sim-bg: 210 10% 48%;
     }
   }
 }
@@ -61,6 +63,7 @@
   --color-muted-foreground: 215 20% 65%;
   --color-destructive: 0 84% 60%;
   --color-destructive-foreground: 210 40% 98%;
+  --color-sim-bg: 210 10% 48%;
 }
 
 html,
@@ -75,7 +78,7 @@ body,
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: hsl(var(--color-foreground));
+    background-color: hsl(var(--color-sim-bg));
   }
 
   #root > div:first-child {
