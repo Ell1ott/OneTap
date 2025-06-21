@@ -35,7 +35,7 @@ export const CategoryCard = observer(({ id, index }: { id: string; index: number
   ];
   const randomColor = colors[index % colors.length];
   return (
-    <View key={category.id} className={`bg- flex-1 flex-row gap-1 rounded-xl ${randomColor} p-4`}>
+    <View key={category.id} className={`flex-1 flex-row gap-1 rounded-xl ${randomColor} p-4`}>
       <AppText className="text-lg font-medium text-foreground">{undoneTodos.length}</AppText>
       <AppText className="text-lg font-medium text-foreground/50">{category.title}</AppText>
     </View>
