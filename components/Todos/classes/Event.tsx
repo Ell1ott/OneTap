@@ -57,9 +57,8 @@ export class Event extends Task {
     if (isToday(nextStart.date)) {
       return (
         <>
-          <AppText className="text-foregroundMuted">At</AppText>
-          <View className="m-0 -my-0.5 rounded-[4px] bg-accent/70 px-1 font-medium text-foregroundMuted">
-            <AppText>
+          <View className="m-0 mt-1 rounded-[4px] bg-indigo-100 px-1 py-0.5 font-medium">
+            <AppText className="text-xs text-indigo-500">
               {nextStart.date.toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',

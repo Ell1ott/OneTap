@@ -1,9 +1,10 @@
 import AppText from 'components/base/AppText';
 import { observer } from '@legendapp/state/react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { categories$, todos$ } from 'utils/supabase/SupaLegend';
 import { TaskCategory } from 'components/Todos/classes';
 import { Tables } from 'utils/supabase/database.types';
+import { router } from 'expo-router';
 
 export const CategorySection = observer(() => {
   const categories = Object.values(categories$.get(true));
@@ -35,9 +36,19 @@ export const CategoryCard = observer(({ id, index }: { id: string; index: number
   ];
   const randomColor = colors[index % colors.length];
   return (
-    <View key={category.id} className={`flex-1 flex-row gap-1 rounded-xl ${randomColor} p-4`}>
+    <Pressable
+      onPress={() => {
+        router.push({
+          pathname: '/category',
+          params: {
+            id: category.id,
+          },
+        });
+      }}
+      key={category.id}
+      className={`flex-1 flex-row gap-1 rounded-xl ${randomColor} p-4`}>
       <AppText className="text-lg font-medium text-foreground">{undoneTodos.length}</AppText>
       <AppText className="text-lg font-medium text-foreground/50">{category.title}</AppText>
-    </View>
+    </Pressable>
   );
 });
