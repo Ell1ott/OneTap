@@ -32,7 +32,6 @@ const CategoryList = observer(({ id, onClose }: { id: string; onClose: () => voi
     );
   }
 
-  console.log('tasks', tasks);
   const [lastAddedTodoId, setLastAddedTodoId] = useState<string>();
   const [shareModalVisible, setShareModalVisible] = useState(false);
 

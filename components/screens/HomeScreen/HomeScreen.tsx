@@ -19,6 +19,7 @@ import { router } from 'expo-router';
 import { User } from 'lucide-react-native';
 import { Icon } from 'components/base/LucideIcon';
 import { TitleSection } from './TitleSection';
+import { CategorySection } from './CategorySection';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -92,13 +93,13 @@ export const HomeScreen = observer(() => {
   const otherTasks = otherTasks$.peek();
   const tasks: Task[] = tasks$.peek();
 
+  console.log('rerendering homescreen');
+
   console.log(todaysTasks.length, priorityTasks.length, otherTasks.length);
 
   if (!todaysTasks || !priorityTasks || !otherTasks) return <AppText>Loading...</AppText>;
 
   const { groceryCount, homeworkCount } = subGreetingStats$.get();
-
-  console.log('tasks', todaysTasks);
   return (
     <>
       {/* <Todos todos$={_todos$} /> */}
@@ -107,9 +108,10 @@ export const HomeScreen = observer(() => {
         className="flex-1 bg-background"
         contentContainerClassName="px-4 pt-16 pb-6"
         keyboardDismissMode="on-drag">
-        <TitleSection />
         <View className="mb-10"></View>
 
+        <TitleSection />
+        <CategorySection />
         <View className="flex-1 gap-6">
           {todayTasksLength > 0 && (
             <TodoSection
