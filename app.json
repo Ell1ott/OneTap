@@ -41,20 +41,39 @@
                 "fontFamily": "Inter",
                 "fontDefinitions": [
                   {
-                    "path": "node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf",
-                    "weight": 600
+                    "path": "node_modules/@expo-google-fonts/inter/100Thin/Inter_100Thin.ttf",
+                    "weight": 100
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/100Thin_Italic/Inter_100Thin_Italic.ttf",
+                    "weight": 100,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/200ExtraLight/Inter_200ExtraLight.ttf",
+                    "weight": 200
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/200ExtraLight_Italic/Inter_200ExtraLight_Italic.ttf",
+                    "weight": 200,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/300Light/Inter_300Light.ttf",
+                    "weight": 300
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/300Light_Italic/Inter_300Light_Italic.ttf",
+                    "weight": 300,
+                    "style": "italic"
                   },
                   {
                     "path": "node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf",
                     "weight": 400
                   },
                   {
-                    "path": "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
-                    "weight": 700
-                  },
-                  {
-                    "path": "node_modules/@expo-google-fonts/inter/500Medium_Italic/Inter_500Medium_Italic.ttf",
-                    "weight": 500,
+                    "path": "node_modules/@expo-google-fonts/inter/400Regular_Italic/Inter_400Regular_Italic.ttf",
+                    "weight": 400,
                     "style": "italic"
                   },
                   {
@@ -62,8 +81,44 @@
                     "weight": 500
                   },
                   {
-                    "path": "node_modules/@expo-google-fonts/inter/400Regular_Italic/Inter_400Regular_Italic.ttf",
-                    "weight": 400,
+                    "path": "node_modules/@expo-google-fonts/inter/500Medium_Italic/Inter_500Medium_Italic.ttf",
+                    "weight": 500,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf",
+                    "weight": 600
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/600SemiBold_Italic/Inter_600SemiBold_Italic.ttf",
+                    "weight": 600,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
+                    "weight": 700
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/700Bold_Italic/Inter_700Bold_Italic.ttf",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/800ExtraBold/Inter_800ExtraBold.ttf",
+                    "weight": 800
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/800ExtraBold_Italic/Inter_800ExtraBold_Italic.ttf",
+                    "weight": 800,
+                    "style": "italic"
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/900Black/Inter_900Black.ttf",
+                    "weight": 900
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/inter/900Black_Italic/Inter_900Black_Italic.ttf",
+                    "weight": 900,
                     "style": "italic"
                   }
                 ]
@@ -72,12 +127,24 @@
           },
           "ios": {
             "fonts": [
-              "node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf",
+              "node_modules/@expo-google-fonts/inter/100Thin/Inter_100Thin.ttf",
+              "node_modules/@expo-google-fonts/inter/100Thin_Italic/Inter_100Thin_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/200ExtraLight/Inter_200ExtraLight.ttf",
+              "node_modules/@expo-google-fonts/inter/200ExtraLight_Italic/Inter_200ExtraLight_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/300Light/Inter_300Light.ttf",
+              "node_modules/@expo-google-fonts/inter/300Light_Italic/Inter_300Light_Italic.ttf",
               "node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf",
-              "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
-              "node_modules/@expo-google-fonts/inter/500Medium_Italic/Inter_500Medium_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/400Regular_Italic/Inter_400Regular_Italic.ttf",
               "node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf",
-              "node_modules/@expo-google-fonts/inter/400Regular_Italic/Inter_400Regular_Italic.ttf"
+              "node_modules/@expo-google-fonts/inter/500Medium_Italic/Inter_500Medium_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf",
+              "node_modules/@expo-google-fonts/inter/600SemiBold_Italic/Inter_600SemiBold_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
+              "node_modules/@expo-google-fonts/inter/700Bold_Italic/Inter_700Bold_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/800ExtraBold/Inter_800ExtraBold.ttf",
+              "node_modules/@expo-google-fonts/inter/800ExtraBold_Italic/Inter_800ExtraBold_Italic.ttf",
+              "node_modules/@expo-google-fonts/inter/900Black/Inter_900Black.ttf",
+              "node_modules/@expo-google-fonts/inter/900Black_Italic/Inter_900Black_Italic.ttf"
             ]
           }
         }
