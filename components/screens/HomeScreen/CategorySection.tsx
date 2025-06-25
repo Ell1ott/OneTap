@@ -1,7 +1,7 @@
 import AppText from 'components/base/AppText';
 import { observer } from '@legendapp/state/react';
 import { Pressable, ScrollView, View } from 'react-native';
-import { categories$, todos$ } from 'utils/supabase/SupaLegend';
+import { categories$, tasks$, todos$ } from 'utils/supabase/SupaLegend';
 import { TaskCategory } from 'components/Todos/classes';
 import { Tables } from 'utils/supabase/database.types';
 import { router } from 'expo-router';
@@ -25,7 +25,7 @@ export const CategorySection = observer(() => {
 
 export const CategoryCard = observer(({ id, index }: { id: string; index: number }) => {
   const category = categories$[id].get();
-  const todos = Object.values(todos$.get(true));
+  const todos = Object.values(todos$.get());
   const categoryTodos = todos.filter((todo) => todo.category === category.id);
   const undoneTodos = categoryTodos.filter((todo) => todo.completed?.includes(false));
 
