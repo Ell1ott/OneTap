@@ -17,45 +17,52 @@ export const CategorySection = observer(() => {
       showsHorizontalScrollIndicator={false}
       horizontal={categories.length > 2}>
       {categories.map((category: Tables<'categories'>, index: number) => (
-        <CategoryCard key={category.id} id={category.id} index={index} />
+        <CategoryCard
+          scrollable={categories.length > 2}
+          key={category.id}
+          id={category.id}
+          index={index}
+        />
       ))}
     </Wrapper>
   );
 });
 
-export const CategoryCard = observer(({ id, index }: { id: string; index: number }) => {
-  const category = categories$[id].get();
-  const todos = Object.values(todos$.get());
-  const categoryTodos = todos.filter((todo) => todo.category === category.id);
-  const undoneTodos = categoryTodos.filter((todo) => todo.completed?.includes(false));
+export const CategoryCard = observer(
+  ({ id, index, scrollable }: { id: string; index: number; scrollable: boolean }) => {
+    const category = categories$[id].get();
+    const todos = Object.values(todos$.get());
+    const categoryTodos = todos.filter((todo) => todo.category === category.id);
+    const undoneTodos = categoryTodos.filter((todo) => todo.completed?.includes(false));
 
-  const colors = [
-    'bg-blue-100 dark:bg-blue-900/10',
-    'bg-[#D5F5E8]',
-    'bg-red-100',
-    'bg-yellow-100',
-    'bg-purple-100',
-    'bg-pink-100',
-    'bg-orange-100',
-    'bg-gray-100',
-  ];
-  const randomColor = colors[index % colors.length];
-  return (
-    <Pressable
-      onPress={() => {
-        router.push({
-          pathname: '/category',
-          params: {
-            id: category.id,
-          },
-        });
-      }}
-      key={category.id}
-      className={`flex-1 flex-row gap-1 rounded-xl ${randomColor} p-4`}>
-      <AppText className="text-lg font-medium text-foreground">{undoneTodos.length}</AppText>
-      <AppText numberOfLines={1} className="text-lg font-medium text-foreground/50">
-        {category.title}
-      </AppText>
-    </Pressable>
-  );
-});
+    const colors = [
+      'bg-blue-100 dark:bg-blue-900/10',
+      'bg-[#D5F5E8]',
+      'bg-red-100',
+      'bg-yellow-100',
+      'bg-purple-100',
+      'bg-pink-100',
+      'bg-orange-100',
+      'bg-gray-100',
+    ];
+    const randomColor = colors[index % colors.length];
+    return (
+      <Pressable
+        onPress={() => {
+          router.push({
+            pathname: '/category',
+            params: {
+              id: category.id,
+            },
+          });
+        }}
+        key={category.id}
+        className={`flex-row gap-1 rounded-xl ${randomColor} p-4 ${scrollable ? 'w-[9rem]' : 'flex-1'}`}>
+        <AppText className="text-lg font-medium text-foreground">{undoneTodos.length}</AppText>
+        <AppText numberOfLines={1} className="text-lg font-medium text-foreground/50">
+          {category.title}
+        </AppText>
+      </Pressable>
+    );
+  }
+);
