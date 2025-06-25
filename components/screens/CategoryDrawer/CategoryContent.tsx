@@ -14,13 +14,13 @@ const CategoryContent = observer(
       return <CategoryShare id={id} />;
     }
 
-    // if (!category) {
-    //   return (
-    //     <View className="flex-1 items-center justify-center">
-    //       <AppText>Category not found</AppText>
-    //     </View>
-    //   );
-    // }
+    if (!category) {
+      return (
+        <View className="flex-1 items-center justify-center">
+          <AppText>Category not found</AppText>
+        </View>
+      );
+    }
 
     return <CategoryList id={id} onClose={onClose} />;
   }

@@ -284,7 +284,9 @@ const DeleteModal = ({
 }) => {
   const handleDelete = () => {
     router.push('/');
+
     categories$[id].delete();
+
     setDeleteModalVisible(false);
   };
   return (
