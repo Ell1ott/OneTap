@@ -1,6 +1,6 @@
 import AppText from 'components/base/AppText';
 import { Icon } from 'components/base/LucideIcon';
-import { Plus } from 'lucide-react-native';
+import { Boxes, Calendar, CircleCheck, LucideIcon, Plus } from 'lucide-react-native';
 import { Pressable, View } from 'react-native';
 import { useState } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
@@ -20,7 +20,7 @@ export const FloatingAddButton = () => {
       damping: 30,
       stiffness: 250,
     });
-    width.value = withSpring(!areOptionsOpen ? 135 : START_SIZE, {
+    width.value = withSpring(!areOptionsOpen ? 160 : START_SIZE, {
       damping: 30,
       stiffness: 250,
     });
@@ -70,18 +70,19 @@ export const FloatingAddButton = () => {
 
 const AddItemSelection = () => {
   return (
-    <View className="gap-2  p-3">
-      <AddItemOption text="Todo"></AddItemOption>
-      <AddItemOption text="Event"></AddItemOption>
-      <AddItemOption text="Category"></AddItemOption>
+    <View className="gap-2  p-4">
+      <AddItemOption text="Todo" icon={CircleCheck}></AddItemOption>
+      <AddItemOption text="Event" icon={Calendar}></AddItemOption>
+      <AddItemOption text="Category" icon={Boxes}></AddItemOption>
     </View>
   );
 };
 
-const AddItemOption = ({ text }: { text: string }) => {
+const AddItemOption = ({ text, icon }: { text: string; icon: LucideIcon }) => {
   return (
-    <Pressable className="rounded-full px-3">
+    <Pressable className="flex-row items-center justify-end gap-2 rounded-full px-2">
       <AppText className="text-end text-2xl text-foreground">{text}</AppText>
+      <Icon icon={icon} size={10} className="h-5 text-foreground" />
     </Pressable>
   );
 };
