@@ -20,6 +20,7 @@ import { User } from 'lucide-react-native';
 import { Icon } from 'components/base/LucideIcon';
 import { TitleSection } from './TitleSection';
 import { CategorySection } from './CategorySection';
+import { FloatingAddButton } from './FloatingAddButton';
 
 const todayTasks$ = observable(() => {
   const tasks = tasks$.get();
@@ -109,7 +110,7 @@ export const HomeScreen = observer(() => {
   return (
     <>
       {/* <Todos todos$={_todos$} /> */}
-
+      <FloatingAddButton />
       <ScrollView
         className="flex-1 bg-background"
         contentContainerClassName="px-4 pt-10 pb-6"

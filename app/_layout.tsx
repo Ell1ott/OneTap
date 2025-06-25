@@ -40,18 +40,16 @@ export default function RootLayout() {
     }
   });
   useEffect(() => {
-    if (openAuth) {
-      const redirectToAuth = async () => {
-        const fullPathname =
-          pathname +
-          (Object.keys(params).length > 0
-            ? '?' + new URLSearchParams(params as any).toString()
-            : '');
-        await AsyncStorage.setItem('redirectUrl', fullPathname);
+    const redirectToAuth = async () => {
+      const fullPathname =
+        pathname +
+        (Object.keys(params).length > 0 ? '?' + new URLSearchParams(params as any).toString() : '');
+      await AsyncStorage.setItem('redirectUrl', fullPathname);
+      if (openAuth) {
         router.push('/auth');
-      };
-      redirectToAuth();
-    }
+      }
+    };
+    redirectToAuth();
   }, [openAuth]);
 
   return (
