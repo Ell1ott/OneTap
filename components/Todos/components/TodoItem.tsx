@@ -148,8 +148,7 @@ export const TodoItem = observer(
       // <Animated.View layout={LinearTransition.springify()}>
       <Swipeable
         renderRightActions={() => <TodoActions onDelete={handleDelete} />}
-        onSwipeableClose={() => setIsSwipeableOpen(false)}
-        onSwipeableOpenStartDrag={() => setIsSwipeableOpen(true)}>
+        onSwipeableClose={() => setIsSwipeableOpen(false)}>
         <Pressable
           onPress={handlePress}
           disabled={isSwipeableOpen}
@@ -166,7 +165,7 @@ export const TodoItem = observer(
                     <Animated.View style={animatedTextStyle}>
                       <Pressable onPress={() => {}}>
                         <TextInput
-                          className="m-0 mx-0 p-0 text-xl font-medium leading-7 text-foreground outline-none"
+                          className="m-0 mx-0 w-[20rem] p-0 text-xl font-medium leading-7 text-foreground outline-none"
                           placeholder="New task..."
                           style={fontStyle}
                           value={item.$().title.get() ?? ''}
