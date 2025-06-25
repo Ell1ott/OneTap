@@ -1,7 +1,7 @@
 import Drawer from 'components/base/Drawer';
 import { View } from 'react-native';
 import { useState } from 'react';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native';
 import { observer } from '@legendapp/state/react';
 import { events$ } from 'utils/supabase/SupaLegend';
 import { DateTime } from './DateTimeInput';

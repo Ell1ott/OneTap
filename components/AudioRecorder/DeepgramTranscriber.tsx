@@ -4,7 +4,7 @@ import { fontStyle } from 'components/base/AppText';
 import { FadeInText } from 'components/base/FadeInText';
 import { useApiKeyStore } from 'stores/apiKeyStore';
 import * as Haptics from 'expo-haptics';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native';
 
 interface DeepgramTranscriberProps {
   isRecording: boolean;
