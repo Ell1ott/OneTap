@@ -5,6 +5,7 @@ import { Pressable, View } from 'react-native';
 import { useState } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { addCategory } from 'utils/supabase/SupaLegend';
+import { router } from 'expo-router';
 
 export const FloatingAddButton = () => {
   const [areOptionsOpen, setAreOptionsOpen] = useState(false);
@@ -82,6 +83,7 @@ const AddItemSelection = () => {
             title: '',
           });
           console.log(catId);
+          router.push(`/category?id=${catId}`);
         }}></AddItemOption>
     </View>
   );
