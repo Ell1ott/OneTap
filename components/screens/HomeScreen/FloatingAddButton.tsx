@@ -4,6 +4,7 @@ import { Boxes, Calendar, CircleCheck, LucideIcon, Plus } from 'lucide-react-nat
 import { Pressable, View } from 'react-native';
 import { useState } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { addCategory } from 'utils/supabase/SupaLegend';
 
 export const FloatingAddButton = () => {
   const [areOptionsOpen, setAreOptionsOpen] = useState(false);
@@ -71,16 +72,34 @@ export const FloatingAddButton = () => {
 const AddItemSelection = () => {
   return (
     <View className="gap-2  p-4">
-      <AddItemOption text="Todo" icon={CircleCheck}></AddItemOption>
-      <AddItemOption text="Event" icon={Calendar}></AddItemOption>
-      <AddItemOption text="Category" icon={Boxes}></AddItemOption>
+      <AddItemOption text="Todo" icon={CircleCheck} onPress={() => {}}></AddItemOption>
+      <AddItemOption text="Event" icon={Calendar} onPress={() => {}}></AddItemOption>
+      <AddItemOption
+        text="Category"
+        icon={Boxes}
+        onPress={() => {
+          const catId = addCategory({
+            title: '',
+          });
+          console.log(catId);
+        }}></AddItemOption>
     </View>
   );
 };
 
-const AddItemOption = ({ text, icon }: { text: string; icon: LucideIcon }) => {
+const AddItemOption = ({
+  text,
+  icon,
+  onPress,
+}: {
+  text: string;
+  icon: LucideIcon;
+  onPress: () => void;
+}) => {
   return (
-    <Pressable className="flex-row items-center justify-end gap-2 rounded-full px-2">
+    <Pressable
+      onPress={onPress}
+      className="flex-row items-center justify-end gap-2 rounded-full px-2">
       <AppText className="text-end text-2xl text-foreground">{text}</AppText>
       <Icon icon={icon} size={10} className="h-5 text-foreground" />
     </Pressable>
