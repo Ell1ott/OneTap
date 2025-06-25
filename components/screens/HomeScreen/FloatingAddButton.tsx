@@ -72,7 +72,7 @@ export const FloatingAddButton = () => {
 
 const AddItemSelection = () => {
   return (
-    <View className="gap-2  p-4">
+    <View className="gap-3  p-4">
       <AddItemOption text="Todo" icon={CircleCheck} onPress={() => {}}></AddItemOption>
       <AddItemOption text="Event" icon={Calendar} onPress={() => {}}></AddItemOption>
       <AddItemOption
@@ -102,7 +102,7 @@ const AddItemOption = ({
     <Pressable
       onPress={onPress}
       className="flex-row items-center justify-end gap-2 rounded-full px-2">
-      <AppText className="text-end text-2xl text-foreground">{text}</AppText>
+      <AppText className="text-end text-xl text-foreground">{text}</AppText>
       <Icon icon={icon} size={10} className="h-5 text-foreground" />
     </Pressable>
   );
