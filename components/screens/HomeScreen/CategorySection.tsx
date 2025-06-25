@@ -7,7 +7,11 @@ import { Tables } from 'utils/supabase/database.types';
 import { router } from 'expo-router';
 
 export const CategorySection = observer(() => {
-  const categories = Object.values(categories$.get(true));
+  const categoriesDict = categories$.get(true);
+  if (categoriesDict === undefined || categoriesDict === null) {
+    return null;
+  }
+  const categories = Object.values(categoriesDict);
   console.log('rerendering category section');
   const Wrapper = categories.length > 2 ? ScrollView : View;
   return (
