@@ -4,7 +4,7 @@ import { Boxes, Calendar, CircleCheck, LucideIcon, Plus } from 'lucide-react-nat
 import { Pressable, View } from 'react-native';
 import { useState } from 'react';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { addCategory } from 'utils/supabase/SupaLegend';
+import { addCategory, addEvent } from 'utils/supabase/SupaLegend';
 import { router } from 'expo-router';
 
 export const FloatingAddButton = () => {
@@ -53,7 +53,7 @@ export const FloatingAddButton = () => {
         style={[animatedButtonStyle]}
         className="absolute bottom-5 right-5 z-10 items-end justify-end overflow-hidden rounded-[2rem] bg-card">
         {areOptionsOpen ? (
-          <AddItemSelection />
+          <AddItemSelection onClose={toggleOptions} />
         ) : (
           <Pressable
             style={{
@@ -70,11 +70,29 @@ export const FloatingAddButton = () => {
   );
 };
 
-const AddItemSelection = () => {
+const AddItemSelection = ({ onClose }: { onClose: () => void }) => {
   return (
-    <View className="gap-3  p-4">
+    <View className="gap-3 p-4">
       <AddItemOption text="Todo" icon={CircleCheck} onPress={() => {}}></AddItemOption>
-      <AddItemOption text="Event" icon={Calendar} onPress={() => {}}></AddItemOption>
+      <AddItemOption
+        text="Event"
+        icon={Calendar}
+        onPress={() => {
+          const eventId = addEvent({
+            title: '',
+            start: [
+              {
+                date: new Date(
+                  new Date().setHours(new Date().getHours() + 1, 0, 0, 0)
+                ).toISOString(),
+                isTimeKnown: true,
+              },
+            ],
+            updated_at: new Date().toISOString(),
+          });
+          router.push(`/event?id=${eventId}`);
+          onClose();
+        }}></AddItemOption>
       <AddItemOption
         text="Category"
         icon={Boxes}
@@ -84,6 +102,7 @@ const AddItemSelection = () => {
           });
           console.log(catId);
           router.push(`/category?id=${catId}`);
+          onClose();
         }}></AddItemOption>
     </View>
   );
