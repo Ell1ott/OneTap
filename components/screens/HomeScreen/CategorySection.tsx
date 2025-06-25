@@ -12,7 +12,7 @@ export const CategorySection = observer(() => {
   const Wrapper = categories.length > 2 ? ScrollView : View;
   return (
     <Wrapper
-      className="-mx-4 mb-6 flex-none flex-row gap-2 px-4"
+      className="-mx-4 mb-6 flex-none flex-row gap-2"
       contentContainerClassName="gap-2 px-4"
       showsHorizontalScrollIndicator={false}
       horizontal={categories.length > 2}>
