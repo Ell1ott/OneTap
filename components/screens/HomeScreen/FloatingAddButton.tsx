@@ -7,22 +7,24 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 import { addCategory, addEvent } from 'utils/supabase/SupaLegend';
 import { router } from 'expo-router';
 
+const START_SIZE = 50;
+const END_WIDTH = 160;
+const END_HEIGHT = 150;
 export const FloatingAddButton = () => {
   const [areOptionsOpen, setAreOptionsOpen] = useState(false);
 
   // Shared values for animation
-  const START_SIZE = 50;
   const height = useSharedValue(START_SIZE); // Initial size (p-4 + icon size)
   const width = useSharedValue(START_SIZE); // Initial size (p-4 + icon size)
 
   // Update animation when options open/close
   const toggleOptions = () => {
     setAreOptionsOpen(!areOptionsOpen);
-    height.value = withSpring(!areOptionsOpen ? 140 : START_SIZE, {
+    height.value = withSpring(!areOptionsOpen ? END_HEIGHT : START_SIZE, {
       damping: 30,
       stiffness: 250,
     });
-    width.value = withSpring(!areOptionsOpen ? 160 : START_SIZE, {
+    width.value = withSpring(!areOptionsOpen ? END_WIDTH : START_SIZE, {
       damping: 30,
       stiffness: 250,
     });
@@ -72,7 +74,7 @@ export const FloatingAddButton = () => {
 
 const AddItemSelection = ({ onClose }: { onClose: () => void }) => {
   return (
-    <View className="gap-3 p-4">
+    <View className="p-4" style={{ width: END_WIDTH, height: END_HEIGHT }}>
       <AddItemOption text="Todo" icon={CircleCheck} onPress={() => {}}></AddItemOption>
       <AddItemOption
         text="Event"
@@ -118,11 +120,16 @@ const AddItemOption = ({
   onPress: () => void;
 }) => {
   return (
-    <Pressable
-      onPress={onPress}
-      className="flex-row items-center justify-end gap-2 rounded-full px-2">
-      <AppText className="text-end text-xl text-foreground">{text}</AppText>
-      <Icon icon={icon} size={10} className="h-5 text-foreground" />
-    </Pressable>
+    <View className="flex-1 flex-row items-center justify-end gap-2 overflow-hidden rounded-full">
+      <Pressable
+        onPress={onPress}
+        android_ripple={{ color: 'rgba(0, 0, 0, 0.1)' }}
+        className="size-full flex-1 flex-row items-center justify-end gap-2 px-2 py-1">
+        <AppText numberOfLines={1} className="text-end text-xl text-foreground">
+          {text}
+        </AppText>
+        <Icon icon={icon} className="h-8 text-foreground" />
+      </Pressable>
+    </View>
   );
 };
