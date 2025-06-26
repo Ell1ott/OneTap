@@ -128,7 +128,7 @@ const AddItemOption = ({
         <AppText numberOfLines={1} className="text-end text-xl text-foreground">
           {text}
         </AppText>
-        <Icon icon={icon} className="h-8 text-foreground" />
+        <Icon icon={icon} className="h-8 text-foregroundMuted" />
       </Pressable>
     </View>
   );
